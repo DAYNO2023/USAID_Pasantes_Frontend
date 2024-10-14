@@ -34,8 +34,10 @@
                 width: 5.857rem;
                 overflow: visible;
                 z-index: 999;
+                
                 .layout-menu-container {
                     overflow: auto;
+                    
 
                     &::-webkit-scrollbar {
                         display: none;
@@ -48,6 +50,7 @@
             }
 
             .layout-menu {
+                
                 padding: 0 1rem;
                 .layout-root-menuitem {
                     > .layout-menuitem-root-text {
@@ -100,6 +103,7 @@
                         max-height: 20rem;
                         overflow: auto;
                         z-index: 999;
+                        
 
                         a {
                             padding-right: 0.5rem;

@@ -11,7 +11,11 @@ import { CustomerService } from 'src/app/demo/service/customer.service';
 @Component({
     templateUrl: './ecommerce.dashboard.component.html',
 })
+
 export class EcommerceDashboardComponent implements OnInit, OnDestroy {
+
+    date: Date[] | undefined;
+    
     visitorChart: any;
 
     visitorChartOptions: any;
@@ -805,4 +809,11 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             this.subscription.unsubscribe();
         }
     }
+
+
+
+
+
+
+    
 }

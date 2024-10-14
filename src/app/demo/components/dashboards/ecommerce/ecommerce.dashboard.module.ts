@@ -17,6 +17,11 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { AvatarModule } from 'primeng/avatar';
 import { TimelineModule } from 'primeng/timeline';
 import { BadgeModule } from 'primeng/badge';
+import { CalendarAppRoutingModule } from '../../apps/calendar/calendar.app-routing.module';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { DialogModule } from 'primeng/dialog';
+import { CalendarModule } from 'primeng/calendar';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
 	imports: [
@@ -36,7 +41,17 @@ import { BadgeModule } from 'primeng/badge';
 		ProgressBarModule,
 		AvatarModule,
 		TimelineModule,
-		BadgeModule
+		BadgeModule,
+        CalendarAppRoutingModule,
+        FullCalendarModule,
+        DialogModule,
+        InputTextareaModule,
+        ButtonModule,
+        CalendarModule,
+        InputTextModule,
+        DropdownModule,
+        ToastModule,
+        RippleModule
 	],
 	declarations: [EcommerceDashboardComponent]
 })

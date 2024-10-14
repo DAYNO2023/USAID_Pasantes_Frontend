@@ -7,12 +7,15 @@
     display: flex;
     flex-direction: column;
     border-radius: 0px 40px 40px 0px;
+
+
    
     .sidebar-header {
         padding: 1.7rem 1.57rem .5rem 2.42rem;
         display: flex;
         justify-content: flex-start;
         align-items: center;
+
 
         .app-logo {
             width: 100%;
@@ -37,12 +40,14 @@
         overflow: auto;
         flex: 1;
         padding-bottom: 2rem;
+        
     }
 
     .layout-menu {
         margin: 0;
         padding: 0 1.5rem;
         list-style-type: none;
+        
 
         > li {
             margin-bottom: 2.25rem;
@@ -62,11 +67,13 @@
                 padding-left: 1.5rem;
                 margin-bottom: 0.5rem;
                 font-size: 12px;
+                
 
                 > .layout-menuitem-text {
                     font-size: 0.857rem;
                     font-weight: 600;
                     text-transform: uppercase;
+                    
                 }
             }
             > a {
@@ -80,6 +87,7 @@
             &.active-menuitem {
                 > .layout-submenu-toggler {
                     transform: rotate(-180deg);
+                    
                 }
             }
         }

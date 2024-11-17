@@ -9,7 +9,7 @@
     border-radius: 0px 0px 0px 0px;
 
     // border-style: dashed;
-    background-color: #102d4c;
+    background-color: #1f3168;
 
     // box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.25);
 
@@ -51,7 +51,7 @@
 
     .layout-menu {
         margin: 0;
-
+        
         list-style-type: none;
         
 
@@ -72,15 +72,14 @@
             > div {
                 padding-left: 1.5rem;
                 margin-bottom: 0.5rem;
-                font-size: 12px;
-
-                
+                font-size: 14px;
+                margin-left: -25px;
+                font-weight: bold;
 
                 > .layout-menuitem-text {
                     font-size: 0.857rem;
                     font-weight: 600;
                     text-transform: uppercase;
-                    
                 }
             }
             > a {
@@ -94,8 +93,6 @@
             &.active-menuitem {
                 > .layout-submenu-toggler {
                     transform: rotate(-180deg);
-
-                    
                 }
             }
         }
@@ -103,8 +100,9 @@
         li.active-menuitem {
             background-color: var(--root-menu-item-hover-bg);
             > a {
-                border-left-color:rgb(0, 174, 255);
+                border-left-color:rgb(255, 255, 255);
                 background-color: var(--root-menu-item-hover-bg);
+
                 .layout-submenu-toggler {
                     transform: rotate(-180deg);
                 }
@@ -116,6 +114,7 @@
             padding: 0;
             list-style-type: none;
             margin-left: -25px;
+            font-size: 16px;
             
 
             a {
@@ -140,7 +139,7 @@
                 }
 
                 &.active-route {
-                    border-left-color: rgb(0, 174, 255);
+                    border-left-color: rgb(239, 48, 48);
                     background-color: var(--root-menu-item-hover-bg);
                 }
 
@@ -150,6 +149,8 @@
             }
 
             ul {
+                margin-left: 10px;
+
                 overflow: hidden;
                 border-radius: var(--border-radius);
 

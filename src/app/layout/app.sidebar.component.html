@@ -1,17 +1,14 @@
 <div class="layout-sidebar" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
     <div class="sidebar-header">
         <a [routerLink]="['/']" class="app-logo">
-            <div class="app-logo-small h-2rem" >
-                <img  [src]="'assets/layout/images/logo-'+ (layoutService.config().colorScheme === 'light' ? 'dark' : 'light') + '.png'">
+            <div class="app-logo-normal" style="display: flex; align-items: center;">
+                <img class="h-5rem" style="height: 5rem; width: auto;" 
+                     [src]="'assets/layout/images/usaidlogo-'+ (layoutService.config().colorScheme === 'light' ? 'dark' : 'light') + '.png'" alt="USAID Logo">
+                <h3 style="color: white; font-size: 2rem; font-weight: bold; margin: 0 0 0 1rem; line-height: 1;">USAID</h3>
             </div>
-            <!-- <div class="app-logo-normal ">
-                <img class="h-2rem" [src]="'assets/layout/images/logo-'+ (layoutService.config().colorScheme === 'light' ? 'dark' : 'light') + '.png'">
-                <img  class="h-2rem ml-3" [src]="'assets/layout/images/appname-'+ (layoutService.config().colorScheme === 'light' ? 'dark' : 'light') + '.png'"/>
-            </div> -->
         </a>
-        <button class="layout-sidebar-anchor p-link z-2 " type="button" (click)="anchor()"></button>
+        <button class="layout-sidebar-anchor p-link z-2" type="button" (click)="anchor()"></button>
     </div>
- 
 
     <div #menuContainer class="layout-menu-container">
         <app-menu></app-menu>

@@ -14,26 +14,33 @@ body, html {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(to bottom, #276bd0, #1f3168); /* Fondo azul */
+  background: linear-gradient(to bottom, #114491, #1f3168); /* Fondo azul */
 }
 
 .login-card {
   display: flex;
-  width: 70%; /* Más ancho */
+  width: 60%; /* Más ancho */
   background: #fff; /* Fondo blanco */
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  height: 700px; /* Más alto */
+  height: 600px; /* Más alto */
+  border-style: hidden;
+  position: relative; /* Para posicionar el botón de FAQ */
+
 }
 
 .left-section {
-  background: #f6f8fa; /* Gris claro */
+  background: #0453a1; /* Gris claro */
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 60px;
+
+  border-radius: 20px 20px;
+  
+
 }
 
 .left-section img {
@@ -43,16 +50,16 @@ body, html {
 
 .right-section {
   flex: 2; /* Más espacio para el formulario */
-  padding: 60px; /* Más espacio interno */
+  padding: 40px; /* Más espacio interno */
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 h2 {
-  font-size: 28px; /* Más grande */
+  font-size: 30px; /* Más grande */
   margin-bottom: 20px;
-  color: #4d94ff; /* Azul */
+  color: #1f3168; /* Azul */
   text-align: center;
 }
 
@@ -75,25 +82,25 @@ h2 {
 }
 
 .input-group input:focus {
-  border: 1px solid #4d94ff; /* Azul */
+  border: 1px solid #0453a1; /* Azul */
   outline: none;
 }
 
-.forgot-link {
+.forgot-link, .faq-link {
   display: block;
   text-align: right;
   margin-top: 10px;
-  font-size: 12px;
-  color: #4d94ff; /* Azul */
+  font-size: 14px;
+  color: #0453a1; /* Azul */
   text-decoration: none;
 }
 
-.forgot-link:hover {
+.forgot-link:hover, .faq-link:hover {
   text-decoration: underline;
 }
 
 .login-btn {
-  background: #ff4d4d; /* Rojo */
+  background: #1f3168; /* Rojo */
   color: #fff;
   padding: 15px; /* Botón más grande */
   border: none;
@@ -101,8 +108,59 @@ h2 {
   font-size: 18px; /* Texto más grande */
   cursor: pointer;
   transition: background 0.3s;
+  margin: 0 auto; /* Centrado del botón */
+  display: block;
 }
 
 .login-btn:hover {
-  background: #cc0000; /* Rojo más oscuro */
+  background: #0453a1; /* Rojo más oscuro */
 }
+
+.faq-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  background: #0453a1;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+}
+
+.faq-btn:hover {
+  background: #0453a1;
+}
+
+.register-link {
+  border-top: 20px;
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 16px;
+  color: #003f7d; /* Azul */
+  text-decoration: none;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}
+
+.faq-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  background: #003f7d;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+}
+
+.faq-btn:hover {
+  background: #4d94ff;
+}
+

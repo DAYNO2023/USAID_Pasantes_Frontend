@@ -14,7 +14,7 @@ body, html {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(to bottom, #114491, #1f3168); /* Fondo azul */
+  background: linear-gradient(to bottom, #0b2751, #1f3168); /* Fondo azul */
 }
 
 .login-card {
@@ -24,20 +24,19 @@ body, html {
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  height: 600px; /* Más alto */
+  height: 500px; /* Más alto */
   border-style: hidden;
   position: relative; /* Para posicionar el botón de FAQ */
 
 }
 
 .left-section {
-  background: #0453a1; /* Gris claro */
+  background: #1f3168; /* Gris claro */
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 60px;
-  
 
 }
 
@@ -98,12 +97,13 @@ h2 {
 }
 
 .login-btn {
+
   background: #1f3168; /* Rojo */
   color: #fff;
   padding: 15px; /* Botón más grande */
   border: none;
   border-radius: 5px;
-  font-size: 18px; /* Texto más grande */
+  font-size: 16px; /* Texto más grande */
   cursor: pointer;
   transition: background 0.3s;
   margin: 0 auto; /* Centrado del botón */
@@ -115,6 +115,7 @@ h2 {
 }
 
 .faq-btn {
+
   position: absolute;
   top: 10px;
   right: 20px;
@@ -145,16 +146,19 @@ h2 {
   text-decoration: underline;
 }
 
+
 .faq-btn {
   position: absolute;
   top: 10px;
   right: 20px;
-  background: #003f7d;
-  color: white;
+  background: #ffffff;
+  color: #003f7d;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   border: none;
+  margin-top: 20px;
+  margin-right: 20px;
   font-size: 14px;
 }
 
@@ -162,3 +166,21 @@ h2 {
   background: #4d94ff;
 }
 
+.logo-container {
+  display: flex;
+  flex-direction: column; /* Apilar elementos en columna */
+  align-items: center; /* Centrar horizontalmente */
+  justify-content: center; /* Centrar verticalmente */
+}
+
+.logo-container img {
+  max-width: 70%;
+  height: auto;
+  margin-bottom: 20px; /* Espacio entre la imagen y el texto */
+}
+
+.logo-container h1 {
+  font-size: 50px; /* Tamaño del texto */
+  color: #fff; /* Color del texto */
+  text-align: center; /* Centrar el texto */
+}

@@ -22,6 +22,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { ToastModule } from 'primeng/toast';
+import { EventService } from 'src/app/demo/service/event.service';
 
 @NgModule({
 	imports: [
@@ -53,6 +54,7 @@ import { ToastModule } from 'primeng/toast';
         ToastModule,
         RippleModule
 	],
-	declarations: [EcommerceDashboardComponent]
+	declarations: [EcommerceDashboardComponent],
+	providers: [EventService]
 })
 export class EcommerceDashboardModule { }

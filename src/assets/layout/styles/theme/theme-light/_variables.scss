@@ -15,13 +15,13 @@ $colors: (
 
 //reused color variables
 $shade000:transparent!default;    //surface
-$shade100:rgba(255, 255, 255, 0.07) !default;    //Alpha - 01
-$shade200:rgba(68, 72, 109, 0.12) !default;    //Alpha - 02
-$shade300:rgba(255, 255, 255, 0.17) !default;    //Alpha - 03
+$shade100:rgb(255, 255, 255) !default;    //Alpha - 01
+$shade200:rgb(255, 255, 255) !default;    //Alpha - 02
+$shade300:rgb(255, 255, 255) !default;    //Alpha - 03
 $shade400:rgba(255, 255, 255, 0.9) !default;    //CardBg
-$shade500:#8A8EA6 !default;    //text third color
-$shade600:#676B89 !default;    //text secondary color
-$shade700:#44486D !default;    //text color
+$shade500:#ffffff !default;    //text third color
+$shade600:#FFF !default;    //text secondary color
+$shade700:#ffffff !default;    //text color
 
 $solidSurfaceColor: #ececf9 !default;
 
@@ -148,7 +148,7 @@ $plainButtonHoverBgColor:$shade100 !default;
 $plainButtonActiveBgColor:$shade300 !default;
 
 $secondaryButtonBg:$shade100 !default;
-$secondaryButtonTextColor:#44486D !default;
+$secondaryButtonTextColor:#ffffff !default;
 $secondaryButtonBorder:1px solid transparent !default;
 $secondaryButtonHoverBg:$shade200 !default;
 $secondaryButtonTextHoverColor:$secondaryButtonTextColor !default;
@@ -168,7 +168,7 @@ $infoButtonHoverBorderColor:transparent !default;
 $infoButtonActiveBg:#5310C1 !default;
 $infoButtonTextActiveColor:$infoButtonTextColor !default;
 $infoButtonActiveBorderColor:transparent !default;
-$infoButtonShadow:0px 0px 10px rgba(135, 62, 254, 0.25) !default;
+$infoButtonShadow:0px 0px 10px rgb(255, 255, 255) !default;
 $infoButtonFocusShadow:none !default;
 
 $successButtonBg:#0BD18A !default;
@@ -184,7 +184,7 @@ $successButtonShadow:0px 0px 10px rgba(11, 209, 138, 0.25) !default;
 $successButtonFocusShadow:none !default;
 
 $warningButtonBg:#EEE500 !default;
-$warningButtonTextColor:#44486D !default;
+$warningButtonTextColor:#ffffff !default;
 $warningButtonBorder:1px solid transparent !default;
 $warningButtonHoverBg:#D1C901 !default;
 $warningButtonTextHoverColor:$warningButtonTextColor !default;
@@ -877,7 +877,7 @@ $imagePreviewActionIconBorderRadius:50% !default;
     --surface-400: #878aa2;
     --surface-500: #717490;
     --surface-600: #5a5e7f;
-    --surface-700: #44486d;
+    --surface-700: #ffffff;
     --surface-800: #3c3f60;
     --surface-900: #343753;
     --gray-50: #e1e2e8;
@@ -887,7 +887,7 @@ $imagePreviewActionIconBorderRadius:50% !default;
     --gray-400: #878aa2;
     --gray-500: #717490;
     --gray-600: #5a5e7f;
-    --gray-700: #44486d;
+    --gray-700: #ffffff;
     --gray-800: #3c3f60;
     --gray-900: #343753;
     --content-padding:#{$panelContentPadding};

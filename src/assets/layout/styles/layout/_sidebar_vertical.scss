@@ -8,6 +8,7 @@
     flex-direction: column;
     border-radius: 0px 0px 0px 0px;
     background-color: #1f3168;
+    color: #fff;
    
     .sidebar-header {
         padding: 1.7rem 1.57rem .5rem 2.42rem;
@@ -88,7 +89,7 @@
         li.active-menuitem {
             background-color: var(--root-menu-item-hover-bg);
             > a {
-                border-left-color: var(--primary-color);
+                border-left-color: rgb(239, 48, 48);
                 background-color: var(--root-menu-item-hover-bg);
                 .layout-submenu-toggler {
                     transform: rotate(-180deg);
@@ -109,6 +110,7 @@
                 color: var(--text-color);
                 cursor: pointer;
                 padding: 0.5rem 1rem;
+                color: #fff;
                 border-radius: 8px;
                 transition: background-color var(--transition-duration), box-shadow var(--transition-duration);
 
@@ -123,7 +125,7 @@
                 }
 
                 &.active-route {
-                    border-left-color: var(--primary-color);
+                    border-left-color: rgb(239, 48, 48);
                     background-color: var(--root-menu-item-hover-bg);
                 }
 

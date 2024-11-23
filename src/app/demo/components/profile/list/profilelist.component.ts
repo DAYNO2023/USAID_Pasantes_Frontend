@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { Customer } from 'src/app/demo/api/customer';
-import { CustomerService } from 'src/app/demo/service/customer.service';
+import { CustomerService } from 'src/app/demo/Service/customer.service';
 
 @Component({
     templateUrl: './profilelist.component.html'

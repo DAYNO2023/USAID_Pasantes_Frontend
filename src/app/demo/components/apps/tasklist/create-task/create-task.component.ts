@@ -3,7 +3,7 @@ import { MessageService } from 'primeng/api';
 import { Member } from 'src/app/demo/api/member';
 import { DialogConfig, Task } from 'src/app/demo/api/task';
 import { TaskService } from '../service/task.service';
-import { MemberService } from 'src/app/demo/service/member.service';
+import { MemberService } from 'src/app/demo/Service/member.service';
 import { Subscription } from 'rxjs';
 
 @Component({

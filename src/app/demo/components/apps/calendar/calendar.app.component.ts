@@ -36,7 +36,7 @@ export class CalendarAppComponent implements OnInit {
     constructor(private eventService: EventService) { }
 
     ngOnInit(): void {
-        this.today = '2022-05-11';
+        this.today = '2024-11-20';
 
         this.eventService.getEvents().then(events => {
             this.events = events;
@@ -57,6 +57,13 @@ export class CalendarAppComponent implements OnInit {
             selectable: true,
             selectMirror: true,
             dayMaxEvents: true,
+            locale: 'es', // Traduce el calendario al español
+            buttonText: { // Personalización de los botones
+                today: 'Hoy',
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día'
+            },
             eventClick: (e: MouseEvent) => this.onEventClick(e),
             select: (e: MouseEvent) => this.onDateSelect(e)
         };

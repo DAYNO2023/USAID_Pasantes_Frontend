@@ -26,7 +26,7 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Hoja de Tiempo',
                         icon: 'pi pi-fw pi-file',
-                        routerLink: ['/apps/calendar']
+                        routerLink: ['/apps/calenda']
                     }
                 ]
             },

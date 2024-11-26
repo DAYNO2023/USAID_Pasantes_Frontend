@@ -13,36 +13,13 @@
                             box-shadow: 0px 6px 20px rgba(252, 97, 97, 0.3);
                         ">
                         <i class="pi pi-arrow-down w-2rem"></i>
-                        <span class="line-height-2">0.6%</span>
+                        <span class="line-height-2">3</span>
                     </div>
-                    <div class="line-height-4 text-4xl">0.81%</div>
+                    <div class="line-height-4 text-4xl">8</div>
                 </div>
             </div>
             <img class="absolute" style="bottom: 14px; right: 12px"
                 src="assets/demo/images/ecommerce-dashboard/rate.svg" />
-        </div>
-    </div>
-    <div class="col-12 md:col-4">
-        <div class="card relative h-6rem border-round-xl p-3">
-            <span class="text-sm font-medium line-height-1">
-                HORAS PENDIENTES
-            </span>
-            <div class="flex justify-content-between">
-                <div class="flex justify-content-between align-items-center">
-                    <div class="flex justify-content-center align-items-center h-2rem w-5rem border-round p-2 mr-3"
-                        style="
-                            margin-right: 12px;
-                            background-color: #0bd18a;
-                            box-shadow: 0px 6px 20px rgba(11, 209, 138, 0.3);
-                        ">
-                        <i class="pi pi-arrow-up w-2rem"></i>
-                        <span class="line-height-2">4,2%</span>
-                    </div>
-                    <div class="line-height-4 text-4xl">$306.2</div>
-                </div>
-            </div>
-            <img class="absolute" style="bottom: 14px; right: 12px"
-                src="assets/demo/images/ecommerce-dashboard/value.svg" />
         </div>
     </div>
     <div class="col-12 md:col-4">
@@ -54,13 +31,36 @@
                 <div class="flex justify-content-between align-items-center">
                     <div class="flex justify-content-center align-items-center h-2rem w-5rem border-round p-2 mr-3"
                         style="
+                            margin-right: 12px;
+                            background-color: #0bd18a;
+                            box-shadow: 0px 6px 20px rgba(11, 209, 138, 0.3);
+                        ">
+                        <i class="pi pi-arrow-up w-2rem"></i>
+                        <span class="line-height-2">50</span>
+                    </div>
+                    <div class="line-height-4 text-4xl">660</div>
+                </div>
+            </div>
+            <img class="absolute" style="bottom: 14px; right: 12px"
+                src="assets/demo/images/ecommerce-dashboard/value.svg" />
+        </div>
+    </div>
+    <div class="col-12 md:col-4">
+        <div class="card relative h-6rem border-round-xl p-3">
+            <span class="text-sm font-medium line-height-1">
+                HORAS PENDIENTES
+            </span>
+            <div class="flex justify-content-between">
+                <div class="flex justify-content-between align-items-center">
+                    <div class="flex justify-content-center align-items-center h-2rem w-5rem border-round p-2 mr-3"
+                        style="
                             background-color: #00d0de;
                             box-shadow: 0px 6px 20px rgba(0, 208, 222, 0.3);
                         ">
                         <i class="pi pi-minus w-2rem"></i>
-                        <span class="line-height-2">2,1%</span>
+                        <span class="line-height-2">440</span>
                     </div>
-                    <div class="line-height-4 text-4xl">1,620</div>
+                    <div class="line-height-4 text-4xl">220</div>
                 </div>
             </div>
             <img class="absolute" style="bottom: 14px; right: 12px"
@@ -68,46 +68,26 @@
         </div>
     </div>
 
-    <div class="col-12 md:col-8">
+    <div class="col-12 md:col-6">
         <div class="card widget-visitor-graph">
             <div class="card-header line-height-4">
-                <span>Unique visitor graph</span>
+                <span>Gráfico de Actividades</span>
                 <p-dropdown [options]="visitorYear" [(ngModel)]="selectedVisitorYear" optionLabel="name" (onChange)="
                         changeVisitorChart($event); visitor.refresh()
                     "></p-dropdown>
             </div>
-
-            <div class="graph-content grid mt-4">
-                <div class="col-12 md:col-6">
-                    <h2>{{ growth }}</h2>
-                    <h6 class="mt-3">MRR GROWTH</h6>
-                    <p class="text-color-secondary">
-                        Measure how fast you’re growing mothly recurring
-                        revenue. <a href="#"
-                            class="text-primary hover:text-primary-400  transition-duration-200">Learn more</a>
-                    </p>
-                </div>
-                <div class="col-12 md:col-6">
-                    <h2>{{ avgCustomer }}</h2>
-                    <h6 class="mt-3">AVG. MRR/CUSTOMER</h6>
-                    <p class="text-color-secondary">
-                        The revenue generated per account on a monthly or
-                        yearly basis. <a href="#"
-                            class="text-primary hover:text-primary-400 transition-duration-200">Learn more</a>
-                    </p>
-                </div>
-            </div>
-
+    
             <div class="graph">
-                <h6 class="mt-4">Revenue</h6>
-
+                <h6 class="mt-4">Ingresos</h6>
+    
                 <p-chart #visitor type="bar" [data]="visitorChart" [options]="visitorChartOptions"
                     id="visitor-chart"></p-chart>
             </div>
         </div>
     </div>
+    
 
-    <div class="col-12 md:col-4">
+    <div class="col-12 md:col-6">
         <div class="card p-0">
             <div class="card">
                 <full-calendar [options]="calendarOptions"></full-calendar>

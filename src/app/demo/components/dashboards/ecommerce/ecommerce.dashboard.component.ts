@@ -158,7 +158,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             {
                 transaction: 'Payment from #28492',
                 amount: '+$250.00',
-                date: 'June 13, 2020 11:09 AM',
+                date: 'June 13, 2024 11:09 AM',
                 icon: PrimeIcons.CHECK,
                 iconColor: '#0F8BFD',
                 amountColor: '#00D0DE',
@@ -166,7 +166,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             {
                 transaction: 'Process refund to #94830',
                 amount: '-$570.00',
-                date: 'June 13, 2020 08:22 AM',
+                date: 'June 13, 2024 08:22 AM',
                 icon: PrimeIcons.REFRESH,
                 iconColor: '#FC6161',
                 amountColor: '#FC6161',
@@ -174,7 +174,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             {
                 transaction: 'New 8 user to #5849',
                 amount: '+$50.00',
-                date: 'June 12, 2020 02:56 PM',
+                date: 'June 12, 2024 02:56 PM',
                 icon: PrimeIcons.PLUS,
                 iconColor: '#0BD18A',
                 amountColor: '#0BD18A',
@@ -182,7 +182,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             {
                 transaction: 'Payment from #3382',
                 amount: '+$3830.00',
-                date: 'June 11, 2020 06:11 AM',
+                date: 'June 11, 2024 06:11 AM',
                 icon: PrimeIcons.CHECK,
                 iconColor: '#0F8BFD',
                 amountColor: '#00D0DE',
@@ -190,7 +190,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             {
                 transaction: 'Payment from #4738',
                 amount: '+$845.00',
-                date: 'June 11, 2020 03:50 AM',
+                date: 'June 11, 2024 03:50 AM',
                 icon: PrimeIcons.CHECK,
                 iconColor: '#0F8BFD',
                 amountColor: '#00D0DE',
@@ -198,7 +198,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             {
                 transaction: 'Payment failed form #60958',
                 amount: '$1450.00',
-                date: 'June 10, 2020 07:54 PM',
+                date: 'June 10, 2024 07:54 PM',
                 icon: PrimeIcons.EXCLAMATION_TRIANGLE,
                 iconColor: '#EC4DBC',
                 amountColor: '#EC4DBC',
@@ -206,7 +206,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             {
                 transaction: 'Payment from #5748',
                 amount: '+$50.00',
-                date: 'June 09, 2020 11:37 PM',
+                date: 'June 09, 2024 11:37 PM',
                 icon: PrimeIcons.CHECK,
                 iconColor: '#0F8BFD',
                 amountColor: '#00D0DE',
@@ -214,7 +214,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             {
                 transaction: 'Removed 32 users from #5849',
                 amount: '-$240.00',
-                date: 'June 09, 2020 08:40 PM',
+                date: 'June 09, 2024 08:40 PM',
                 icon: PrimeIcons.MINUS,
                 iconColor: '#FC6161',
                 amountColor: '#FC6161',
@@ -244,27 +244,27 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
 
         this.orderYear = [
             { name: '2021', code: '0' },
-            { name: '2020', code: '1' },
+            { name: '2024', code: '1' },
         ];
 
         this.visitorYear = [
-            { name: '2020', code: '0' },
+            { name: '2024', code: '0' },
             { name: '2019', code: '1' },
         ];
 
         this.customerYear = [
-            { name: '2020', code: '0' },
+            { name: '2024', code: '0' },
             { name: '2019', code: '1' },
         ];
 
         this.revenueMonth = [
             { name: 'January - July 2021', code: '0' },
-            { name: 'August - December 2020', code: '1' },
+            { name: 'August - December 2024', code: '1' },
         ];
 
         this.selectedVisitorYear = this.visitorYear[0];
 
-        this.today = '2022-05-11';
+        this.today = '2024-11-23';
 
         this.eventService.getEvents().then(events => {
             this.events = events;
@@ -285,9 +285,18 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             selectable: true,
             selectMirror: true,
             dayMaxEvents: true,
+            locale: 'es', // Traduce el calendario al español
+            buttonText: { // Personalización de los botones
+                today: 'Hoy',
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día'
+            },
             eventClick: (e: MouseEvent) => this.onEventClick(e),
             select: (e: MouseEvent) => this.onDateSelect(e)
         };
+        
+        
     }
 
     onEventClick(e: any) {
@@ -354,25 +363,23 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
         this.avgCustomer = '$1,120';
         this.visitorChart = {
             labels: [
-                'Jan',
+                'Ene',
                 'Feb',
                 'Mar',
-                'Apr',
+                'Abr',
                 'May',
                 'Jun',
-                'July',
-                'Aug',
-                'Sept',
+                'Jul',
+                'Ago',
+                'Sep',
                 'Oct',
                 'Nov',
-                'Dec',
             ],
             datasets: [
                 {
                     label: 'Plan',
                     data: [
-                        630, 630, 695, 695, 695, 760, 760, 760, 840, 840, 840,
-                        840,
+                        20, 40, 30, 50, 20, 40, 30, 20, 30, 10, 50,
                     ],
                     borderColor: ['#FC6161'],
                     pointBorderColor: 'transparent',
@@ -383,10 +390,9 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                     stepped: true,
                 },
                 {
-                    label: 'Groth actual',
+                    label: 'Crecimiento actual',
                     data: [
-                        600, 671, 660, 665, 700, 610, 810, 790, 710, 860, 810,
-                        780,
+                        50, 70, 60, 80, 40, 70, 50, 60, 80, 30, 70,
                     ],
                     backgroundColor: getComputedStyle(
                         document.body
@@ -416,8 +422,8 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                     ticks: {
                         color: textColor,
                     },
-                    min: 500,
-                    max: 900,
+                    min: 0,
+                    max: 80,
                     grid: {
                         display: false,
                     },

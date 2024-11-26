@@ -2,7 +2,7 @@ import { Component, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { KanbanCard, Comment, ListName, Task } from 'src/app/demo/api/kanban';
 import { Member } from 'src/app/demo/api/member';
 import { KanbanAppComponent } from '../kanban.app.component';
-import { MemberService } from 'src/app/demo/service/member.service';
+import { MemberService } from 'src/app/demo/Service/member.service';
 import { Subscription } from 'rxjs';
 import { MenuItem } from 'primeng/api';
 import { KanbanService } from '../service/kanban.service';

@@ -22,7 +22,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { ToastModule } from 'primeng/toast';
-import { EventService } from 'src/app/demo/service/event.service';
+import { EventService } from 'src/app/demo/Service/event.service';
 
 @NgModule({
 	imports: [

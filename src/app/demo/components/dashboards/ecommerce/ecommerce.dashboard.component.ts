@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, debounceTime } from 'rxjs';
-import { EventService } from 'src/app/demo/service/event.service';
+import { EventService } from 'src/app/demo/Service/event.service';
 import {
     LayoutService,
 } from 'src/app/layout/service/app.layout.service';
-import { ProductService } from 'src/app/demo/service/product.service';
+import { ProductService } from 'src/app/demo/Service/product.service';
 import { Customer } from 'src/app/demo/api/customer';
 import { PrimeIcons } from 'primeng/api';
-import { CustomerService } from 'src/app/demo/service/customer.service';
+import { CustomerService } from 'src/app/demo/Service/customer.service';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';

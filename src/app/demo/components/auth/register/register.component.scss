@@ -24,14 +24,14 @@ body, html {
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  height: 500px; /* Más alto */
+  height:60%; /* Más alto */
   border-style: hidden;
   position: relative; /* Para posicionar el botón de FAQ */
 
 }
 
 .left-section {
-  background: #1f3168; /* Gris claro */
+  background: #1f3168; 
   flex: 1;
   display: flex;
   justify-content: center;
@@ -46,7 +46,7 @@ body, html {
 }
 
 .right-section {
-  flex: 2; /* Más espacio para el formulario */
+  flex: 3; /* Más espacio para el formulario */
   padding: 40px; /* Más espacio interno */
   display: flex;
   flex-direction: column;
@@ -60,9 +60,18 @@ h2 {
   text-align: center;
 }
 
-.input-group {
-  margin-bottom: 20px;
+/* Ajustes para los campos de entrada */
+.input-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Espacio entre las columnas */
 }
+
+.input-group {
+  flex: 1; /* Hace que ambos campos tomen el mismo ancho */
+  margin-bottom: 10px;
+}
+
 
 .input-group label {
   display: block;
@@ -114,24 +123,6 @@ h2 {
   background: #0453a1; /* Rojo más oscuro */
 }
 
-.faq-btn {
-
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  background: #0453a1;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  border: none;
-  font-size: 14px;
-}
-
-.faq-btn:hover {
-  background: #0453a1;
-}
-
 .register-link {
   border-top: 20px;
   display: block;
@@ -149,7 +140,7 @@ h2 {
 
 .faq-btn {
   position: absolute;
-  top: 10px;
+  top: 2px;
   right: 20px;
   background: #ffffff;
   color: #003f7d;

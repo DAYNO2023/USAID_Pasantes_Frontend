@@ -9,6 +9,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AppConfigModule } from 'src/app/layout/config/app.config.module';
 import { PasswordModule } from 'primeng/password';
+import { FileUploadModule } from 'primeng/fileupload';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
     imports: [
@@ -20,7 +23,10 @@ import { PasswordModule } from 'primeng/password';
         InputTextModule,
         CheckboxModule,
         AppConfigModule,
-        PasswordModule
+        PasswordModule,
+        FileUploadModule,
+        TabViewModule,
+        RadioButtonModule
     ],
     declarations: [RegisterComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA] 

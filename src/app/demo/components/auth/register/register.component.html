@@ -69,20 +69,34 @@
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-calendar [showIcon]="true" inputId="icon" ></p-calendar>
-                                    <label for="calendar">Fecha de Nacimiento</label>
+                                    <p-calendar
+                                        [showIcon]="true"
+                                        inputId="icon"
+                                    ></p-calendar>
+                                    <label for="calendar"
+                                        >Fecha de Nacimiento</label
+                                    >
                                 </span>
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown
-                                        inputId="dropdown"
-                                        [autoDisplayFirst]="false"
-                                        [options]="tipossangre"  
-                                        optionLabel="tisa_Descripcion"  
-                                        [(ngModel)]="tiposangreseleccionado"  
-                                        (onChange)="optanteForm.controls['tisa_Id'].setValue(tiposangreseleccionado.tisa_Id)" 
-                                    ></p-dropdown>
+                                    <p-autoComplete
+                                        inputId="autocomplete"
+                                        [(ngModel)]="seleccionadoTipoSangre"
+                                        [suggestions]="filtradoTiposSangre"
+                                        (completeMethod)="
+                                            filtroTipoSangre($event)
+                                        "
+                                        field="tisa_Descripcion"
+                                        [dropdown]="true"
+                                        (onSelect)="
+                                            optanteForm.controls[
+                                                'tisa_Id'
+                                            ].setValue(
+                                                seleccionadoTipoSangre?.tisa_Id
+                                            )
+                                        "
+                                    ></p-autoComplete>
                                     <label for="dropdown">Tipo de Sangre</label>
                                 </span>
                             </div>
@@ -90,14 +104,23 @@
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown
-                                        inputId="dropdown"
-                                        [autoDisplayFirst]="false"
-                                        [options]="estadosciviles"  
-                                        optionLabel="civi_DescripcionEstadoCivil"  
-                                        [(ngModel)]="estadocivilseleccionado"  
-                                        (onChange)="optanteForm.controls['civi_Id'].setValue(estadocivilseleccionado.civi_Id)" 
-                                    ></p-dropdown>
+                                    <p-autoComplete
+                                        inputId="autocomplete2"
+                                        [(ngModel)]="seleccionadoEstadosCiviles"
+                                        [suggestions]="filtradoEstadosCiviles"
+                                        (completeMethod)="
+                                            filtroEstadoCivil($event)
+                                        "
+                                        field="civi_DescripcionEstadoCivil"
+                                        [dropdown]="true"
+                                        (onSelect)="
+                                            optanteForm.controls[
+                                                'civi_Id'
+                                            ].setValue(
+                                                seleccionadoEstadosCiviles?.civi_Id
+                                            )
+                                        "
+                                    ></p-autoComplete>
                                     <label for="dropdown">Estado Civil</label>
                                 </span>
                             </div>
@@ -224,15 +247,32 @@
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" 
-                                        optionLabel="name"></p-dropdown>
+                                    <p-autoComplete
+                                        [(ngModel)]="seleccionadoDepartamentos"
+                                        [suggestions]="filtradoDepartamentos"
+                                        (completeMethod)="
+                                            filtroDepartamento($event)
+                                        "
+                                        field="depa_DescripcionDepartamento"
+                                        [dropdown]="true"
+                                        (onSelect)="
+                                            optanteForm.controls[
+                                                'depa_Id'
+                                            ].setValue(
+                                                seleccionadoDepartamentos?.depa_Id
+                                            )
+                                        "
+                                    ></p-autoComplete>
                                     <label for="dropdown">Departamento</label>
                                 </span>
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" 
-                                        optionLabel="name"></p-dropdown>
+                                    <p-dropdown
+                                        inputId="dropdown"
+                                        [autoDisplayFirst]="false"
+                                        optionLabel="name"
+                                    ></p-dropdown>
                                     <label for="dropdown">Municipio</label>
                                 </span>
                             </div>
@@ -240,15 +280,21 @@
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" 
-                                        optionLabel="name"></p-dropdown>
+                                    <p-dropdown
+                                        inputId="dropdown"
+                                        [autoDisplayFirst]="false"
+                                        optionLabel="name"
+                                    ></p-dropdown>
                                     <label for="dropdown">Universidad</label>
                                 </span>
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" 
-                                        optionLabel="name"></p-dropdown>
+                                    <p-dropdown
+                                        inputId="dropdown"
+                                        [autoDisplayFirst]="false"
+                                        optionLabel="name"
+                                    ></p-dropdown>
                                     <label for="dropdown">Regional</label>
                                 </span>
                             </div>
@@ -256,21 +302,30 @@
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" 
-                                        optionLabel="name"></p-dropdown>
+                                    <p-dropdown
+                                        inputId="dropdown"
+                                        [autoDisplayFirst]="false"
+                                        optionLabel="name"
+                                    ></p-dropdown>
                                     <label for="dropdown">Facultad</label>
                                 </span>
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" 
-                                        optionLabel="name"></p-dropdown>
+                                    <p-dropdown
+                                        inputId="dropdown"
+                                        [autoDisplayFirst]="false"
+                                        optionLabel="name"
+                                    ></p-dropdown>
                                     <label for="dropdown">Carrera</label>
                                 </span>
                             </div>
                         </div>
 
-                        <div style="display: flex; justify-content: end;" class="gap-3">
+                        <div
+                            style="display: flex; justify-content: end"
+                            class="gap-3"
+                        >
                             <button
                                 pButton
                                 pRipple
@@ -280,13 +335,13 @@
                                 (click)="anterior()"
                             ></button>
                             <button
-                            pButton
-                            pRipple
-                            label="Guardar"
-                            icon="pi pi-save"
-                            iconPos="left"
-                            (click)="guardar()"
-                        ></button>
+                                pButton
+                                pRipple
+                                label="Guardar"
+                                icon="pi pi-save"
+                                iconPos="left"
+                                (click)="guardar()"
+                            ></button>
                         </div>
                     </form>
                 </p-tabPanel>

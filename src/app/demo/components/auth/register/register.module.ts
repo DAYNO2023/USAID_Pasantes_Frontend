@@ -14,7 +14,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TabViewModule } from 'primeng/tabview';
 import { CalendarModule } from 'primeng/calendar';
 import { ChipsModule } from 'primeng/chips';
-import { DropdownModule } from 'primeng/dropdown';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -37,7 +37,7 @@ import { ReactiveFormsModule } from '@angular/forms';
         CalendarModule,
         RadioButtonModule,
         ChipsModule,
-        DropdownModule,
+        AutoCompleteModule,
         InputNumberModule,
         InputTextareaModule,
         InputGroupModule,

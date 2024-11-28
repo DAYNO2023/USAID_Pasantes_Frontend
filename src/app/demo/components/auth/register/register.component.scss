@@ -92,7 +92,7 @@ h2 {
 }
 
 p-calendar,
-p-dropdown {
+p-autoComplete {
   width: 100%; /* Asegura que ocupe el ancho del contenedor */
   height: 32px;
   border: 1px solid #ccc !important; /* Color del borde */
@@ -101,7 +101,7 @@ p-dropdown {
 }
 
 /* Asegurar consistencia en todos los elementos */
-p-calendar, p-dropdown {
+p-calendar, p-autoComplete {
   display: block;
   font-family: inherit; /* Usa la misma fuente */
   font-size: inherit; /* Mantiene el mismo tamaño de fuente */
@@ -113,11 +113,11 @@ p-calendar, p-dropdown {
   outline: none;
 }
 
-/* Sobrescribe el borde en el estado de foco del dropdown */
-::ng-deep .p-dropdown:not(.p-disabled).p-focus {
-  border-color: #0453a1 !important; /* Cambia el color del borde a azul */
-  box-shadow: none !important; /* Elimina cualquier sombra (si existe) */
-  outline: none !important; /* Asegura que no haya contornos adicionales */
+::ng-deep .p-inputtext:enabled:focus {
+  outline: none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color: #007BFF; /* Azul */
 }
 
 /* Estilo para el botón del calendario */

@@ -13,83 +13,95 @@
         <div class="right-section">
             <h2>Registro</h2>
 
-            <p-tabView [(activeIndex)]="IndexTab">
+            <p-tabView [(activeIndex)]="IndexTab" class="custom-tabview">
                 <p-tabPanel header="Personal">
-                    <form>
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label>Número de Identidad</label>
-                                <p-floatLabel>
-                                    <input id="dni" type="text" pInputText />
-                                </p-floatLabel>
-                            </div>
-                            <div class="input-group">
-                                <label>Correo Electrónico</label>
-                                <p-floatLabel>
+                    <form [formGroup]="optanteForm">
+                        <div class="grid p-fluid mt-1">
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label p-input-icon-left">
+                                    <i class="pi pi-user"></i>
                                     <input
+                                        type="text"
+                                        id="dni"
+                                        pInputText
+                                        formControlName="opta_DNI"
+                                    />
+                                    <label>Número de Identidad</label>
+                                </span>
+                            </div>
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label p-input-icon-left">
+                                    <i class="pi pi-envelope"></i>
+                                    <input
+                                        type="text"
                                         id="correo"
-                                        type="email"
                                         pInputText
+                                        formControlName="opta_CorreoElectronico"
                                     />
-                                </p-floatLabel>
+                                    <label>Correo Electrónico</label>
+                                </span>
                             </div>
                         </div>
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label>Nombres</label>
-                                <p-floatLabel>
+                        <div class="grid p-fluid mt-0.2">
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label p-input-icon-left">
+                                    <i class="pi pi-envelope"></i>
                                     <input
-                                        id="nombres"
                                         type="text"
+                                        id="lefticon"
                                         pInputText
                                     />
-                                </p-floatLabel>
+                                    <label>Nombres</label>
+                                </span>
                             </div>
-                            <div class="input-group">
-                                <label>Apellidos</label>
-                                <p-floatLabel>
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label p-input-icon-left">
+                                    <i class="pi pi-envelope"></i>
                                     <input
-                                        id="apellidos"
                                         type="text"
+                                        id="lefticon"
                                         pInputText
                                     />
-                                </p-floatLabel>
+                                    <label>Apellidos</label>
+                                </span>
                             </div>
                         </div>
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label>Fecha de Nacimiento</label>
-                                <p-floatLabel>
-                                    <input
-                                        id="fechanacimiento"
-                                        type="date"
-                                        pInputText
-                                    />
-                                </p-floatLabel>
+                        <div class="grid p-fluid mt-0.2">
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label">
+                                    <p-calendar [showIcon]="true" inputId="icon" ></p-calendar>
+                                    <label for="calendar">Fecha de Nacimiento</label>
+                                </span>
                             </div>
-                            <div class="input-group">
-                                <label>Tipo de Sangre</label>
-                                <p-floatLabel>
-                                    <input
-                                        id="tiposangre"
-                                        type="text"
-                                        pInputText
-                                    />
-                                </p-floatLabel>
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label">
+                                    <p-dropdown
+                                        inputId="dropdown"
+                                        [autoDisplayFirst]="false"
+                                        [options]="tipossangre"  
+                                        optionLabel="tisa_Descripcion"  
+                                        [(ngModel)]="tiposangreseleccionado"  
+                                        (onChange)="optanteForm.controls['tisa_Id'].setValue(tiposangreseleccionado.tisa_Id)" 
+                                    ></p-dropdown>
+                                    <label for="dropdown">Tipo de Sangre</label>
+                                </span>
                             </div>
                         </div>
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label>Estado Civil</label>
-                                <p-floatLabel>
-                                    <input
-                                        id="estadocivil"
-                                        type="text"
-                                        pInputText
-                                    />
-                                </p-floatLabel>
+                        <div class="grid p-fluid mt-0.2">
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label">
+                                    <p-dropdown
+                                        inputId="dropdown"
+                                        [autoDisplayFirst]="false"
+                                        [options]="estadosciviles"  
+                                        optionLabel="civi_DescripcionEstadoCivil"  
+                                        [(ngModel)]="estadocivilseleccionado"  
+                                        (onChange)="optanteForm.controls['civi_Id'].setValue(estadocivilseleccionado.civi_Id)" 
+                                    ></p-dropdown>
+                                    <label for="dropdown">Estado Civil</label>
+                                </span>
                             </div>
-                            <div class="input-group">
+                            <div class="input-group col-12 md:col-4">
                                 <label>Sexo</label>
                                 <div class="grid formgrid">
                                     <div class="col-12 md:col-4">
@@ -97,7 +109,6 @@
                                             <p-radioButton
                                                 name="sexo"
                                                 value="f"
-                                                [(ngModel)]="valRadio"
                                                 id="f"
                                             ></p-radioButton>
                                             <label for="city1">Femenino</label>
@@ -108,7 +119,6 @@
                                             <p-radioButton
                                                 name="sexo"
                                                 value="m"
-                                                [(ngModel)]="valRadio"
                                                 id="m"
                                             ></p-radioButton>
                                             <label for="city2">Masculino</label>
@@ -117,44 +127,61 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label>Celular</label>
-                                <p-floatLabel>
+
+                        <div class="grid p-fluid mt-0.2">
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label p-input-icon-left">
+                                    <i class="pi pi-envelope"></i>
                                     <input
-                                        id="celular"
                                         type="text"
+                                        id="lefticon"
                                         pInputText
                                     />
-                                </p-floatLabel>
-                            </div>
-                            <div class="input-group">
-                                <label>Celular Alterno</label>
-                                <p-floatLabel>
-                                    <input
-                                        id="celular2"
-                                        type="text"
-                                        pInputText
-                                    />
-                                </p-floatLabel>
+                                    <label>Dirección</label>
+                                </span>
                             </div>
                         </div>
-                        <div class="input-group">
-                            <label>Dirección Exacta</label>
-                            <p-floatLabel>
-                                <input id="direccion" type="text" pInputText />
-                            </p-floatLabel>
+                        <!-- <div
+                            class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-4"
+                        >
+                            <button
+                                pButton
+                                pRipple
+                                class="p-button-secondary p-button-outlined mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4"
+                                label="Cancelar"
+                                icon="pi pi-fw pi-arrow-left"
+                                style="padding: 1px 10px; height: 30px"
+                            ></button>
+                            <button
+                                pButton
+                                pRipple
+                                class="p-button-primary w-full lg:w-auto flex-order-1 lg:flex-order-2"
+                                label="Registrar"
+                                icon="pi pi-fw pi-check"
+                                style="padding: 1px 10px; height: 30px"
+                            ></button>
+                            
+                        </div> -->
+                        <div style="display: flex; justify-content: end">
+                            <button
+                                pButton
+                                pRipple
+                                label="Siguiente"
+                                icon="pi pi-chevron-right"
+                                iconPos="right"
+                                (click)="siguiente()"
+                            ></button>
                         </div>
                     </form>
                 </p-tabPanel>
                 <p-tabPanel header="General">
-                    <form>
+                    <form [formGroup]="optanteForm">
                         <div class="input-group">
                             <label>Imagen</label>
                             <p-fileUpload
                                 name="demo[]"
                                 url="./upload.php"
-                                (onUpload)="onUpload($event)"
+                                (onUpload)="subirImagen($event)"
                                 [multiple]="true"
                                 accept="image/*"
                                 [maxFileSize]="1000000"
@@ -169,94 +196,98 @@
                                 </ng-template>
                             </p-fileUpload>
                         </div>
-
-                        
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label>Departamento</label>
-                                <p-floatLabel>
+                        <div class="grid p-fluid mt-0.2">
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label p-input-icon-left">
+                                    <i class="pi pi-envelope"></i>
                                     <input
-                                        id="departamento"
                                         type="text"
+                                        id="lefticon"
                                         pInputText
                                     />
-                                </p-floatLabel>
+                                    <label>Celular</label>
+                                </span>
                             </div>
-                            <div class="input-group">
-                                <label>Municipio</label>
-                                <p-floatLabel>
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label p-input-icon-left">
+                                    <i class="pi pi-envelope"></i>
                                     <input
-                                        id="municipio"
                                         type="text"
+                                        id="lefticon"
                                         pInputText
                                     />
-                                </p-floatLabel>
-                            </div>
-                        </div>
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label>Universidad</label>
-                                <p-floatLabel>
-                                    <input
-                                        id="universidad"
-                                        type="text"
-                                        pInputText
-                                    />
-                                </p-floatLabel>
-                            </div>
-                            <div class="input-group">
-                                <label>Regional</label>
-                                <p-floatLabel>
-                                    <input
-                                        id="regional"
-                                        type="text"
-                                        pInputText
-                                    />
-                                </p-floatLabel>
-                            </div>
-                        </div>
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label>Facultad</label>
-                                <p-floatLabel>
-                                    <input
-                                        id="facultad"
-                                        type="text"
-                                        pInputText
-                                    />
-                                </p-floatLabel>
-                            </div>
-                            <div class="input-group">
-                                <label>Carrera</label>
-                                <p-floatLabel>
-                                    <input
-                                        id="carrera"
-                                        type="text"
-                                        pInputText
-                                    />
-                                </p-floatLabel>
+                                    <label>Celular Alterno</label>
+                                </span>
                             </div>
                         </div>
 
-                        <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-6">
-                            <button
-                                pButton
-                                pRipple
-                                class="p-button-secondary p-button-outlined mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4"
-                                label="Cancelar"
-                                icon="pi pi-fw pi-arrow-left"
-                                style="padding: 1px 10px; height: 30px;"
-                            ></button>
-                            <button
-                                pButton
-                                pRipple
-                                class="p-button-primary w-full lg:w-auto flex-order-1 lg:flex-order-2"
-                                label="Registrar"
-                                icon="pi pi-fw pi-check"
-                                style="padding: 1px 10px; height: 30px;" 
-                            ></button>
+                        <div class="grid p-fluid mt-0.2">
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label">
+                                    <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" 
+                                        optionLabel="name"></p-dropdown>
+                                    <label for="dropdown">Departamento</label>
+                                </span>
+                            </div>
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label">
+                                    <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" 
+                                        optionLabel="name"></p-dropdown>
+                                    <label for="dropdown">Municipio</label>
+                                </span>
+                            </div>
                         </div>
-                        
+                        <div class="grid p-fluid mt-0.2">
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label">
+                                    <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" 
+                                        optionLabel="name"></p-dropdown>
+                                    <label for="dropdown">Universidad</label>
+                                </span>
+                            </div>
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label">
+                                    <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" 
+                                        optionLabel="name"></p-dropdown>
+                                    <label for="dropdown">Regional</label>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="grid p-fluid mt-0.2">
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label">
+                                    <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" 
+                                        optionLabel="name"></p-dropdown>
+                                    <label for="dropdown">Facultad</label>
+                                </span>
+                            </div>
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label">
+                                    <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" 
+                                        optionLabel="name"></p-dropdown>
+                                    <label for="dropdown">Carrera</label>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: end;" class="gap-3">
+                            <button
+                                pButton
+                                pRipple
+                                label="Regresar"
+                                icon="pi pi-chevron-left"
+                                iconPos="left"
+                                (click)="anterior()"
+                            ></button>
+                            <button
+                            pButton
+                            pRipple
+                            label="Guardar"
+                            icon="pi pi-save"
+                            iconPos="left"
+                            (click)="guardar()"
+                        ></button>
+                        </div>
                     </form>
                 </p-tabPanel>
             </p-tabView>

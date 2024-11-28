@@ -1,9 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
-}
 
 body, html {
   height: 100%;
@@ -24,7 +18,7 @@ body, html {
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  height:60%; /* Más alto */
+  height:70%; /* Más alto */
   border-style: hidden;
   position: relative; /* Para posicionar el botón de FAQ */
 
@@ -72,7 +66,6 @@ h2 {
   margin-bottom: 10px;
 }
 
-
 .input-group label {
   display: block;
   font-size: 14px;
@@ -84,12 +77,99 @@ h2 {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
+  height: 32px;
   border-radius: 5px;
 }
 
 .input-group input:focus {
   border: 1px solid #0453a1; /* Azul */
   outline: none;
+}
+
+.custom-tabview ::ng-deep .p-tabview-nav {
+  display: flex !important; /* Asegura que se use flexbox */
+  justify-content: center !important; /* Centra las pestañas */
+}
+
+p-calendar,
+p-dropdown {
+  width: 100%; /* Asegura que ocupe el ancho del contenedor */
+  height: 32px;
+  border: 1px solid #ccc !important; /* Color del borde */
+  border-radius: 6px; /* Bordes redondeados */
+  box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+}
+
+/* Asegurar consistencia en todos los elementos */
+p-calendar, p-dropdown {
+  display: block;
+  font-family: inherit; /* Usa la misma fuente */
+  font-size: inherit; /* Mantiene el mismo tamaño de fuente */
+  line-height: inherit;
+}
+
+::ng-deep p-calendar .p-inputtext:focus {
+  border: 1px solid #0453a1 !important;
+  outline: none;
+}
+
+/* Sobrescribe el borde en el estado de foco del dropdown */
+::ng-deep .p-dropdown:not(.p-disabled).p-focus {
+  border-color: #0453a1 !important; /* Cambia el color del borde a azul */
+  box-shadow: none !important; /* Elimina cualquier sombra (si existe) */
+  outline: none !important; /* Asegura que no haya contornos adicionales */
+}
+
+/* Estilo para el botón del calendario */
+::ng-deep .p-button:not(:disabled):hover {
+  background: #0453a1 !important; /* Cambia el fondo al azul */
+  color: #ffffff !important; /* Asegura que el texto/icono sea blanco */
+  border-color: #0453a1 !important; /* Cambia el borde al azul */
+}
+
+/* Estilo adicional para el estado normal (sin hover) */
+::ng-deep .p-button {
+  background: #0453a1 !important; /* Fondo azul */
+  color: #ffffff !important; /* Texto/icono blanco */
+  border-color: #0453a1 !important; /* Borde azul */
+}
+
+/* Cambiar el color de la barra activa del tab */
+::ng-deep .p-tabview .p-tabview-nav .p-tabview-ink-bar {
+  background-color: #0453a1 !important; /* Cambiar el color al azul */
+}
+
+/* Cambiar el color del título de la pestaña activa */
+::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: transparent; /* Fondo transparente */
+  border-color: #0453a1 !important; /* Color azul para el borde */
+  color: #0453a1 !important; /* Color azul para el texto */
+  font-weight: bold; /* Opcional: hacer que el texto se vea más destacado */
+  transition: 0.3s ease-in-out; /* Transición suave para el cambio de color */
+}
+
+/* Cambiar el color del texto en pestañas inactivas */
+::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  color: #2a2a2a !important; /* Negro para el texto */
+  border-color: transparent !important; /* Asegura que el borde siga transparente */
+  background: transparent !important; /* Fondo transparente */
+  font-weight: 500; /* Mantiene el estilo de fuente */
+  transition: color 0.2s ease-in-out; /* Transición suave al cambiar color */
+}
+
+/* Cambiar color del texto al pasar el cursor por pestañas inactivas */
+::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link:hover {
+  color: #333333 !important; /* Negro más claro al pasar el cursor */
+}
+
+::ng-deep .p-radiobutton .p-radiobutton-box.p-highlight {
+  border-color: #0453a1; /* Azul */
+  background: #0453a1; /* Azul */
+}
+
+::ng-deep .p-inputtext {
+  color: #2a2a2a;
+  padding-left: 28px !important;
 }
 
 .forgot-link, .faq-link {

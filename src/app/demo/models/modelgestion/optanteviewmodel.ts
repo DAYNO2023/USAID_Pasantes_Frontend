@@ -1,0 +1,30 @@
+export class optante {
+    codigo?:string;
+    opta_Id?:number;
+    opta_Imagen?:string;
+    opta_DNI?:string;
+    opta_Nombres?:string;
+    opta_Apellidos?:string;
+    opta_FechaNacimiento?:string;
+    opta_Sexo?:string;
+    opta_Direccion?:string;
+    opta_CorreoElectronico?:string;
+    opta_Telefono1?:string;
+    opta_Telefono2?:string;
+    opta_FechaInicio?:string;
+    opta_FechaFin?:string;
+    opta_Observacion?:string;
+    comp_Id?:number;
+    civi_Id?:number;
+    tisa_Id?:number;
+    muni_Id?:string;
+    cafr_Id?:number;
+    banc_Id?:number;
+    opta_TipoPago?: boolean;
+    opta_CuentaBancaria?: string;
+    opta_OptanteAceptado?: boolean;
+    opta_UsuarioCreacion?:number; 
+    opta_FechaCreacion?:string;
+    opta_UsuarioModificacion?:number;
+    opta_FechaModificacion?:string;
+}

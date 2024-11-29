@@ -45,7 +45,7 @@
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label p-input-icon-left">
-                                    <i class="pi pi-envelope"></i>
+                                    <i class="pi pi-user-edit"></i>
                                     <input
                                         type="text"
                                         id="lefticon"
@@ -56,7 +56,7 @@
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label p-input-icon-left">
-                                    <i class="pi pi-envelope"></i>
+                                    <i class="pi pi-user-edit"></i>
                                     <input
                                         type="text"
                                         id="lefticon"
@@ -96,7 +96,9 @@
                                                 seleccionadoTipoSangre?.tisa_Id
                                             )
                                         "
+                                        [ngModelOptions]="{ standalone: true }"
                                     ></p-autoComplete>
+
                                     <label for="dropdown">Tipo de Sangre</label>
                                 </span>
                             </div>
@@ -105,8 +107,8 @@
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
                                     <p-autoComplete
-                                        inputId="autocomplete2"
-                                        [(ngModel)]="seleccionadoEstadosCiviles"
+                                        inputId="acestado"
+                                        [(ngModel)]="seleccionadoEstadoCivil"
                                         [suggestions]="filtradoEstadosCiviles"
                                         (completeMethod)="
                                             filtroEstadoCivil($event)
@@ -117,17 +119,18 @@
                                             optanteForm.controls[
                                                 'civi_Id'
                                             ].setValue(
-                                                seleccionadoEstadosCiviles?.civi_Id
+                                                seleccionadoEstadoCivil?.civi_Id
                                             )
                                         "
+                                        [ngModelOptions]="{ standalone: true }"
                                     ></p-autoComplete>
                                     <label for="dropdown">Estado Civil</label>
                                 </span>
                             </div>
-                            <div class="input-group col-12 md:col-4">
+                            <div class="input-group col-12 md:col-6">
                                 <label>Sexo</label>
                                 <div class="grid formgrid">
-                                    <div class="col-12 md:col-4">
+                                    <div class="col-12 md:col-6">
                                         <div class="field-radiobutton">
                                             <p-radioButton
                                                 name="sexo"
@@ -137,7 +140,7 @@
                                             <label for="city1">Femenino</label>
                                         </div>
                                     </div>
-                                    <div class="col-12 md:col-4">
+                                    <div class="col-12 md:col-6">
                                         <div class="field-radiobutton">
                                             <p-radioButton
                                                 name="sexo"
@@ -154,7 +157,7 @@
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label p-input-icon-left">
-                                    <i class="pi pi-envelope"></i>
+                                    <i class="pi pi-map-marker"></i>
                                     <input
                                         type="text"
                                         id="lefticon"
@@ -222,7 +225,7 @@
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label p-input-icon-left">
-                                    <i class="pi pi-envelope"></i>
+                                    <i class="pi pi-phone"></i>
                                     <input
                                         type="text"
                                         id="lefticon"
@@ -233,7 +236,7 @@
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label p-input-icon-left">
-                                    <i class="pi pi-envelope"></i>
+                                    <i class="pi pi-phone"></i>
                                     <input
                                         type="text"
                                         id="lefticon"
@@ -248,31 +251,43 @@
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
                                     <p-autoComplete
-                                        [(ngModel)]="seleccionadoDepartamentos"
+                                        inputId="autocomplete-departamento"
                                         [suggestions]="filtradoDepartamentos"
                                         (completeMethod)="
                                             filtroDepartamento($event)
                                         "
                                         field="depa_DescripcionDepartamento"
                                         [dropdown]="true"
+                                        [showClear]="true"
                                         (onSelect)="
-                                            optanteForm.controls[
-                                                'depa_Id'
-                                            ].setValue(
-                                                seleccionadoDepartamentos?.depa_Id
-                                            )
+                                            seleccionandoDepartamento($event)
                                         "
-                                    ></p-autoComplete>
+                                    >
+                                    </p-autoComplete>
                                     <label for="dropdown">Departamento</label>
                                 </span>
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown
-                                        inputId="dropdown"
-                                        [autoDisplayFirst]="false"
-                                        optionLabel="name"
-                                    ></p-dropdown>
+                                    <p-autoComplete
+                                        inputId="acmunicipio"
+                                        [(ngModel)]="seleccionadoMunicipio"
+                                        [suggestions]="filtradoMunicipios"
+                                        (completeMethod)="
+                                            filtroMunicipio($event)
+                                        "
+                                        field="muni_DescripcionMunicipio"
+                                        [dropdown]="true"
+                                        [disabled]="municipios.length === 0"
+                                        (onSelect)="
+                                            optanteForm.controls[
+                                                'muni_Id'
+                                            ].setValue(
+                                                seleccionadoMunicipio?.muni_Id
+                                            )
+                                        "
+                                        [ngModelOptions]="{ standalone: true }"
+                                    ></p-autoComplete>
                                     <label for="dropdown">Municipio</label>
                                 </span>
                             </div>
@@ -280,21 +295,39 @@
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown
-                                        inputId="dropdown"
-                                        [autoDisplayFirst]="false"
-                                        optionLabel="name"
-                                    ></p-dropdown>
+                                    <p-autoComplete
+                                        inputId="acuniversidad"
+                                        [suggestions]="filtradoUniversidades"
+                                        (completeMethod)="
+                                            filtroUniversidad($event)
+                                        "
+                                        field="univ_DescripcionUniversidad"
+                                        [dropdown]="true"
+                                        [showClear]="true"
+                                        (onSelect)="
+                                            seleccionandoUniversidad($event)
+                                        "
+                                    >
+                                    </p-autoComplete>
                                     <label for="dropdown">Universidad</label>
                                 </span>
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown
-                                        inputId="dropdown"
-                                        [autoDisplayFirst]="false"
-                                        optionLabel="name"
-                                    ></p-dropdown>
+                                    <p-autoComplete
+                                        inputId="acregional"
+                                        [suggestions]="filtradoRegionales"
+                                        (completeMethod)="
+                                            filtroRegional($event)
+                                        "
+                                        field="regi_DescripcionRegional"
+                                        [dropdown]="true"
+                                        [showClear]="true"
+                                        [disabled]="regionales.length === 0"
+                                        (onSelect)="
+                                            seleccionandoRegional($event)
+                                        "
+                                    ></p-autoComplete>
                                     <label for="dropdown">Regional</label>
                                 </span>
                             </div>
@@ -302,21 +335,44 @@
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown
-                                        inputId="dropdown"
-                                        [autoDisplayFirst]="false"
-                                        optionLabel="name"
-                                    ></p-dropdown>
+                                    <p-autoComplete
+                                        inputId="acfacultad"
+                                        [suggestions]="filtradoFacultades"
+                                        (completeMethod)="
+                                            filtroFacultad($event)
+                                        "
+                                        field="facu_DesripcionFacultad"
+                                        [dropdown]="true"
+                                        [disabled]="facultades.length === 0"
+                                        [showClear]="true"
+                                        (onSelect)="
+                                            seleccionandoFacultad($event)
+                                        "
+                                    ></p-autoComplete>
                                     <label for="dropdown">Facultad</label>
                                 </span>
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
-                                    <p-dropdown
-                                        inputId="dropdown"
-                                        [autoDisplayFirst]="false"
-                                        optionLabel="name"
-                                    ></p-dropdown>
+                                    <p-autoComplete
+                                        inputId="accarrera"
+                                        [(ngModel)]="seleccionadoCarrera"
+                                        [suggestions]="filtradoCarreras"
+                                        (completeMethod)="
+                                            filtroCarrera($event)
+                                        "
+                                        field="carr_DescripcionCarrera"
+                                        [dropdown]="true"
+                                        [disabled]="carreras.length === 0"
+                                        (onSelect)="
+                                            optanteForm.controls[
+                                                'cafr_Id'
+                                            ].setValue(
+                                                seleccionadoCarrera?.cafr_Id
+                                            )
+                                        "
+                                        [ngModelOptions]="{ standalone: true }"
+                                    ></p-autoComplete>
                                     <label for="dropdown">Carrera</label>
                                 </span>
                             </div>

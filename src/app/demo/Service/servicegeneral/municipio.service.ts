@@ -24,8 +24,7 @@ export class municipioService {
   }
 
   
-  Listar (){
-    return this.http.get<municipio[]>(`${this.municipio}/Listar`,this.getHttpOptions());
+  ListarPorDepartamento(id: string) {
+    return this.http.get<municipio[]>(`${this.municipio}/ListarPorDepartamento/${id}`, this.getHttpOptions());
   }
-
 }

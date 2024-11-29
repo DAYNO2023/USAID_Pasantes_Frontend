@@ -24,8 +24,8 @@ export class carreraService {
   }
 
   
-  Listar (){
-    return this.http.get<carrera[]>(`${this.carrera}/Listar`,this.getHttpOptions());
+  ListarPorFacultadPorRegional(id: number) {
+    return this.http.get<carrera[]>(`${this.carrera}/ListarPorFacultad/${id}`, this.getHttpOptions());
   }
 
 }

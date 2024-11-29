@@ -24,8 +24,8 @@ export class regionalService {
   }
 
   
-  Listar (){
-    return this.http.get<regional[]>(`${this.regional}/Listar`,this.getHttpOptions());
+  ListarPorUniversidad (id: number) {
+    return this.http.get<regional[]>(`${this.regional}/ListarPorUniversidad/${id}`, this.getHttpOptions());
   }
 
 }

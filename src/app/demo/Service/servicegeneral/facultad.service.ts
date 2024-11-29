@@ -24,8 +24,8 @@ export class facultadService {
   }
 
   
-  Listar (){
-    return this.http.get<facultad[]>(`${this.facultad}/Listar`,this.getHttpOptions());
+  ListarPorRegional(id: number) {
+    return this.http.get<facultad[]>(`${this.facultad}/ListarPorRegional/${id}`, this.getHttpOptions());
   }
 
 }

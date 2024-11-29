@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem, MessageService } from 'primeng/api';
-import { tipoSangre } from 'src/app/demo/models/modelsgeneral/tiposangreviewmodel';
 import { tipoSangreService } from 'src/app/demo/service/servicegeneral/tiposangre.service';
 import { optanteService } from 'src/app/demo/service/servicegestion/optante.service';
 import { estadoCivilService } from 'src/app/demo/service/servicegeneral/estadocivil.service';
-import { estadoCivil } from 'src/app/demo/models/modelsgeneral/estadocivilviewmodel';
 import { departamentoService } from 'src/app/demo/service/servicegeneral/departamento.service';
 import { municipioService } from 'src/app/demo/service/servicegeneral/municipio.service';
 import { universidadService } from 'src/app/demo/service/servicegeneral/universidad.service';
@@ -25,34 +23,28 @@ export class RegisterComponent implements OnInit {
     tiposSangre: any[] = []; // Lista original de tipos de sangres
     filtradoTiposSangre: any[] = []; // Lista filtrada para autocomplete
     seleccionadoTipoSangre: any; // Tipo de sangre seleccionada
-    //
-    estadosCiviles: any[] = []; 
-    filtradoEstadosCiviles: any[] = []; 
-    seleccionadoEstadosCiviles: any; 
-    //
-    departamentos: any[] = []; 
-    filtradoDepartamentos: any[] = []; 
-    seleccionadoDepartamentos: any; 
-    //
-    municipios: any[] = []; 
-    filtradoMunicipios: any[] = []; 
-    seleccionadoMunicipios: any; 
-    //
-    universidades: any[] = []; 
-    filtradoUniversidades: any[] = []; 
-    seleccionadoUniversidades: any; 
-    //
-    regionales: any[] = []; 
-    filtradoRegionales: any[] = []; 
-    seleccionadoRegionales: any; 
-    //
-    facultades: any[] = []; 
-    filtradoFacultades: any[] = []; 
-    seleccionadoFacultades: any; 
-    //
-    carreras: any[] = []; 
-    filtradoCarreras: any[] = []; 
-    seleccionadoCarreras: any; 
+    //continuacion autocompletes:
+    estadosCiviles: any[] = [];
+    filtradoEstadosCiviles: any[] = [];
+    seleccionadoEstadoCivil: any;
+    departamentos: any[] = [];
+    filtradoDepartamentos: any[] = [];
+    seleccionadoDepartamento: any;
+    municipios: any[] = [];
+    filtradoMunicipios: any[] = [];
+    seleccionadoMunicipio: any;
+    universidades: any[] = [];
+    filtradoUniversidades: any[] = [];
+    seleccionadoUniversidad: any;
+    regionales: any[] = [];
+    filtradoRegionales: any[] = [];
+    seleccionadoRegional: any;
+    facultades: any[] = [];
+    filtradoFacultades: any[] = [];
+    seleccionadoFacultad: any;
+    carreras: any[] = [];
+    filtradoCarreras: any[] = [];
+    seleccionadoCarrera: any;
 
     routeItems: MenuItem[] = [];
     IndexTab: number = 0;
@@ -98,6 +90,7 @@ export class RegisterComponent implements OnInit {
         this.tipoSangreService.Listar().subscribe(
             (response) => {
                 this.tiposSangre = response; // Asignar la lista de tipos de sangre
+                console.log(this.tiposSangre);
             },
             (error) => {
                 console.error('Error al cargar los tipos de sangre:', error);
@@ -105,7 +98,7 @@ export class RegisterComponent implements OnInit {
         );
         this.estadoCivilService.Listar().subscribe(
             (response) => {
-                this.estadosCiviles = response; 
+                this.estadosCiviles = response;
             },
             (error) => {
                 console.error('Error al cargar los estados civiles:', error);
@@ -113,13 +106,20 @@ export class RegisterComponent implements OnInit {
         );
         this.departamentoService.Listar().subscribe(
             (response) => {
-                this.estadosCiviles = response; 
+                this.departamentos = response;
             },
             (error) => {
                 console.error('Error al cargar los departamentos:', error);
             }
         );
-
+        this.universidadService.Listar().subscribe(
+            (response) => {
+                this.universidades = response;
+            },
+            (error) => {
+                console.error('Error al cargar las universidades:', error);
+            }
+        );
     }
 
     siguiente() {
@@ -133,18 +133,14 @@ export class RegisterComponent implements OnInit {
     //FILTRADO AUTOCOMPLETES
     filtroTipoSangre(event: any) {
         const query = event.query.toLowerCase();
-        this.filtradoEstadosCiviles = this.tiposSangre.filter((tipo) =>
-            tipo.tisa_Descripcion
-                .toLowerCase()
-                .includes(query)
+        this.filtradoTiposSangre = this.tiposSangre.filter((tipo) =>
+            tipo.tisa_Descripcion.toLowerCase().includes(query)
         );
     }
     filtroEstadoCivil(event: any) {
         const query = event.query.toLowerCase();
         this.filtradoEstadosCiviles = this.estadosCiviles.filter((estado) =>
-            estado.civi_DescripcionEstadoCivil
-                .toLowerCase()
-                .includes(query)
+            estado.civi_DescripcionEstadoCivil.toLowerCase().includes(query)
         );
     }
     filtroDepartamento(event: any) {
@@ -155,7 +151,135 @@ export class RegisterComponent implements OnInit {
                 .includes(query)
         );
     }
-    
+    seleccionandoDepartamento(event: any) {
+        const departamentoSeleccionado = event?.value?.depa_Id;
+
+        if (departamentoSeleccionado) {
+            this.municipioService
+                .ListarPorDepartamento(departamentoSeleccionado)
+                .subscribe(
+                    (response) => {
+                        this.municipios = response;
+                        this.filtradoMunicipios = [];
+                        this.optanteForm.controls['muni_Id'].setValue(null); // Reiniciar municipio seleccionado
+                    },
+                    (error) => {
+                        console.error('Error al cargar los municipios:', error);
+                    }
+                );
+        } else {
+            console.warn('No se seleccionó un departamento válido');
+            this.municipios = [];
+            this.filtradoMunicipios = [];
+        }
+    }
+    filtroMunicipio(event: any) {
+        const query = event.query.toLowerCase();
+        this.filtradoMunicipios = this.municipios.filter((municipio) =>
+            municipio.muni_DescripcionMunicipio.toLowerCase().includes(query)
+        );
+    }
+    filtroUniversidad(event: any) {
+        const query = event.query.toLowerCase();
+        this.filtradoUniversidades = this.universidades.filter((universidad) =>
+            universidad.univ_DescripcionUniversidad
+                .toLowerCase()
+                .includes(query)
+        );
+    }
+    seleccionandoUniversidad(event: any) {
+        const universidadSeleccionada = event?.value?.univ_Id;
+
+        if (universidadSeleccionada) {
+            this.regionalService
+                .ListarPorUniversidad(universidadSeleccionada)
+                .subscribe(
+                    (response) => {
+                        this.regionales = response;
+                        this.filtradoRegionales = [];
+                        this.facultades = [];
+                        this.carreras = [];
+                        this.filtradoFacultades = [];
+                        this.filtradoCarreras = [];
+                    },
+                    (error) => {
+                        console.error('Error al cargar las regionales:', error);
+                    }
+                );
+        } else {
+            console.warn('No se seleccionó una universidad válida');
+            this.regionales = [];
+            this.facultades = [];
+            this.carreras = [];
+            this.filtradoRegionales = [];
+            this.filtradoFacultades = [];
+            this.filtradoCarreras = [];
+        }
+    }
+    filtroRegional(event: any) {
+        const query = event.query.toLowerCase();
+        this.filtradoRegionales = this.regionales.filter((regional) =>
+            regional.regi_DescripcionRegional.toLowerCase().includes(query)
+        );
+    }
+    seleccionandoRegional(event: any) {
+        const regionalSeleccionada = event?.value?.regi_Id;
+
+        if (regionalSeleccionada) {
+            this.facultadService
+                .ListarPorRegional(regionalSeleccionada)
+                .subscribe(
+                    (response) => {
+                        this.facultades = response;
+                        this.filtradoFacultades = [];
+                        this.carreras = [];
+                        this.filtradoCarreras = [];
+                    },
+                    (error) => {
+                        console.error('Error al cargar las facultades:', error);
+                    }
+                );
+        } else {
+            this.facultades = [];
+            this.carreras = [];
+            this.filtradoFacultades = [];
+            this.filtradoCarreras = [];
+        }
+    }
+    filtroFacultad(event: any) {
+        const query = event.query.toLowerCase();
+        this.filtradoFacultades = this.facultades.filter((facultad) =>
+            facultad.facu_DesripcionFacultad.toLowerCase().includes(query)
+        );
+    }
+    seleccionandoFacultad(event: any) {
+        const facultadSeleccionada = event?.value?.fare_Id;
+        console.log(event);
+
+        if (facultadSeleccionada) {
+            this.carreraService
+                .ListarPorFacultadPorRegional(facultadSeleccionada)
+                .subscribe(
+                    (response) => {
+                        this.carreras = response;
+                        console.log(this.carreras);
+                        this.filtradoCarreras = [];
+                    },
+                    (error) => {
+                        console.error('Error al cargar las carreras:', error);
+                    }
+                );
+        } else {
+            this.carreras = [];
+            this.filtradoCarreras = [];
+        }
+    }
+    filtroCarrera(event: any) {
+        const query = event.query.toLowerCase();
+        this.filtradoCarreras = this.carreras.filter((carrera) =>
+            carrera.carr_DescripcionCarrera.toLowerCase().includes(query)
+        );
+    }
 
     subirImagen(event: any) {
         for (const file of event.files) {

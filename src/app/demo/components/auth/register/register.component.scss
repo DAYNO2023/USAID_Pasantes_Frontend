@@ -1,132 +1,275 @@
-
-body, html {
-  height: 100%;
+body,
+html {
+    height: 100%;
 }
 
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: linear-gradient(to bottom, #0b2751, #1f3168); /* Fondo azul */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom, #0b2751, #1f3168); /* Fondo azul */
 }
 
 .login-card {
-  display: flex;
-  width: 65%; /* Más ancho */
-  background: #fff; /* Fondo blanco */
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  height:80%; /* Más alto */
-  border-style: hidden;
-  position: relative; /* Para posicionar el botón de FAQ */
-
+    display: flex;
+    width: 65%; /* Más ancho */
+    background: #fff; /* Fondo blanco */
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    height: 80%; /* Más alto */
+    border-style: hidden;
+    position: relative; /* Para posicionar el botón de FAQ */
 }
 
 .left-section {
-  background: #1f3168; 
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px;
-
+    background: #1f3168;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
 }
 
 .left-section img {
-  max-width: 70%;
-  height: auto;
+    max-width: 70%;
+    height: auto;
 }
 
 .right-section {
-  flex: 3; /* Más espacio para el formulario */
-  padding: 40px; /* Más espacio interno */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+    flex: 3; /* Más espacio para el formulario */
+    padding: 40px; /* Más espacio interno */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 h2 {
-  font-size: 30px; /* Más grande */
-  margin-bottom: 20px;
-  color: #1f3168; /* Azul */
-  text-align: center;
+    font-size: 30px; /* Más grande */
+    margin-bottom: 20px;
+    color: #1f3168; /* Azul */
+    text-align: center;
 }
 
-/* Ajustes para los campos de entrada */
-.input-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px; /* Espacio entre las columnas */
-}
+// /* Ajustes para los campos de entrada */
+// .input-row {
+//   display: flex;
+//   justify-content: space-between;
+//   gap: 20px; /* Espacio entre las columnas */
+// }
 
+//ESTILOS PARA INPUTS
 .input-group {
-  flex: 1; /* Hace que ambos campos tomen el mismo ancho */
-  margin-bottom: 10px;
+    flex: 1; /* Hace que ambos campos tomen el mismo ancho */
+    margin-bottom: 10px;
 }
 
 .input-group label {
-  display: block;
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 5px;
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
 }
 
 .input-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  height: 32px;
-  border-radius: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+    height: 32px;
+    border-radius: 5px;
 }
 
 .input-group input:focus {
-  border: 1px solid #0453a1; /* Azul */
-  outline: none;
+    border: 1px solid #0453a1; /* Azul */
+    outline: none;
 }
 
+.form-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
+  gap: 1rem; /* Espaciado entre columnas */
+  align-items: start; /* Alinear elementos al inicio de las columnas */
+}
+
+.image-column {
+  justify-content: left; /* Alinear al lado izquierdo */
+  grid-row: 1 / span 4; /* Ocupa 4 filas */
+}
+
+.input-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Espaciado entre filas */
+  flex: 1; /* Hace que ambos campos tomen el mismo ancho */
+}
+
+//ESTILOS PARA CALENDARIO, Y AUTOCOMPLETADOS
+p-calendar,
+p-autoComplete {
+    width: 100%; /* Asegura que ocupe el ancho del contenedor */
+    height: 32px;
+    border: 1px solid #ccc !important; /* Color del borde */
+    border-radius: 6px; /* Bordes redondeados */
+    box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+}
+
+/* Asegurar consistencia en todos los elementos */
+p-calendar,
+p-autoComplete {
+    display: block;
+    font-family: inherit; /* Usa la misma fuente */
+    font-size: inherit; /* Mantiene el mismo tamaño de fuente */
+    line-height: inherit;
+}
+
+::ng-deep p-calendar .p-inputtext:focus {
+    border: 1px solid #0453a1 !important;
+    outline: none;
+}
+
+::ng-deep .p-inputtext:enabled:focus {
+    outline: none;
+    outline-offset: 0;
+    box-shadow: none;
+    border-color: #007bff; /* Azul */
+}
+
+/* Estilo para el botón del calendario */
+::ng-deep .p-button:not(:disabled):hover {
+    background: #0453a1 !important; /* Cambia el fondo al azul */
+    color: #ffffff !important; /* Asegura que el texto/icono sea blanco */
+    border-color: #0453a1 !important; /* Cambia el borde al azul */
+}
+
+//ESTILOS PARA TABS
 .custom-tabview ::ng-deep .p-tabview-nav {
   display: flex !important; /* Asegura que se use flexbox */
   justify-content: center !important; /* Centra las pestañas */
 }
 
-p-calendar,
-p-autoComplete {
-  width: 100%; /* Asegura que ocupe el ancho del contenedor */
-  height: 32px;
-  border: 1px solid #ccc !important; /* Color del borde */
-  border-radius: 6px; /* Bordes redondeados */
-  box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+/* Cambiar el color de la barra activa del tab */
+::ng-deep .p-tabview .p-tabview-nav .p-tabview-ink-bar {
+    background-color: #0453a1 !important; /* Cambiar el color al azul */
 }
 
-/* Asegurar consistencia en todos los elementos */
-p-calendar, p-autoComplete {
-  display: block;
-  font-family: inherit; /* Usa la misma fuente */
-  font-size: inherit; /* Mantiene el mismo tamaño de fuente */
-  line-height: inherit;
+/* Cambiar el color del título de la pestaña activa */
+::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    background: transparent; /* Fondo transparente */
+    border-color: #0453a1 !important; /* Color azul para el borde */
+    color: #0453a1 !important; /* Color azul para el texto */
+    font-weight: bold; /* Opcional: hacer que el texto se vea más destacado */
+    transition: 0.3s ease-in-out; /* Transición suave para el cambio de color */
 }
 
-::ng-deep p-calendar .p-inputtext:focus {
-  border: 1px solid #0453a1 !important;
-  outline: none;
+/* Cambiar el color del texto en pestañas inactivas */
+::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    color: #2a2a2a !important; /* Negro para el texto */
+    border-color: transparent !important; /* Asegura que el borde siga transparente */
+    background: transparent !important; /* Fondo transparente */
+    font-weight: 500; /* Mantiene el estilo de fuente */
+    transition: color 0.2s ease-in-out; /* Transición suave al cambiar color */
 }
 
-::ng-deep .p-inputtext:enabled:focus {
-  outline: none;
-  outline-offset: 0;
-  box-shadow: none;
-  border-color: #007BFF; /* Azul */
+/* Cambiar color del texto al pasar el cursor por pestañas inactivas */
+::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link:hover {
+    color: #333333 !important; /* Negro más claro al pasar el cursor */
 }
 
-/* Estilo para el botón del calendario */
-::ng-deep .p-button:not(:disabled):hover {
-  background: #0453a1 !important; /* Cambia el fondo al azul */
-  color: #ffffff !important; /* Asegura que el texto/icono sea blanco */
-  border-color: #0453a1 !important; /* Cambia el borde al azul */
+//ESTILOS PARA RADIO
+::ng-deep .p-radiobutton .p-radiobutton-box.p-highlight {
+    border-color: #0453a1; /* Azul */
+    background: #0453a1; /* Azul */
 }
 
+::ng-deep .p-inputtext {
+    color: #2a2a2a;
+    // padding-left: 28px !important;
+}
+
+//SUBIR IMAGENES
+::ng-deep .p-fileupload-buttonbar {
+  display: none;
+}
+
+::ng-deep .p-fileupload-files.ng-star-inserted > .ng-star-inserted > .p-fileupload-row > div {
+  display: none !important;
+}
+
+::ng-deep .p-fileupload-files.ng-star-inserted > .ng-star-inserted > .p-fileupload-row > div:last-child {
+  display: block !important;
+}
+
+   //boton de borrar imagen
+::ng-deep .p-fileupload-files.ng-star-inserted > .ng-star-inserted > .p-fileupload-row > div:last-child > .p-element.p-button-icon-only.p-button.p-component {
+  width: 24px !important;
+  height: 24px !important;
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+}
+
+.image-upload-container {
+  border: 3px dotted rgba(255, 255, 255, 0.795);
+  border-radius: 5px;
+  margin: auto;
+  padding: 1rem;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: left;
+  justify-content: center;
+  background-color: #0453a1;
+  box-shadow: 0 4px 8px #0452a19c;
+  position: relative;
+  overflow: hidden; /* Asegura que nada se salga del contenedor */
+}
+
+.image-preview-container img {
+  max-width: 100%; /* Ajusta el ancho al contenedor */
+  max-height: 100%; /* Ajusta la altura al contenedor */
+  object-fit: contain; /* Mantiene la proporción de la imagen */
+  border-radius: 5px; /* Opcional: redondea las esquinas */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Opcional: sombra para la imagen */
+}
+
+
+::ng-deep #p-fileupload {
+  max-width: 350px;
+}
+
+::ng-deep .p-fileupload-content {
+  max-width: 220px;
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-upload-container:hover {
+  cursor: pointer;
+  background-color: #0452a1c4;
+}
+.upload-placeholder {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+gap: 10px;
+}
+
+.upload-placeholder i {
+font-size: 3rem;
+}
+
+.upload-placeholder span {
+margin-bottom: 0.5rem;
+}
+.custom-icon-size {
+font-size: 5rem; /* Aumenta el tamaño del ícono */
+}
+
+//ESTILO PARA BOTONES
 /* Estilo adicional para el estado normal (sin hover) */
 ::ng-deep .p-button {
   background: #0453a1 !important; /* Fondo azul */
@@ -134,126 +277,87 @@ p-calendar, p-autoComplete {
   border-color: #0453a1 !important; /* Borde azul */
 }
 
-/* Cambiar el color de la barra activa del tab */
-::ng-deep .p-tabview .p-tabview-nav .p-tabview-ink-bar {
-  background-color: #0453a1 !important; /* Cambiar el color al azul */
+.forgot-link,
+.faq-link {
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #0453a1; /* Azul */
+    text-decoration: none;
 }
 
-/* Cambiar el color del título de la pestaña activa */
-::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-  background: transparent; /* Fondo transparente */
-  border-color: #0453a1 !important; /* Color azul para el borde */
-  color: #0453a1 !important; /* Color azul para el texto */
-  font-weight: bold; /* Opcional: hacer que el texto se vea más destacado */
-  transition: 0.3s ease-in-out; /* Transición suave para el cambio de color */
-}
-
-/* Cambiar el color del texto en pestañas inactivas */
-::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-  color: #2a2a2a !important; /* Negro para el texto */
-  border-color: transparent !important; /* Asegura que el borde siga transparente */
-  background: transparent !important; /* Fondo transparente */
-  font-weight: 500; /* Mantiene el estilo de fuente */
-  transition: color 0.2s ease-in-out; /* Transición suave al cambiar color */
-}
-
-/* Cambiar color del texto al pasar el cursor por pestañas inactivas */
-::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link:hover {
-  color: #333333 !important; /* Negro más claro al pasar el cursor */
-}
-
-::ng-deep .p-radiobutton .p-radiobutton-box.p-highlight {
-  border-color: #0453a1; /* Azul */
-  background: #0453a1; /* Azul */
-}
-
-::ng-deep .p-inputtext {
-  color: #2a2a2a;
-  padding-left: 28px !important;
-}
-
-.forgot-link, .faq-link {
-  display: block;
-  text-align: right;
-  margin-top: 10px;
-  font-size: 14px;
-  color: #0453a1; /* Azul */
-  text-decoration: none;
-}
-
-.forgot-link:hover, .faq-link:hover {
-  text-decoration: underline;
+.forgot-link:hover,
+.faq-link:hover {
+    text-decoration: underline;
 }
 
 .login-btn {
-
-  background: #1f3168; /* Rojo */
-  color: #fff;
-  padding: 15px; /* Botón más grande */
-  border: none;
-  border-radius: 5px;
-  font-size: 16px; /* Texto más grande */
-  cursor: pointer;
-  transition: background 0.3s;
-  margin: 0 auto; /* Centrado del botón */
-  display: block;
+    background: #1f3168; /* Rojo */
+    color: #fff;
+    padding: 15px; /* Botón más grande */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px; /* Texto más grande */
+    cursor: pointer;
+    transition: background 0.3s;
+    margin: 0 auto; /* Centrado del botón */
+    display: block;
 }
 
 .login-btn:hover {
-  background: #0453a1; /* Rojo más oscuro */
+    background: #0453a1; /* Rojo más oscuro */
 }
 
 .register-link {
-  border-top: 20px;
-  display: block;
-  text-align: center;
-  margin-top: 10px;
-  font-size: 16px;
-  color: #003f7d; /* Azul */
-  text-decoration: none;
+    border-top: 20px;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #003f7d; /* Azul */
+    text-decoration: none;
 }
 
 .register-link:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
-
 
 .faq-btn {
-  position: absolute;
-  top: 2px;
-  right: 20px;
-  background: #ffffff;
-  color: #003f7d;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  border: none;
-  margin-top: 20px;
-  margin-right: 20px;
-  font-size: 14px;
-  font-weight: bold; /* Texto en negritas */
+    position: absolute;
+    top: 2px;
+    right: 20px;
+    background: #ffffff;
+    color: #003f7d;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    margin-top: 20px;
+    margin-right: 20px;
+    font-size: 14px;
+    font-weight: bold; /* Texto en negritas */
 }
 
-
 .faq-btn:hover {
-  background: #4d94ff;
+    background: #4d94ff;
 }
 
 .logo-container {
-  display: flex;
-  flex-direction: column; /* Apilar elementos en columna */
-  align-items: center; /* Centrar horizontalmente */
-  justify-content: center; /* Centrar verticalmente */
+    display: flex;
+    flex-direction: column; /* Apilar elementos en columna */
+    align-items: center; /* Centrar horizontalmente */
+    justify-content: center; /* Centrar verticalmente */
 }
 
 .logo-container img {
-  max-width: 70%;
-  height: auto;
-  margin-bottom: 20px; /* Espacio entre la imagen y el texto */
+    max-width: 70%;
+    height: auto;
+    margin-bottom: 20px; /* Espacio entre la imagen y el texto */
 }
 
 .logo-container h1 {
-  font-size: 50px; /* Tamaño del texto */
-  color: #fff; /* Color del texto */
-  text-align: center; /* Centrar el texto */
+    font-size: 50px; /* Tamaño del texto */
+    color: #fff; /* Color del texto */
+    text-align: center; /* Centrar el texto */
 }

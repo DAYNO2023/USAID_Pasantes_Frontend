@@ -22,7 +22,6 @@
                                     <i class="pi pi-user"></i>
                                     <input
                                         type="text"
-                                        id="dni"
                                         pInputText
                                         formControlName="opta_DNI"
                                     />
@@ -34,7 +33,6 @@
                                     <i class="pi pi-envelope"></i>
                                     <input
                                         type="text"
-                                        id="correo"
                                         pInputText
                                         formControlName="opta_CorreoElectronico"
                                     />
@@ -48,8 +46,8 @@
                                     <i class="pi pi-user-edit"></i>
                                     <input
                                         type="text"
-                                        id="lefticon"
                                         pInputText
+                                        formControlName="opta_Nombres"
                                     />
                                     <label>Nombres</label>
                                 </span>
@@ -59,8 +57,8 @@
                                     <i class="pi pi-user-edit"></i>
                                     <input
                                         type="text"
-                                        id="lefticon"
                                         pInputText
+                                        formControlName="opta_Apellidos"
                                     />
                                     <label>Apellidos</label>
                                 </span>
@@ -71,7 +69,7 @@
                                 <span class="p-float-label">
                                     <p-calendar
                                         [showIcon]="true"
-                                        inputId="icon"
+                                        formControlName="opta_FechaNacimiento"
                                     ></p-calendar>
                                     <label for="calendar"
                                         >Fecha de Nacimiento</label
@@ -89,6 +87,8 @@
                                         "
                                         field="tisa_Descripcion"
                                         [dropdown]="true"
+                                        [showClear]="true"
+                                        (onClear)="limpiarTipoSangre()"
                                         (onSelect)="
                                             optanteForm.controls[
                                                 'tisa_Id'
@@ -115,6 +115,8 @@
                                         "
                                         field="civi_DescripcionEstadoCivil"
                                         [dropdown]="true"
+                                        [showClear]="true"
+                                        (onClear)="limpiarEstadoCivil()"
                                         (onSelect)="
                                             optanteForm.controls[
                                                 'civi_Id'
@@ -133,21 +135,23 @@
                                     <div class="col-12 md:col-6">
                                         <div class="field-radiobutton">
                                             <p-radioButton
-                                                name="sexo"
+                                                name="opta_Sexo"
                                                 value="f"
                                                 id="f"
+                                                formControlName="opta_Sexo"
                                             ></p-radioButton>
-                                            <label for="city1">Femenino</label>
+                                            <label>Femenino</label>
                                         </div>
                                     </div>
                                     <div class="col-12 md:col-6">
                                         <div class="field-radiobutton">
                                             <p-radioButton
-                                                name="sexo"
+                                                name="opta_Sexo"
                                                 value="m"
                                                 id="m"
+                                                formControlName="opta_Sexo"
                                             ></p-radioButton>
-                                            <label for="city2">Masculino</label>
+                                            <label>Masculino</label>
                                         </div>
                                     </div>
                                 </div>
@@ -160,8 +164,8 @@
                                     <i class="pi pi-map-marker"></i>
                                     <input
                                         type="text"
-                                        id="lefticon"
                                         pInputText
+                                        formControlName="opta_Direccion"
                                     />
                                     <label>Dirección</label>
                                 </span>
@@ -202,101 +206,107 @@
                 </p-tabPanel>
                 <p-tabPanel header="General">
                     <form [formGroup]="optanteForm">
-                        <div class="input-group">
+                        <div class="form-grid-container">
+                            <div class="image-column">
                             <label>Imagen</label>
+                            <!-- <small
+                          style="display: inline-block; color: red !important; vertical-align: super;"
+                          class="ng-dirty ng-invalid"
+                          *ngIf="optanteForm.controls['opta_Imagen'].invalid"
+                        >*</small> -->
                             <p-fileUpload
+                                #fileUpload
                                 name="demo[]"
-                                url="./upload.php"
-                                (onUpload)="subirImagen($event)"
-                                [multiple]="true"
+                                (onSelect)="onImageSelect($event)"
+                                (onRemove)="onImageRemove($event)"
+                                [customUpload]="true"
+                                [multiple]="false"
                                 accept="image/*"
-                                [maxFileSize]="1000000"
+                                chooseLabel="Subir"
+                                [showUploadButton]="false"
+                                [showCancelButton]="false"
+                                [auto]="true"
+                                formControlName="opta_Imagen"
                             >
                                 <ng-template pTemplate="content">
-                                    <ul *ngIf="uploadedFiles.length">
-                                        <li *ngFor="let file of uploadedFiles">
-                                            {{ file.name }} -
-                                            {{ file.size }} bytes
-                                        </li>
-                                    </ul>
+                                    <div class="image-upload-container" (click)="fileUpload.choose()">
+                                        <ng-container *ngIf="!optanteForm.get('opta_Imagen')?.value; else showImage">
+                                            <div class="upload-placeholder">
+                                              <i class="pi pi-image text-900 text-4xl mb-3 custom-icon-size"></i>
+                                              <span class="font-bold text-900 text-2xl mb-3">Subir Imagen</span>
+                                              <span class="font-medium text-600 text-lg text-center">Seleccione Una Imagen</span>
+                                            </div>
+                                          </ng-container>
+                                          <ng-template #showImage>
+                                            <div class="image-preview-container">
+                                              <img [src]="optanteForm.get('opta_Imagen')?.value" alt="Imagen seleccionada" class="image-preview" />
+                                            </div>
+                                          </ng-template>
+                                        </div>
                                 </ng-template>
                             </p-fileUpload>
+                            <!-- <small
+                        class="error-message"
+                        *ngIf="optanteForm.controls['opta_Imagen'].invalid"
+                        style="color: red !important"
+                      >
+                        El campo es requerido.
+                      </small> -->
                         </div>
-                        <div class="grid p-fluid mt-0.2">
-                            <div class="input-group col-12 md:col-4">
-                                <span class="p-float-label p-input-icon-left">
-                                    <i class="pi pi-phone"></i>
-                                    <input
-                                        type="text"
-                                        id="lefticon"
-                                        pInputText
-                                    />
-                                    <label>Celular</label>
-                                </span>
+                        <div class="input-column">
+                            <div class="input-group">
+                              <span class="p-float-label p-input-icon-left">
+                                <i class="pi pi-phone"></i>
+                                <input type="text" formControlName="opta_Telefono1" pInputText />
+                                <label>Celular</label>
+                              </span>
                             </div>
-                            <div class="input-group col-12 md:col-4">
-                                <span class="p-float-label p-input-icon-left">
-                                    <i class="pi pi-phone"></i>
-                                    <input
-                                        type="text"
-                                        id="lefticon"
-                                        pInputText
-                                    />
-                                    <label>Celular Alterno</label>
-                                </span>
+                            <div class="input-group">
+                              <span class="p-float-label p-input-icon-left">
+                                <i class="pi pi-phone"></i>
+                                <input type="text" pInputText formControlName="opta_Telefono2" />
+                                <label>Celular Alterno</label>
+                              </span>
                             </div>
-                        </div>
-
-                        <div class="grid p-fluid mt-0.2">
-                            <div class="input-group col-12 md:col-4">
-                                <span class="p-float-label">
-                                    <p-autoComplete
-                                        inputId="autocomplete-departamento"
-                                        [suggestions]="filtradoDepartamentos"
-                                        (completeMethod)="
-                                            filtroDepartamento($event)
-                                        "
-                                        field="depa_DescripcionDepartamento"
-                                        [dropdown]="true"
-                                        [showClear]="true"
-                                        (onSelect)="
-                                            seleccionandoDepartamento($event)
-                                        "
-                                    >
-                                    </p-autoComplete>
-                                    <label for="dropdown">Departamento</label>
-                                </span>
+                            <div class="input-group">
+                              <span class="p-float-label">
+                                <p-autoComplete
+                                  [suggestions]="filtradoDepartamentos"
+                                  (completeMethod)="filtroDepartamento($event)"
+                                  field="depa_DescripcionDepartamento"
+                                  [dropdown]="true"
+                                  [showClear]="true"
+                                  (onClear)="limpiarDepartamento()"
+                                  (onSelect)="seleccionandoDepartamento($event)"
+                                >
+                                </p-autoComplete>
+                                <label for="dropdown">Departamento</label>
+                              </span>
                             </div>
-                            <div class="input-group col-12 md:col-4">
-                                <span class="p-float-label">
-                                    <p-autoComplete
-                                        inputId="acmunicipio"
-                                        [(ngModel)]="seleccionadoMunicipio"
-                                        [suggestions]="filtradoMunicipios"
-                                        (completeMethod)="
-                                            filtroMunicipio($event)
-                                        "
-                                        field="muni_DescripcionMunicipio"
-                                        [dropdown]="true"
-                                        [disabled]="municipios.length === 0"
-                                        (onSelect)="
-                                            optanteForm.controls[
-                                                'muni_Id'
-                                            ].setValue(
-                                                seleccionadoMunicipio?.muni_Id
-                                            )
-                                        "
-                                        [ngModelOptions]="{ standalone: true }"
-                                    ></p-autoComplete>
-                                    <label for="dropdown">Municipio</label>
-                                </span>
+                            <div class="input-group">
+                              <span class="p-float-label">
+                                <p-autoComplete
+                                  [(ngModel)]="seleccionadoMunicipio"
+                                  [suggestions]="filtradoMunicipios"
+                                  (completeMethod)="filtroMunicipio($event)"
+                                  field="muni_DescripcionMunicipio"
+                                  [dropdown]="true"
+                                  [showClear]="true"
+                                  (onClear)="limpiarMunicipio()"
+                                  [disabled]="municipios.length === 0"
+                                  (onSelect)="optanteForm.controls['muni_Id'].setValue(seleccionadoMunicipio?.muni_Id)"
+                                  [ngModelOptions]="{ standalone: true }"
+                                >
+                                </p-autoComplete>
+                                <label for="dropdown">Municipio</label>
+                              </span>
                             </div>
+                          </div>
                         </div>
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
                                     <p-autoComplete
-                                        inputId="acuniversidad"
                                         [suggestions]="filtradoUniversidades"
                                         (completeMethod)="
                                             filtroUniversidad($event)
@@ -304,6 +314,7 @@
                                         field="univ_DescripcionUniversidad"
                                         [dropdown]="true"
                                         [showClear]="true"
+                                        (onClear)="limpiarUniversidad()"
                                         (onSelect)="
                                             seleccionandoUniversidad($event)
                                         "
@@ -315,7 +326,6 @@
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
                                     <p-autoComplete
-                                        inputId="acregional"
                                         [suggestions]="filtradoRegionales"
                                         (completeMethod)="
                                             filtroRegional($event)
@@ -323,6 +333,7 @@
                                         field="regi_DescripcionRegional"
                                         [dropdown]="true"
                                         [showClear]="true"
+                                        (onClear)="limpiarRegional()"
                                         [disabled]="regionales.length === 0"
                                         (onSelect)="
                                             seleccionandoRegional($event)
@@ -336,7 +347,6 @@
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
                                     <p-autoComplete
-                                        inputId="acfacultad"
                                         [suggestions]="filtradoFacultades"
                                         (completeMethod)="
                                             filtroFacultad($event)
@@ -345,6 +355,7 @@
                                         [dropdown]="true"
                                         [disabled]="facultades.length === 0"
                                         [showClear]="true"
+                                        (onClear)="limpiarFacultad()"
                                         (onSelect)="
                                             seleccionandoFacultad($event)
                                         "
@@ -355,7 +366,6 @@
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
                                     <p-autoComplete
-                                        inputId="accarrera"
                                         [(ngModel)]="seleccionadoCarrera"
                                         [suggestions]="filtradoCarreras"
                                         (completeMethod)="
@@ -363,6 +373,8 @@
                                         "
                                         field="carr_DescripcionCarrera"
                                         [dropdown]="true"
+                                        [showClear]="true"
+                                        (onClear)="limpiarCarrera()"
                                         [disabled]="carreras.length === 0"
                                         (onSelect)="
                                             optanteForm.controls[

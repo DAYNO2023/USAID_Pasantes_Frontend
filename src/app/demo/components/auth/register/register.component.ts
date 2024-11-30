@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MenuItem, MessageService } from 'primeng/api';
 import { tipoSangreService } from 'src/app/demo/service/servicegeneral/tiposangre.service';
@@ -17,7 +17,7 @@ import { carreraService } from 'src/app/demo/service/servicegeneral/carrera.serv
     providers: [MessageService],
 })
 export class RegisterComponent implements OnInit {
-    optanteForm!: FormGroup; // Grupo de controles
+    optanteForm: FormGroup; // Grupo de controles
 
     // AUTOCOMPLETES
     tiposSangre: any[] = []; // Lista original de tipos de sangres
@@ -62,10 +62,9 @@ export class RegisterComponent implements OnInit {
         private regionalService: regionalService,
         private facultadService: facultadService,
         private carreraService: carreraService,
-        private fb: FormBuilder
-    ) {}
-
-    ngOnInit() {
+        private fb: FormBuilder,
+        private cdr: ChangeDetectorRef
+    ) {
         this.optanteForm = this.fb.group({
             opta_DNI: ['', Validators.required],
             opta_Imagen: ['', Validators.required],
@@ -76,7 +75,7 @@ export class RegisterComponent implements OnInit {
             opta_Nombres: ['', Validators.required],
             opta_Apellidos: ['', Validators.required],
             opta_FechaNacimiento: ['', Validators.required],
-            opta_Sexo: ['', Validators.required],
+            opta_Sexo: ['f'],
             opta_Direccion: ['', Validators.required],
             opta_Telefono1: ['', Validators.required],
             opta_Telefono2: [''],
@@ -85,6 +84,10 @@ export class RegisterComponent implements OnInit {
             muni_Id: ['', Validators.required],
             cafr_Id: ['', Validators.required],
         });
+    }
+
+    ngOnInit() {
+        
 
         //AUTOCOMPLETES
         this.tipoSangreService.Listar().subscribe(
@@ -281,28 +284,186 @@ export class RegisterComponent implements OnInit {
         );
     }
 
-    subirImagen(event: any) {
-        for (const file of event.files) {
-            this.uploadedFiles.push(file);
+    //METODOS PARA LIMIAR AUTOCOMPLETES
+    limpiarEstadoCivil() {
+        this.seleccionadoEstadoCivil = null;
+        this.optanteForm.controls['civi_Id'].setValue(null); // Reiniciar valor en el formulario
+    }
+    limpiarTipoSangre() {
+        this.seleccionadoTipoSangre = null;
+        this.optanteForm.controls['tisa_Id'].setValue(null); 
+    }
+    limpiarDepartamento() {
+        // Resetear selección de departamentos y municipios
+        this.seleccionadoDepartamento = null;
+        this.municipios = [];
+        this.filtradoMunicipios = [];
+        this.seleccionadoMunicipio = null;
+        this.optanteForm.controls['muni_Id'].setValue(null);
+    }
+    limpiarMunicipio() {
+        this.seleccionadoMunicipio = null;
+        this.optanteForm.controls['muni_Id'].setValue(null); 
+    }
+    limpiarUniversidad() {
+        this.seleccionadoUniversidad = null;
+        this.regionales = [];
+        this.facultades = [];
+        this.carreras = [];
+        this.filtradoRegionales = [];
+        this.filtradoFacultades = [];
+        this.filtradoCarreras = [];
+        this.seleccionadoRegional = null;
+        this.seleccionadoFacultad = null;
+        this.seleccionadoCarrera = null;
+        this.optanteForm.controls['cafr_Id'].setValue(null);
+    }
+    limpiarRegional() {
+        this.seleccionadoRegional = null;
+        this.facultades = [];
+        this.carreras = [];
+        this.filtradoFacultades = [];
+        this.filtradoCarreras = [];
+        this.seleccionadoFacultad = null;
+        this.seleccionadoCarrera = null;
+        this.optanteForm.controls['cafr_Id'].setValue(null);
+    }
+    limpiarFacultad() {
+        this.seleccionadoFacultad = null;
+        this.carreras = [];
+        this.filtradoCarreras = [];
+        this.seleccionadoCarrera = null;
+        this.optanteForm.controls['cafr_Id'].setValue(null);
+    }
+    limpiarCarrera() {
+        this.seleccionadoMunicipio = null;
+        this.optanteForm.controls['muni_Id'].setValue(null); 
+    }
+    
+    onImageSelect(event: any): void {
+        const file: File = event.files[0]; // Get the selected file
+      
+        if (!file) {
+            return; 
         }
+      
+        // Check if the file is an image
+        if (!file.type.startsWith('image/')) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Advertencia',
+                detail: 'Solo se permiten archivos de imagen.',
+                life: 3000,
+            });
+            event.files = []; // Clear the file input to prevent selection
+            return;
+        }
+      
+        // Validate file name length
+        if (file.name.length > 260) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'El nombre del archivo excede el límite de 260 caracteres.',
+                life: 3000,
+                styleClass: 'iziToast-custom'
+            });
+            event.files = []; // Clear the file input
+            return;
+        }
+      
+        const originalSize = file.size;
+        
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+            const imageUrl = e.target.result;
+            
+            this.resizeImage(imageUrl, file.type, (resizedImageUrl) => {
+                this.dataUrlToBlob(resizedImageUrl, (blob) => {
+                    const resizedSize = blob.size;
+                    // console.log('Original size:', originalSize, 'bytes');
+                    // console.log('Resized size:', resizedSize, 'bytes');
+                    
+                    if (resizedSize < originalSize) {
+                        console.log('La imagen redimensionada es más pequeña que la original.');
+                    } else {
+                        console.log('La imagen redimensionada no es más pequeña que la original.');
+                    }
+                    
+                    this.optanteForm.get('opta_Imagen')?.setValue(resizedImageUrl);
+                    // console.log('Resized Image preview URL:', resizedImageUrl);
+                });
+            });
+        };
+        
+        reader.readAsDataURL(file);
+      }
 
-        this.messageService.add({
-            severity: 'info',
-            summary: 'Success',
-            detail: 'File Uploaded',
-        });
+      resizeImage(imageUrl: string, mimeType: string, callback: (resizedImageUrl: string) => void) {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            const MAX_WIDTH = 620;
+            const scale = MAX_WIDTH / img.width;
+            canvas.width = MAX_WIDTH;
+            canvas.height = img.height * scale;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+            const resizedImageUrl = canvas.toDataURL(mimeType, 0.6);
+            callback(resizedImageUrl);
+          }
+        };
+        img.src = imageUrl;
+      }
+      
+      
+      dataUrlToBlob(dataUrl: string, callback: (blob: Blob) => void) {
+        //header contiene la parte antes de la coma (que describe el tipo de datos), y base64 contiene la cadena base64 que representa los datos binarios.
+        const [header, base64] = dataUrl.split(','); 
+        const mime = header.match(/:(.*?);/)?.[1];
+        const binary = atob(base64);
+        const array = [];
+        for (let i = 0; i < binary.length; i++) {
+          array.push(binary.charCodeAt(i));
+        }
+        const blob = new Blob([new Uint8Array(array)], { type: mime });
+        callback(blob);
+      }
+
+    //Funcion para limpiar el contenedor imagen
+  onImageRemove(event: any): void {
+    this.optanteForm.get('opta_Imagen')?.setValue(null);
+    const fileUpload = document.getElementById('p-fileupload') as any;
+    if (fileUpload && fileUpload.clear) {
+      fileUpload.clear();
     }
 
-    guardar() {
-        if (this.optanteForm.valid) {
-            this.optanteService
-                .registrarOptante(this.optanteForm.value)
-                .subscribe(
-                    (response) => console.log('Registrado:', response),
-                    (error) => console.error('Error:', error)
-                );
-        } else {
-            console.error('Formulario inválido');
-        }
+    this.cdr.detectChanges();
+  }
+
+  guardar() {
+    const formData = { ...this.optanteForm.value };
+
+    // Asegurarse de que la fecha se transforme a formato ISO (YYYY-MM-DD)
+    if (formData.opta_FechaNacimiento) {
+        const fecha = new Date(formData.opta_FechaNacimiento);
+        formData.opta_FechaNacimiento = fecha.toISOString().split('T')[0]; // Solo la fecha (sin hora)
     }
+
+    console.log(formData); // Verificar cómo queda el objeto antes de enviarlo
+
+    // if (this.optanteForm.valid) {
+        this.optanteService
+            .registrarOptante(formData) // Enviar el objeto transformado
+            .subscribe(
+                (response) => console.log('Registrado:', response),
+                (error) => console.error('Error:', error)
+            );
+    // } else {
+        // console.error('Formulario inválido');
+    // }
+}
+
 }

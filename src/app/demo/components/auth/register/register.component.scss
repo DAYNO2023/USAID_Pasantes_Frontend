@@ -13,7 +13,7 @@ html {
 
 .login-card {
     display: flex;
-    width: 65%; /* Más ancho */
+    width: 70%; /* Más ancho */
     background: #fff; /* Fondo blanco */
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -52,17 +52,15 @@ h2 {
     text-align: center;
 }
 
-// /* Ajustes para los campos de entrada */
-// .input-row {
-//   display: flex;
-//   justify-content: space-between;
-//   gap: 20px; /* Espacio entre las columnas */
-// }
-
 //ESTILOS PARA INPUTS
+::ng-deep .p-inputtext {
+    color: #2a2a2a;
+}
+
 .input-group {
     flex: 1; /* Hace que ambos campos tomen el mismo ancho */
     margin-bottom: 10px;
+    width: 100%;
 }
 
 .input-group label {
@@ -80,27 +78,8 @@ h2 {
 }
 
 .input-group input:focus {
-    border: 1px solid #0453a1; /* Azul */
+    border: 1px solid #1f3168; /* Azul */
     outline: none;
-}
-
-.form-grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
-  gap: 1rem; /* Espaciado entre columnas */
-  align-items: start; /* Alinear elementos al inicio de las columnas */
-}
-
-.image-column {
-  justify-content: left; /* Alinear al lado izquierdo */
-  grid-row: 1 / span 4; /* Ocupa 4 filas */
-}
-
-.input-column {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem; /* Espaciado entre filas */
-  flex: 1; /* Hace que ambos campos tomen el mismo ancho */
 }
 
 //ESTILOS PARA CALENDARIO, Y AUTOCOMPLETADOS
@@ -123,7 +102,7 @@ p-autoComplete {
 }
 
 ::ng-deep p-calendar .p-inputtext:focus {
-    border: 1px solid #0453a1 !important;
+    border: 1px solid #1f3168 !important;
     outline: none;
 }
 
@@ -131,14 +110,14 @@ p-autoComplete {
     outline: none;
     outline-offset: 0;
     box-shadow: none;
-    border-color: #007bff; /* Azul */
+    border-color: #1f3168; /* Azul */
 }
 
 /* Estilo para el botón del calendario */
 ::ng-deep .p-button:not(:disabled):hover {
-    background: #0453a1 !important; /* Cambia el fondo al azul */
+    background: #1f3168 !important; /* Cambia el fondo al azul */
     color: #ffffff !important; /* Asegura que el texto/icono sea blanco */
-    border-color: #0453a1 !important; /* Cambia el borde al azul */
+    border-color: #1f3168 !important; /* Cambia el borde al azul */
 }
 
 //ESTILOS PARA TABS
@@ -149,14 +128,14 @@ p-autoComplete {
 
 /* Cambiar el color de la barra activa del tab */
 ::ng-deep .p-tabview .p-tabview-nav .p-tabview-ink-bar {
-    background-color: #0453a1 !important; /* Cambiar el color al azul */
+    background-color: #1f3168 !important; /* Cambiar el color al azul */
 }
 
 /* Cambiar el color del título de la pestaña activa */
 ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
     background: transparent; /* Fondo transparente */
-    border-color: #0453a1 !important; /* Color azul para el borde */
-    color: #0453a1 !important; /* Color azul para el texto */
+    border-color: #1f3168 !important; /* Color azul para el borde */
+    color: #1f3168 !important; /* Color azul para el texto */
     font-weight: bold; /* Opcional: hacer que el texto se vea más destacado */
     transition: 0.3s ease-in-out; /* Transición suave para el cambio de color */
 }
@@ -177,14 +156,10 @@ p-autoComplete {
 
 //ESTILOS PARA RADIO
 ::ng-deep .p-radiobutton .p-radiobutton-box.p-highlight {
-    border-color: #0453a1; /* Azul */
-    background: #0453a1; /* Azul */
+    border-color: #1f3168; /* Azul */
+    background: #1f3168; /* Azul */
 }
 
-::ng-deep .p-inputtext {
-    color: #2a2a2a;
-    // padding-left: 28px !important;
-}
 
 //SUBIR IMAGENES
 ::ng-deep .p-fileupload-buttonbar {
@@ -193,10 +168,6 @@ p-autoComplete {
 
 ::ng-deep .p-fileupload-files.ng-star-inserted > .ng-star-inserted > .p-fileupload-row > div {
   display: none !important;
-}
-
-::ng-deep .p-fileupload-files.ng-star-inserted > .ng-star-inserted > .p-fileupload-row > div:last-child {
-  display: block !important;
 }
 
    //boton de borrar imagen
@@ -211,44 +182,44 @@ p-autoComplete {
 .image-upload-container {
   border: 3px dotted rgba(255, 255, 255, 0.795);
   border-radius: 5px;
-  margin: auto;
+  margin: 0 auto;
   padding: 1rem;
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  max-width: 300px;
+  height: 100%;
   display: flex;
-  align-items: left;
+  align-items: center;
   justify-content: center;
-  background-color: #0453a1;
-  box-shadow: 0 4px 8px #0452a19c;
+  background-color: #1f3168;
+  box-shadow: 0 4px 8px #1f3168bd;
   position: relative;
   overflow: hidden; /* Asegura que nada se salga del contenedor */
+}
+.col-6:not(:last-child) {
+    margin-bottom: 0; /* Reduce el espacio entre filas */
 }
 
 .image-preview-container img {
   max-width: 100%; /* Ajusta el ancho al contenedor */
-  max-height: 100%; /* Ajusta la altura al contenedor */
+  height: auto; /* Ajusta la altura al contenedor */
   object-fit: contain; /* Mantiene la proporción de la imagen */
   border-radius: 5px; /* Opcional: redondea las esquinas */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Opcional: sombra para la imagen */
 }
-
-
-::ng-deep #p-fileupload {
-  max-width: 350px;
-}
-
 ::ng-deep .p-fileupload-content {
-  max-width: 220px;
-  min-height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 100%; /* Asegura que ocupe el 100% del espacio disponible */
+    max-width: 325px; /* Ancho máximo igual al del input */
+    height: 200px; /* Mantén la altura deseada */
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    margin: 0; /* Elimina márgenes innecesarios */
+    padding: 0; /* Elimina padding si lo hubiera */
+    border: none; /* Elimina bordes no deseados */
+    box-sizing: border-box; /* Asegura que el ancho incluya padding y bordes */
 }
 
-.image-upload-container:hover {
-  cursor: pointer;
-  background-color: #0452a1c4;
-}
+
 .upload-placeholder {
 display: flex;
 flex-direction: column;
@@ -272,9 +243,9 @@ font-size: 5rem; /* Aumenta el tamaño del ícono */
 //ESTILO PARA BOTONES
 /* Estilo adicional para el estado normal (sin hover) */
 ::ng-deep .p-button {
-  background: #0453a1 !important; /* Fondo azul */
+  background: #1f3168 !important; /* Fondo azul */
   color: #ffffff !important; /* Texto/icono blanco */
-  border-color: #0453a1 !important; /* Borde azul */
+  border-color: #1f3168 !important; /* Borde azul */
 }
 
 .forgot-link,
@@ -283,7 +254,7 @@ font-size: 5rem; /* Aumenta el tamaño del ícono */
     text-align: right;
     margin-top: 10px;
     font-size: 14px;
-    color: #0453a1; /* Azul */
+    color: #1f3168; /* Azul */
     text-decoration: none;
 }
 
@@ -306,7 +277,7 @@ font-size: 5rem; /* Aumenta el tamaño del ícono */
 }
 
 .login-btn:hover {
-    background: #0453a1; /* Rojo más oscuro */
+    background: #1f3168; /* Rojo más oscuro */
 }
 
 .register-link {
@@ -315,7 +286,7 @@ font-size: 5rem; /* Aumenta el tamaño del ícono */
     text-align: center;
     margin-top: 10px;
     font-size: 16px;
-    color: #003f7d; /* Azul */
+    color: #1f3168; /* Azul */
     text-decoration: none;
 }
 
@@ -328,7 +299,7 @@ font-size: 5rem; /* Aumenta el tamaño del ícono */
     top: 2px;
     right: 20px;
     background: #ffffff;
-    color: #003f7d;
+    color: #1f3168;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;

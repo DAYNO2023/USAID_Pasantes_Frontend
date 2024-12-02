@@ -20,6 +20,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ToastModule } from "primeng/toast";
 
 @NgModule({
     imports: [
@@ -42,7 +43,8 @@ import { ReactiveFormsModule } from '@angular/forms';
         InputTextareaModule,
         InputGroupModule,
         InputGroupAddonModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ToastModule
     ],
     declarations: [RegisterComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA] 

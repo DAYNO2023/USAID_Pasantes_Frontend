@@ -255,7 +255,6 @@ export class RegisterComponent implements OnInit {
     }
     seleccionandoFacultad(event: any) {
         const facultadSeleccionada = event?.value?.fare_Id;
-        console.log(event);
 
         if (facultadSeleccionada) {
             this.carreraService
@@ -263,7 +262,6 @@ export class RegisterComponent implements OnInit {
                 .subscribe(
                     (response) => {
                         this.carreras = response;
-                        console.log(this.carreras);
                         this.filtradoCarreras = [];
                     },
                     (error) => {
@@ -447,24 +445,60 @@ export class RegisterComponent implements OnInit {
 
     guardar() {
         const formData = { ...this.optanteForm.value };
-
+    
         // Asegurarse de que la fecha se transforme a formato ISO (YYYY-MM-DD)
         if (formData.opta_FechaNacimiento) {
             const fecha = new Date(formData.opta_FechaNacimiento);
             formData.opta_FechaNacimiento = fecha.toISOString().split('T')[0]; // Solo la fecha (sin hora)
         }
-
+    
         console.log(formData); // Verificar cómo queda el objeto antes de enviarlo
-
+    
         if (this.optanteForm.valid) {
             this.optanteService
                 .registrarOptante(formData) // Enviar el objeto transformado
                 .subscribe(
-                    (response) => console.log('Registrado:', response),
-                    (error) => console.error('Error:', error)
+                    (response) => {
+                        // Validar si la operación fue exitosa según la respuesta
+                        if (response && response.code === 200 && response.success) {
+                            this.messageService.add({
+                                severity: 'success',
+                                summary: 'Éxito',
+                                detail: 'Operación completada exitosamente.',
+                                life: 3000,
+                            });
+                            this.ngOnInit(); // Recarga los datos
+                        } else {
+                            // Manejar respuestas inesperadas
+                            this.messageService.add({
+                                severity: 'error',
+                                summary: 'Error',
+                                detail: response.message || 'Actualización fallida',
+                                life: 3000,
+                            });
+                        }
+                    },
+                    (error) => {
+                        console.error('Error:', error);
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: 'Actualización fallida',
+                            life: 3000,
+                        });
+                    }
                 );
         } else {
             console.error('Formulario inválido');
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Advertencia',
+                detail: 'Por favor, complete los campos obligatorios.',
+                life: 3000,
+            });
+            this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Message sent' });
+
         }
     }
+    
 }

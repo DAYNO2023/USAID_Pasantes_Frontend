@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="container">
     <div class="login-card">
         <div class="left-section">
@@ -192,7 +194,8 @@
                             ></button>
                             
                         </div> -->
-                        <div style="display: flex; justify-content: end">
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <a routerLink="login-pasantes" class="register-link">Iniciar Sesión</a>
                             <button
                                 pButton
                                 pRipple
@@ -202,6 +205,7 @@
                                 (click)="siguiente()"
                             ></button>
                         </div>
+                        
                     </form>
                 </p-tabPanel>
                 <p-tabPanel header="General">
@@ -365,7 +369,7 @@
                                 </p-fileUpload>
                             </div>
                         </div>
-                        <div class="grid p-fluid mt-0.2">
+                        <div class="grid p-fluid mt-0">
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
                                     <p-autoComplete
@@ -476,4 +480,6 @@
             </p-tabView>
         </div>
     </div>
+    <button class="faq-btn">Preguntas más frecuentes</button>
+
 </div>

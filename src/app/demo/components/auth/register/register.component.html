@@ -23,13 +23,28 @@
                                 <span class="p-float-label p-input-icon-left">
                                     <i class="pi pi-user"></i>
                                     <input
+                                        (keydown)="ValidarNumeros($event)"
+                                        (input)="permitirSoloNumeros($event)"
+                                        maxlength="13"
                                         type="text"
                                         pInputText
                                         formControlName="opta_DNI"
+                                        [ngClass]="{
+                                            'ng-invalid ng-dirty':
+                                                enviado && optanteForm.get('opta_DNI')?.invalid
+                                        }"
                                     />
                                     <label>Número de Identidad</label>
                                 </span>
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="enviado && optanteForm.get('opta_DNI')?.invalid"
+                                    style="color: red !important"
+                                >
+                                    El número de identidad debe tener exactamente 13 dígitos.
+                                </small>
                             </div>
+                            
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label p-input-icon-left">
                                     <i class="pi pi-envelope"></i>
@@ -47,24 +62,58 @@
                                 <span class="p-float-label p-input-icon-left">
                                     <i class="pi pi-user-edit"></i>
                                     <input
+                                        (keydown)="ValidarTexto($event)"
+                                        (input)="permitirSoloLetras($event)"
+                                        maxlength="50"
                                         type="text"
                                         pInputText
                                         formControlName="opta_Nombres"
+                                        [ngClass]="{
+                                            'ng-invalid ng-dirty':
+                                                enviado &&
+                                                optanteForm.get('opta_Nombres')
+                                                    ?.invalid
+                                        }"
                                     />
                                     <label>Nombres</label>
                                 </span>
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        enviado &&
+                                        optanteForm.get('opta_Nombres')?.invalid
+                                    "
+                                    style="color: red !important"
+                                >
+                                    El campo es requerido.
+                                </small>
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label p-input-icon-left">
                                     <i class="pi pi-user-edit"></i>
                                     <input
+                                        (keydown)="ValidarTexto($event)"
+                                        (input)="permitirSoloLetras($event)"
+                                        maxlength="50"
                                         type="text"
                                         pInputText
                                         formControlName="opta_Apellidos"
+                                        [ngClass]="{
+                                            'ng-invalid ng-dirty':
+                                                enviado && optanteForm.get('opta_Apellidos')?.invalid
+                                        }"
                                     />
                                     <label>Apellidos</label>
                                 </span>
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="enviado && optanteForm.get('opta_Apellidos')?.invalid"
+                                    style="color: red !important"
+                                >
+                                    El campo es requerido.
+                                </small>
                             </div>
+                            
                         </div>
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
@@ -194,8 +243,17 @@
                             ></button>
                             
                         </div> -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                            <a routerLink="login-pasantes" class="register-link">Iniciar Sesión</a>
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                width: 100%;
+                            "
+                        >
+                            <a routerLink="login-pasantes" class="register-link"
+                                >Iniciar Sesión</a
+                            >
                             <button
                                 pButton
                                 pRipple
@@ -205,7 +263,6 @@
                                 (click)="siguiente()"
                             ></button>
                         </div>
-                        
                     </form>
                 </p-tabPanel>
                 <p-tabPanel header="General">
@@ -213,19 +270,19 @@
                         <div class="grid nested-grid">
                             <div class="col-6">
                                 <div class="grid p-fluid">
-                                        <div class="input-group col-12 md:col-4">
-                                            <span
-                                                class="p-float-label p-input-icon-left"
-                                            >
-                                                <i class="pi pi-phone"></i>
-                                                <input
-                                                    type="text"
-                                                    formControlName="opta_Telefono1"
-                                                    pInputText
-                                                />
-                                                <label>Celular</label>
-                                            </span>
-                                        </div>
+                                    <div class="input-group col-12 md:col-4">
+                                        <span
+                                            class="p-float-label p-input-icon-left"
+                                        >
+                                            <i class="pi pi-phone"></i>
+                                            <input
+                                                type="text"
+                                                formControlName="opta_Telefono1"
+                                                pInputText
+                                            />
+                                            <label>Celular</label>
+                                        </span>
+                                    </div>
                                     <div class="col-12">
                                         <div class="input-group">
                                             <span
@@ -249,12 +306,16 @@
                                                         filtradoDepartamentos
                                                     "
                                                     (completeMethod)="
-                                                        filtroDepartamento($event)
+                                                        filtroDepartamento(
+                                                            $event
+                                                        )
                                                     "
                                                     field="depa_DescripcionDepartamento"
                                                     [dropdown]="true"
                                                     [showClear]="true"
-                                                    (onClear)="limpiarDepartamento()"
+                                                    (onClear)="
+                                                        limpiarDepartamento()
+                                                    "
                                                     (onSelect)="
                                                         seleccionandoDepartamento(
                                                             $event
@@ -272,16 +333,24 @@
                                         <div class="input-group">
                                             <span class="p-float-label">
                                                 <p-autoComplete
-                                                    [(ngModel)]="seleccionadoMunicipio"
-                                                    [suggestions]="filtradoMunicipios"
+                                                    [(ngModel)]="
+                                                        seleccionadoMunicipio
+                                                    "
+                                                    [suggestions]="
+                                                        filtradoMunicipios
+                                                    "
                                                     (completeMethod)="
                                                         filtroMunicipio($event)
                                                     "
                                                     field="muni_DescripcionMunicipio"
                                                     [dropdown]="true"
                                                     [showClear]="true"
-                                                    (onClear)="limpiarMunicipio()"
-                                                    [disabled]="municipios.length === 0"
+                                                    (onClear)="
+                                                        limpiarMunicipio()
+                                                    "
+                                                    [disabled]="
+                                                        municipios.length === 0
+                                                    "
                                                     (onSelect)="
                                                         optanteForm.controls[
                                                             'muni_Id'
@@ -294,14 +363,18 @@
                                                     }"
                                                 >
                                                 </p-autoComplete>
-                                                <label for="dropdown">Municipio</label>
+                                                <label for="dropdown"
+                                                    >Municipio</label
+                                                >
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6">
-                                <label style="color: rgb(19, 18, 18);">Imagen</label>
+                                <label style="color: rgb(19, 18, 18)"
+                                    >Imagen</label
+                                >
                                 <!-- <small
                           style="display: inline-block; color: red !important; vertical-align: super;"
                           class="ng-dirty ng-invalid"
@@ -481,5 +554,4 @@
         </div>
     </div>
     <button class="faq-btn">Preguntas más frecuentes</button>
-
 </div>

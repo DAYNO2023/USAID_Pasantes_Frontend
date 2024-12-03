@@ -51,6 +51,8 @@ export class RegisterComponent implements OnInit {
 
     uploadedFiles: any[] = [];
 
+    enviado: boolean = false;
+
     constructor(
         private messageService: MessageService,
         private optanteService: optanteService,
@@ -66,14 +68,22 @@ export class RegisterComponent implements OnInit {
         private cdr: ChangeDetectorRef
     ) {
         this.optanteForm = this.fb.group({
-            opta_DNI: ['', Validators.required],
+            opta_DNI: ['', Validators.required, Validators.pattern(/^\d{13}$/)],
             opta_Imagen: ['', Validators.required],
             opta_CorreoElectronico: [
                 '',
                 [Validators.required, Validators.email],
             ],
-            opta_Nombres: ['', Validators.required],
-            opta_Apellidos: ['', Validators.required],
+            opta_Nombres: [
+                '',
+                Validators.required,
+                Validators.pattern('^[a-zA-ZñÑ\\s]+$'),
+            ],
+            opta_Apellidos: [
+                '',
+                Validators.required,
+                Validators.pattern('^[a-zA-ZñÑ\\s]+$'),
+            ],
             opta_FechaNacimiento: ['', Validators.required],
             opta_Sexo: ['f'],
             opta_Direccion: ['', Validators.required],
@@ -336,8 +346,82 @@ export class RegisterComponent implements OnInit {
         this.optanteForm.controls['muni_Id'].setValue(null);
     }
 
+    //VALIDACIONES:
+    ValidarTexto(event: KeyboardEvent) {
+        const inputElement = event.target as HTMLInputElement;
+        const key = event.key;
+        if (
+            !/^[a-zA-Z\s]+$/.test(event.key) &&
+            event.key !== 'Backspace' &&
+            event.key !== 'Tab' &&
+            event.key !== 'ArrowLeft' &&
+            event.key !== 'ArrowRight'
+        ) {
+            event.preventDefault();
+        }
+        if (key === ' ' && inputElement.selectionStart === 0) {
+            event.preventDefault();
+        }
+    }
+
+    ValidarNumeros(event: KeyboardEvent) {
+        const key = event.key;
+    
+        // Permitir solo números y teclas especiales como backspace, tab, flechas
+        if (
+            !/^\d$/.test(key) &&
+            key !== 'Backspace' &&
+            key !== 'Tab' &&
+            key !== 'ArrowLeft' &&
+            key !== 'ArrowRight'
+        ) {
+            event.preventDefault();
+        }
+    }
+    
+
+    permitirSoloLetras(event: Event) {
+        const inputElement = event.target as HTMLInputElement;
+        const texto = inputElement.value;
+    
+        // Obtener el nombre del control basado en el atributo formControlName
+        const controlName = inputElement.getAttribute('formControlName');
+        if (controlName) {
+            inputElement.value = texto
+                .replace(
+                    /[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]|(?<=\s)[^\sa-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g,
+                    ''
+                )
+                .replace(/\s{2,}/g, ' ')
+                .replace(/^\s/, '');
+    
+            // Actualizar dinámicamente el control correspondiente
+            this.optanteForm.controls[controlName].setValue(inputElement.value);
+        }
+    }
+    
+    permitirSoloNumeros(event: Event) {
+        const inputElement = event.target as HTMLInputElement;
+        const texto = inputElement.value;
+    
+        // Permitir solo números
+        inputElement.value = texto.replace(/[^0-9]/g, '');
+    
+        // Limitar a 13 caracteres
+        if (inputElement.value.length > 13) {
+            inputElement.value = inputElement.value.substring(0, 13);
+        }
+    
+        // Actualizar el FormControl correspondiente
+        const controlName = inputElement.getAttribute('formControlName');
+        if (controlName) {
+            this.optanteForm.controls[controlName].setValue(inputElement.value);
+        }
+    }
+    
+
     seleccionarImagen(event: any): void {
-        const archivo: File = event.files[0]; 
+        const archivo: File = event.files[0];
 
         if (!archivo) {
             return;
@@ -373,25 +457,29 @@ export class RegisterComponent implements OnInit {
         lector.onload = (e: any) => {
             const imageUrl = e.target.result;
 
-            this.redimensionandoImagen(imageUrl, archivo.type, (redimencionarImagenUrl) => {
-                this.dataUrlaBlob(redimencionarImagenUrl, (blob) => {
-                    const tamanoRedimensionado = blob.size;
+            this.redimensionandoImagen(
+                imageUrl,
+                archivo.type,
+                (redimencionarImagenUrl) => {
+                    this.dataUrlaBlob(redimencionarImagenUrl, (blob) => {
+                        const tamanoRedimensionado = blob.size;
 
-                    if (tamanoRedimensionado < tamanoOriginal) {
-                        console.log(
-                            'La imagen redimensionada es más pequeña que la original.'
-                        );
-                    } else {
-                        console.log(
-                            'La imagen redimensionada no es más pequeña que la original.'
-                        );
-                    }
+                        if (tamanoRedimensionado < tamanoOriginal) {
+                            console.log(
+                                'La imagen redimensionada es más pequeña que la original.'
+                            );
+                        } else {
+                            console.log(
+                                'La imagen redimensionada no es más pequeña que la original.'
+                            );
+                        }
 
-                    this.optanteForm
-                        .get('opta_Imagen')
-                        ?.setValue(redimencionarImagenUrl);
-                });
-            });
+                        this.optanteForm
+                            .get('opta_Imagen')
+                            ?.setValue(redimencionarImagenUrl);
+                    });
+                }
+            );
         };
 
         lector.readAsDataURL(archivo);
@@ -444,23 +532,28 @@ export class RegisterComponent implements OnInit {
     }
 
     guardar() {
+        this.enviado = true;
         const formData = { ...this.optanteForm.value };
-    
+
         // Asegurarse de que la fecha se transforme a formato ISO (YYYY-MM-DD)
         if (formData.opta_FechaNacimiento) {
             const fecha = new Date(formData.opta_FechaNacimiento);
             formData.opta_FechaNacimiento = fecha.toISOString().split('T')[0]; // Solo la fecha (sin hora)
         }
-    
+
         console.log(formData); // Verificar cómo queda el objeto antes de enviarlo
-    
+
         if (this.optanteForm.valid) {
             this.optanteService
                 .registrarOptante(formData) // Enviar el objeto transformado
                 .subscribe(
                     (response) => {
                         // Validar si la operación fue exitosa según la respuesta
-                        if (response && response.code === 200 && response.success) {
+                        if (
+                            response &&
+                            response.code === 200 &&
+                            response.success
+                        ) {
                             this.messageService.add({
                                 severity: 'success',
                                 summary: 'Éxito',
@@ -473,7 +566,8 @@ export class RegisterComponent implements OnInit {
                             this.messageService.add({
                                 severity: 'error',
                                 summary: 'Error',
-                                detail: response.message || 'Actualización fallida',
+                                detail:
+                                    response.message || 'Actualización fallida',
                                 life: 3000,
                             });
                         }
@@ -496,9 +590,11 @@ export class RegisterComponent implements OnInit {
                 detail: 'Por favor, complete los campos obligatorios.',
                 life: 3000,
             });
-            this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Message sent' });
-
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Success Message',
+                detail: 'Message sent',
+            });
         }
     }
-    
 }

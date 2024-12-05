@@ -10,6 +10,7 @@ import { universidadService } from 'src/app/demo/service/servicegeneral/universi
 import { regionalService } from 'src/app/demo/service/servicegeneral/regional.service';
 import { facultadService } from 'src/app/demo/service/servicegeneral/facultad.service';
 import { carreraService } from 'src/app/demo/service/servicegeneral/carrera.service';
+import { proyectoService } from 'src/app/demo/service/servicegestion/proyecto.service';
 
 @Component({
     templateUrl: './register.component.html',
@@ -27,6 +28,9 @@ export class RegisterComponent implements OnInit {
     estadosCiviles: any[] = [];
     filtradoEstadosCiviles: any[] = [];
     seleccionadoEstadoCivil: any;
+    proyectos: any[] = [];
+    filtradoProyectos: any[] = [];
+    seleccionadoProyecto: any;
     departamentos: any[] = [];
     filtradoDepartamentos: any[] = [];
     seleccionadoDepartamento: any;
@@ -49,15 +53,20 @@ export class RegisterComponent implements OnInit {
     routeItems: MenuItem[] = [];
     IndexTab: number = 0;
 
-    uploadedFiles: any[] = [];
-
     enviado: boolean = false;
+
+    //FECHAS
+    fechaMinima!: Date;
+    fechaMaxima!: Date;
+    fechaPorDefecto!: Date;
+    anioRango!: string;
 
     constructor(
         private messageService: MessageService,
         private optanteService: optanteService,
         private tipoSangreService: tipoSangreService,
         private estadoCivilService: estadoCivilService,
+        private proyectoService: proyectoService,
         private departamentoService: departamentoService,
         private municipioService: municipioService,
         private universidadService: universidadService,
@@ -72,7 +81,12 @@ export class RegisterComponent implements OnInit {
             opta_Imagen: ['', Validators.required],
             opta_CorreoElectronico: [
                 '',
-                [Validators.required, Validators.email],
+                [
+                    Validators.required,
+                    Validators.pattern(
+                        /^[^\s@]+@[^\s@]+\.(com|org|net|edu|gov)$/i
+                    ),
+                ],
             ],
             opta_Nombres: [
                 '',
@@ -89,10 +103,11 @@ export class RegisterComponent implements OnInit {
             opta_Direccion: ['', Validators.required],
             opta_Telefono1: ['', Validators.required],
             opta_Telefono2: [''],
-            civi_Id: ['', Validators.required],
-            tisa_Id: ['', Validators.required],
+            civi_Id: [null, Validators.required],
+            tisa_Id: [null, Validators.required],
             muni_Id: ['', Validators.required],
-            cafr_Id: ['', Validators.required],
+            cafr_Id: [null, Validators.required],
+            prco_Id: [null, Validators.required],
         });
     }
 
@@ -102,35 +117,46 @@ export class RegisterComponent implements OnInit {
             (response) => {
                 this.tiposSangre = response; // Asignar la lista de tipos de sangre
                 console.log(this.tiposSangre);
-            },
-            (error) => {
-                console.error('Error al cargar los tipos de sangre:', error);
             }
         );
         this.estadoCivilService.Listar().subscribe(
             (response) => {
                 this.estadosCiviles = response;
-            },
-            (error) => {
-                console.error('Error al cargar los estados civiles:', error);
+            }
+        );
+        this.proyectoService.Listar().subscribe(
+            (response) => {
+                this.proyectos = response;
             }
         );
         this.departamentoService.Listar().subscribe(
             (response) => {
                 this.departamentos = response;
-            },
-            (error) => {
-                console.error('Error al cargar los departamentos:', error);
             }
         );
         this.universidadService.Listar().subscribe(
             (response) => {
                 this.universidades = response;
-            },
-            (error) => {
-                console.error('Error al cargar las universidades:', error);
             }
         );
+
+        //RANGO PARA FECHA DE NACIMIENTO
+        const currentYear = new Date().getFullYear();
+        const today = new Date();
+
+        // Establecer fecha mínima y máxima
+        this.fechaMinima = new Date(currentYear - 30, 0, 1); // 30 años atrás (1 de enero)
+        this.fechaMaxima = new Date(currentYear - 18, 11, 31); // 18 años atrás (31 de diciembre)
+
+        // Fecha por defecto para mostrar al abrir el calendario
+        this.fechaPorDefecto = new Date(
+            today.getFullYear() - 18,
+            today.getMonth(),
+            today.getDate()
+        ); // 18 años atrás mismo mes y día
+
+        // Rango de años para el selector de años
+        this.anioRango = `${currentYear - 30}:${currentYear - 18}`;
     }
 
     siguiente() {
@@ -152,6 +178,12 @@ export class RegisterComponent implements OnInit {
         const query = event.query.toLowerCase();
         this.filtradoEstadosCiviles = this.estadosCiviles.filter((estado) =>
             estado.civi_DescripcionEstadoCivil.toLowerCase().includes(query)
+        );
+    }
+    filtroProyecto(event: any) {
+        const query = event.query.toLowerCase();
+        this.filtradoProyectos = this.proyectos.filter((proyecto) =>
+            proyecto.pryt_DescripcionProyecto.toLowerCase().includes(query)
         );
     }
     filtroDepartamento(event: any) {
@@ -291,13 +323,18 @@ export class RegisterComponent implements OnInit {
     }
 
     //METODOS PARA LIMIAR AUTOCOMPLETES
-    limpiarEstadoCivil() {
-        this.seleccionadoEstadoCivil = null;
-        this.optanteForm.controls['civi_Id'].setValue(null); // Reiniciar valor en el formulario
-    }
     limpiarTipoSangre() {
         this.seleccionadoTipoSangre = null;
-        this.optanteForm.controls['tisa_Id'].setValue(null);
+        this.optanteForm.controls['tisa_Id'].setValue(null); // Reiniciar valor en el formulario
+    }
+    limpiarEstadoCivil() {
+        this.seleccionadoEstadoCivil = null;
+        this.optanteForm.
+        controls['civi_Id'].setValue(null);
+    }
+    limpiarProyecto() {
+        this.seleccionadoProyecto = null;
+        this.optanteForm.controls['prco_Id'].setValue(null);
     }
     limpiarDepartamento() {
         // Resetear selección de departamentos y municipios
@@ -350,23 +387,45 @@ export class RegisterComponent implements OnInit {
     ValidarTexto(event: KeyboardEvent) {
         const inputElement = event.target as HTMLInputElement;
         const key = event.key;
+    
+        // Permitir letras (incluyendo ñ y acentos), espacios y teclas especiales
         if (
-            !/^[a-zA-Z\s]+$/.test(event.key) &&
-            event.key !== 'Backspace' &&
-            event.key !== 'Tab' &&
-            event.key !== 'ArrowLeft' &&
-            event.key !== 'ArrowRight'
+            !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]$/.test(key) &&
+            key !== 'Backspace' &&
+            key !== 'Tab' &&
+            key !== 'ArrowLeft' &&
+            key !== 'ArrowRight'
         ) {
             event.preventDefault();
+            return;
         }
+    
+        // Evitar espacio inicial
         if (key === ' ' && inputElement.selectionStart === 0) {
             event.preventDefault();
         }
     }
-
+    permitirSoloLetras(event: Event) {
+        const inputElement = event.target as HTMLInputElement;
+        let texto = inputElement.value;
+    
+        // Limitar a solo letras, espacios y caracteres especiales válidos
+        texto = texto
+            .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '') // Eliminar caracteres no válidos
+            .replace(/\s{2,}/g, ' ') // Evitar múltiples espacios consecutivos
+            .replace(/^\s/, ''); // Evitar espacio al inicio
+    
+        // Obtener el nombre del control basado en el atributo formControlName
+        const controlName = inputElement.getAttribute('formControlName');
+        if (controlName) {
+            inputElement.value = texto;
+            this.optanteForm.controls[controlName].setValue(texto);
+        }
+    }
+        
     ValidarNumeros(event: KeyboardEvent) {
         const key = event.key;
-    
+
         // Permitir solo números y teclas especiales como backspace, tab, flechas
         if (
             !/^\d$/.test(key) &&
@@ -378,56 +437,161 @@ export class RegisterComponent implements OnInit {
             event.preventDefault();
         }
     }
-    
-
-    permitirSoloLetras(event: Event) {
-        const inputElement = event.target as HTMLInputElement;
-        const texto = inputElement.value;
-    
-        // Obtener el nombre del control basado en el atributo formControlName
-        const controlName = inputElement.getAttribute('formControlName');
-        if (controlName) {
-            inputElement.value = texto
-                .replace(
-                    /[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]|(?<=\s)[^\sa-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g,
-                    ''
-                )
-                .replace(/\s{2,}/g, ' ')
-                .replace(/^\s/, '');
-    
-            // Actualizar dinámicamente el control correspondiente
-            this.optanteForm.controls[controlName].setValue(inputElement.value);
-        }
-    }
-    
     permitirSoloNumeros(event: Event) {
         const inputElement = event.target as HTMLInputElement;
         const texto = inputElement.value;
-    
+
         // Permitir solo números
         inputElement.value = texto.replace(/[^0-9]/g, '');
-    
+
         // Limitar a 13 caracteres
         if (inputElement.value.length > 13) {
             inputElement.value = inputElement.value.substring(0, 13);
         }
-    
+
         // Actualizar el FormControl correspondiente
         const controlName = inputElement.getAttribute('formControlName');
         if (controlName) {
             this.optanteForm.controls[controlName].setValue(inputElement.value);
         }
     }
-    
+    ValidarCorreo(event: KeyboardEvent) {
+        const inputElement = event.target as HTMLInputElement;
+        const key = event.key;
 
-    seleccionarImagen(event: any): void {
-        const archivo: File = event.files[0];
-
-        if (!archivo) {
+        // Permitir letras, números, @, ., -, _, y teclas especiales como backspace y flechas
+        if (
+            !/^[a-zA-Z0-9@._-]+$/.test(key) &&
+            key !== 'Backspace' &&
+            key !== 'Tab' &&
+            key !== 'ArrowLeft' &&
+            key !== 'ArrowRight'
+        ) {
+            event.preventDefault();
             return;
         }
 
-        // Verifica si el archivo is una imagen
+        const cursorPos = inputElement.selectionStart || 0;
+
+        // Prevenir múltiples @
+        if (key === '@' && inputElement.value.includes('@')) {
+            event.preventDefault();
+            return;
+        }
+
+        // Prevenir múltiples puntos consecutivos
+        if (
+            key === '.' &&
+            (inputElement.value[cursorPos - 1] === '.' ||
+                inputElement.value[cursorPos] === '.')
+        ) {
+            event.preventDefault();
+            return;
+        }
+
+        // Prevenir más de un punto en el dominio después del @
+        if (key === '.' && inputElement.value.includes('@')) {
+            const afterAt = inputElement.value.split('@')[1] || '';
+            if (
+                afterAt.includes('.') &&
+                cursorPos > inputElement.value.indexOf('@')
+            ) {
+                event.preventDefault();
+                return;
+            }
+        }
+
+        // Evitar que inicie con un punto o punto inmediatamente después de @
+        if (
+            (key === '.' && cursorPos === 0) ||
+            (key === '.' && inputElement.value[cursorPos - 1] === '@')
+        ) {
+            event.preventDefault();
+            return;
+        }
+    }
+    permitirFormatoCorreo(event: Event) {
+        const inputElement = event.target as HTMLInputElement;
+        let texto = inputElement.value;
+
+        // Eliminar caracteres inválidos
+        texto = texto.replace(/[^a-zA-Z0-9@._-]/g, '');
+
+        // Asegurar un solo @
+        const partes = texto.split('@');
+        if (partes.length > 2) {
+            texto = partes[0] + '@' + partes.slice(1).join('');
+        }
+
+        // Asegurar que no existan puntos consecutivos
+        texto = texto.replace(/\.{2,}/g, '.');
+
+        // Prevenir punto inmediatamente después de @ o al inicio
+        texto = texto.replace(/@\.|^\./g, '');
+
+        // Actualizar el valor visual y el FormControl
+        inputElement.value = texto;
+        const controlName = inputElement.getAttribute('formControlName');
+        if (controlName) {
+            this.optanteForm.controls[controlName].setValue(texto);
+        }
+    }
+    validarDireccion(event: KeyboardEvent) {
+        const inputElement = event.target as HTMLInputElement;
+        const key = event.key;
+    
+        // Permitir letras, números, espacios, y caracteres válidos en direcciones
+        if (
+            !/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,#-]$/.test(key) &&
+            key !== 'Backspace' &&
+            key !== 'Tab' &&
+            key !== 'ArrowLeft' &&
+            key !== 'ArrowRight'
+        ) {
+            event.preventDefault();
+            return;
+        }
+    
+        // Prevenir caracteres consecutivos repetidos (##, .., etc.)
+        const cursorPos = inputElement.selectionStart || 0;
+        const previousChar = inputElement.value[cursorPos - 1];
+        if (key === previousChar && /[.,#-]/.test(key)) {
+            event.preventDefault();
+        }
+    }
+    permitirFormatoDireccion(event: Event) {
+        const inputElement = event.target as HTMLInputElement;
+        let texto = inputElement.value;
+    
+        // Permitir solo caracteres válidos
+        texto = texto.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,#-]/g, '');
+    
+        // Prevenir múltiples espacios consecutivos
+        texto = texto.replace(/\s{2,}/g, ' ');
+    
+        // Prevenir caracteres consecutivos repetidos (##, .., etc.)
+        texto = texto.replace(/([.,#-])\1+/g, '$1');
+    
+        // Evitar espacio al inicio
+        texto = texto.replace(/^\s/, '');
+    
+        // Actualizar el valor visual y el FormControl
+        inputElement.value = texto;
+        const controlName = inputElement.getAttribute('formControlName');
+        if (controlName) {
+            this.optanteForm.controls[controlName].setValue(texto);
+        }
+    }
+
+    //IMAGEN SUBIR
+    seleccionarImagen(event: any): void {
+        const archivo: File = event.files[0]; // Obtenemos el primer archivo
+    
+        if (!archivo) {
+            return;
+        }
+    
+        // Verifica si el archivo es una imagen
         if (!archivo.type.startsWith('image/')) {
             this.messageService.add({
                 severity: 'warn',
@@ -435,55 +599,46 @@ export class RegisterComponent implements OnInit {
                 detail: 'Solo se permiten archivos de imagen.',
                 life: 3000,
             });
-            event.files = [];
+    
+            // Limpia el archivo subido sin modificar directamente el `FileList`
+            event.originalEvent.target.value = ''; // Limpia el input de archivo
             return;
         }
-
-        if (archivo.name.length > 260) {
+    
+        // Verificar que el tamaño del archivo no exceda 10 MB
+        const MAX_TAMANIO_MB = 10 * 1024 * 1024;
+        if (archivo.size > MAX_TAMANIO_MB) {
             this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'El nombre del archivo excede el límite de 260 caracteres.',
+                severity: 'warn',
+                summary: 'Advertencia',
+                detail: 'El tamaño máximo permitido es de 10 MB.',
                 life: 3000,
-                styleClass: 'iziToast-custom',
             });
-            event.files = [];
+    
+            // Limpia el archivo subido
+            event.originalEvent.target.value = ''; // Limpia el input de archivo
             return;
         }
-
-        const tamanoOriginal = archivo.size;
-
+    
         const lector = new FileReader();
         lector.onload = (e: any) => {
             const imageUrl = e.target.result;
-
+    
+            // Redimensionar y guardar la imagen
             this.redimensionandoImagen(
                 imageUrl,
                 archivo.type,
-                (redimencionarImagenUrl) => {
-                    this.dataUrlaBlob(redimencionarImagenUrl, (blob) => {
-                        const tamanoRedimensionado = blob.size;
-
-                        if (tamanoRedimensionado < tamanoOriginal) {
-                            console.log(
-                                'La imagen redimensionada es más pequeña que la original.'
-                            );
-                        } else {
-                            console.log(
-                                'La imagen redimensionada no es más pequeña que la original.'
-                            );
-                        }
-
-                        this.optanteForm
-                            .get('opta_Imagen')
-                            ?.setValue(redimencionarImagenUrl);
-                    });
+                (redimensionarImagenUrl) => {
+                    this.optanteForm
+                        .get('opta_Imagen')
+                        ?.setValue(redimensionarImagenUrl);
                 }
             );
         };
-
-        lector.readAsDataURL(archivo);
+    
+        lector.readAsDataURL(archivo); // Cargar la imagen
     }
+    
 
     redimensionandoImagen(
         imageUrl: string,
@@ -508,18 +663,6 @@ export class RegisterComponent implements OnInit {
         img.src = imageUrl;
     }
 
-    dataUrlaBlob(dataUrl: string, callback: (blob: Blob) => void) {
-        const [header, base64] = dataUrl.split(',');
-        const mime = header.match(/:(.*?);/)?.[1];
-        const binario = atob(base64);
-        const array = [];
-        for (let i = 0; i < binario.length; i++) {
-            array.push(binario.charCodeAt(i));
-        }
-        const blob = new Blob([new Uint8Array(array)], { type: mime });
-        callback(blob);
-    }
-
     //Funcion para limpiar el contenedor imagen
     eliminarImagen(event: any): void {
         this.optanteForm.get('opta_Imagen')?.setValue(null);
@@ -532,6 +675,7 @@ export class RegisterComponent implements OnInit {
     }
 
     guardar() {
+        console.log(this.seleccionadoProyecto);
         this.enviado = true;
         const formData = { ...this.optanteForm.value };
 
@@ -589,11 +733,6 @@ export class RegisterComponent implements OnInit {
                 summary: 'Advertencia',
                 detail: 'Por favor, complete los campos obligatorios.',
                 life: 3000,
-            });
-            this.messageService.add({
-                severity: 'success',
-                summary: 'Success Message',
-                detail: 'Message sent',
             });
         }
     }

@@ -25,26 +25,31 @@
                                     <input
                                         (keydown)="ValidarNumeros($event)"
                                         (input)="permitirSoloNumeros($event)"
+                                        placeholder="Ingrese su número de identidad."
                                         maxlength="13"
                                         type="text"
                                         pInputText
                                         formControlName="opta_DNI"
                                         [ngClass]="{
                                             'ng-invalid ng-dirty':
-                                                enviado && optanteForm.get('opta_DNI')?.invalid
+                                                enviado &&
+                                                optanteForm.get('opta_DNI')
+                                                    ?.invalid
                                         }"
                                     />
                                     <label>Número de Identidad</label>
                                 </span>
                                 <small
                                     class="ng-dirty ng-invalid"
-                                    *ngIf="enviado && optanteForm.get('opta_DNI')?.invalid"
+                                    *ngIf="
+                                        enviado &&
+                                        optanteForm.get('opta_DNI')?.invalid
+                                    "
                                     style="color: red !important"
                                 >
-                                    El número de identidad debe tener exactamente 13 dígitos.
+                                    El campo es requerido.
                                 </small>
                             </div>
-                            
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label p-input-icon-left">
                                     <i class="pi pi-envelope"></i>
@@ -52,9 +57,37 @@
                                         type="text"
                                         pInputText
                                         formControlName="opta_CorreoElectronico"
+                                        (keydown)="ValidarCorreo($event)"
+                                        (input)="permitirFormatoCorreo($event)"
+                                        placeholder="usuario@dominio.com"
+                                        [ngClass]="{
+                                            'ng-invalid ng-dirty':
+                                                enviado &&
+                                                optanteForm.get(
+                                                    'opta_CorreoElectronico'
+                                                )?.invalid
+                                        }"
                                     />
                                     <label>Correo Electrónico</label>
                                 </span>
+                                <small
+                                    *ngIf="
+                                        enviado &&
+                                        optanteForm.get('opta_CorreoElectronico')?.errors?.['required']
+                                    "
+                                    style="color: red !important"
+                                >
+                                    El campo es requerido.
+                                </small>
+                                <small
+                                    *ngIf="
+                                        enviado &&
+                                        optanteForm.get('opta_CorreoElectronico')?.errors?.['pattern']
+                                    "
+                                    style="color: red !important"
+                                >
+                                    Ingresa un correo electrónico válido.
+                                </small>
                             </div>
                         </div>
                         <div class="grid p-fluid mt-0.2">
@@ -65,6 +98,7 @@
                                         (keydown)="ValidarTexto($event)"
                                         (input)="permitirSoloLetras($event)"
                                         maxlength="50"
+                                        placeholder="Ingrese su primer y segundo nombre."
                                         type="text"
                                         pInputText
                                         formControlName="opta_Nombres"
@@ -95,25 +129,32 @@
                                         (keydown)="ValidarTexto($event)"
                                         (input)="permitirSoloLetras($event)"
                                         maxlength="50"
+                                        placeholder="Ingrese su primer y segundo apellido."
                                         type="text"
                                         pInputText
                                         formControlName="opta_Apellidos"
                                         [ngClass]="{
                                             'ng-invalid ng-dirty':
-                                                enviado && optanteForm.get('opta_Apellidos')?.invalid
+                                                enviado &&
+                                                optanteForm.get(
+                                                    'opta_Apellidos'
+                                                )?.invalid
                                         }"
                                     />
                                     <label>Apellidos</label>
                                 </span>
                                 <small
                                     class="ng-dirty ng-invalid"
-                                    *ngIf="enviado && optanteForm.get('opta_Apellidos')?.invalid"
+                                    *ngIf="
+                                        enviado &&
+                                        optanteForm.get('opta_Apellidos')
+                                            ?.invalid
+                                    "
                                     style="color: red !important"
                                 >
                                     El campo es requerido.
                                 </small>
                             </div>
-                            
                         </div>
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
@@ -121,11 +162,23 @@
                                     <p-calendar
                                         [showIcon]="true"
                                         formControlName="opta_FechaNacimiento"
+                                        placeholder="Día/Mes/Año."
+                                        [defaultDate]="fechaPorDefecto"
+                                        [yearRange]="anioRango"
+                                        [minDate]="fechaMinima"
+                                        [maxDate]="fechaMaxima"
                                     ></p-calendar>
-                                    <label for="calendar"
-                                        >Fecha de Nacimiento</label
-                                    >
+                                    <label>Fecha de Nacimiento</label>
                                 </span>
+                                <small
+                                    *ngIf="
+                                        enviado &&
+                                        optanteForm.get('opta_FechaNacimiento')?.errors?.['required']
+                                    "
+                                    style="color: red !important"
+                                >
+                                    El campo es requerido.
+                                </small>
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
@@ -133,6 +186,7 @@
                                         inputId="autocomplete"
                                         [(ngModel)]="seleccionadoTipoSangre"
                                         [suggestions]="filtradoTiposSangre"
+                                        placeholder="Seleccione su tipo de sangre."
                                         (completeMethod)="
                                             filtroTipoSangre($event)
                                         "
@@ -152,6 +206,12 @@
 
                                     <label for="dropdown">Tipo de Sangre</label>
                                 </span>
+                                <small
+                                    *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                    style="color: red !important"
+                                >
+                                    El campo es requerido.
+                                </small>
                             </div>
                         </div>
                         <div class="grid p-fluid mt-0.2">
@@ -165,6 +225,7 @@
                                             filtroEstadoCivil($event)
                                         "
                                         field="civi_DescripcionEstadoCivil"
+                                        placeholder="Seleccione su estado civil."
                                         [dropdown]="true"
                                         [showClear]="true"
                                         (onClear)="limpiarEstadoCivil()"
@@ -179,6 +240,12 @@
                                     ></p-autoComplete>
                                     <label for="dropdown">Estado Civil</label>
                                 </span>
+                                <small
+                                    *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                    style="color: red !important"
+                                >
+                                    El campo es requerido.
+                                </small>
                             </div>
                             <div class="input-group col-12 md:col-6">
                                 <label>Sexo</label>
@@ -210,39 +277,74 @@
                         </div>
 
                         <div class="grid p-fluid mt-0.2">
-                            <div class="input-group col-12 md:col-4">
+                            <div class="input-group col-12 md:col-6">
                                 <span class="p-float-label p-input-icon-left">
                                     <i class="pi pi-map-marker"></i>
-                                    <input
-                                        type="text"
-                                        pInputText
+                                    <textarea
+                                        rows="3"
+                                        cols="30"
+                                        pInputTextarea
+                                        placeholder="Ingrese su dirección exacta."
                                         formControlName="opta_Direccion"
-                                    />
+                                        maxlength="300"
+                                        (keydown)="validarDireccion($event)"
+                                        (input)="
+                                            permitirFormatoDireccion($event)
+                                        "
+                                        [ngClass]="{
+                                            'ng-invalid ng-dirty':
+                                                enviado &&
+                                                optanteForm.get(
+                                                    'opta_Direccion'
+                                                )?.invalid
+                                        }"
+                                    ></textarea>
                                     <label>Dirección</label>
                                 </span>
+                                <small
+                                    *ngIf="
+                                        enviado &&
+                                        optanteForm.get('opta_Direccion')?.errors?.['required']
+                                    "
+                                    style="color: red !important"
+                                >
+                                    El campo es requerido.
+                                </small>
+                            </div>
+                            <div class="input-group col-12 md:col-4">
+                                <span class="p-float-label p-input-icon-left">
+                                    <i class="pi pi-phone"></i>
+                                    <input
+                                        (keydown)="ValidarNumeros($event)"
+                                        (input)="permitirSoloNumeros($event)"
+                                        placeholder="Ingrese su número de teléfono celular."
+                                        maxlength="8"
+                                        type="text"
+                                        formControlName="opta_Telefono1"
+                                        pInputText
+                                        [ngClass]="{
+                                            'ng-invalid ng-dirty':
+                                                enviado &&
+                                                optanteForm.get(
+                                                    'opta_Telefono1'
+                                                )?.invalid
+                                        }"
+                                    />
+                                    <label>Celular</label>
+                                </span>
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="
+                                        enviado &&
+                                        optanteForm.get('opta_Telefono1')
+                                            ?.invalid
+                                    "
+                                    style="color: red !important"
+                                >
+                                    El campo es requerido.
+                                </small>
                             </div>
                         </div>
-                        <!-- <div
-                            class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-end my-4"
-                        >
-                            <button
-                                pButton
-                                pRipple
-                                class="p-button-secondary p-button-outlined mt-3 lg:mt-0 w-full lg:w-auto flex-order-2 lg:flex-order-1 lg:mr-4"
-                                label="Cancelar"
-                                icon="pi pi-fw pi-arrow-left"
-                                style="padding: 1px 10px; height: 30px"
-                            ></button>
-                            <button
-                                pButton
-                                pRipple
-                                class="p-button-primary w-full lg:w-auto flex-order-1 lg:flex-order-2"
-                                label="Registrar"
-                                icon="pi pi-fw pi-check"
-                                style="padding: 1px 10px; height: 30px"
-                            ></button>
-                            
-                        </div> -->
                         <div
                             style="
                                 display: flex;
@@ -270,19 +372,6 @@
                         <div class="grid nested-grid">
                             <div class="col-6">
                                 <div class="grid p-fluid">
-                                    <div class="input-group col-12 md:col-4">
-                                        <span
-                                            class="p-float-label p-input-icon-left"
-                                        >
-                                            <i class="pi pi-phone"></i>
-                                            <input
-                                                type="text"
-                                                formControlName="opta_Telefono1"
-                                                pInputText
-                                            />
-                                            <label>Celular</label>
-                                        </span>
-                                    </div>
                                     <div class="col-12">
                                         <div class="input-group">
                                             <span
@@ -290,12 +379,68 @@
                                             >
                                                 <i class="pi pi-phone"></i>
                                                 <input
+                                                    (keydown)="
+                                                        ValidarNumeros($event)
+                                                    "
+                                                    placeholder="Ingrese un número de celular alterno."
+                                                    (input)="
+                                                        permitirSoloNumeros(
+                                                            $event
+                                                        )
+                                                    "
+                                                    maxlength="8"
                                                     type="text"
                                                     pInputText
                                                     formControlName="opta_Telefono2"
                                                 />
                                                 <label>Celular Alterno</label>
                                             </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <span class="p-float-label">
+                                                <p-autoComplete
+                                                    inputId="acproyecto"
+                                                    [(ngModel)]="
+                                                        seleccionadoProyecto
+                                                    "
+                                                    [suggestions]="
+                                                        filtradoProyectos
+                                                    "
+                                                    (completeMethod)="
+                                                        filtroProyecto(
+                                                            $event
+                                                        )
+                                                    "
+                                                    field="pryt_DescripcionProyecto"
+                                                    placeholder="Seleccione el proyecto a optar."
+                                                    [dropdown]="true"
+                                                    [showClear]="true"
+                                                    (onClear)="
+                                                        limpiarProyecto()
+                                                    "
+                                                    (onSelect)="
+                                                        optanteForm.controls[
+                                                            'prco_Id'
+                                                        ].setValue(
+                                                            seleccionadoProyecto?.pryt_Id
+                                                        )
+                                                    "
+                                                    [ngModelOptions]="{
+                                                        standalone: true
+                                                    }"
+                                                ></p-autoComplete>
+                                                <label for="dropdown"
+                                                    >Proyecto</label
+                                                >
+                                            </span>
+                                            <small
+                                                *ngIf="enviado && optanteForm.get('prco_Id')?.errors?.['required']"
+                                                style="color: red !important"
+                                            >
+                                                El campo es requerido.
+                                            </small>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -310,6 +455,7 @@
                                                             $event
                                                         )
                                                     "
+                                                    placeholder="Seleccione su departamento."
                                                     field="depa_DescripcionDepartamento"
                                                     [dropdown]="true"
                                                     [showClear]="true"
@@ -327,6 +473,12 @@
                                                     >Departamento</label
                                                 >
                                             </span>
+                                            <small
+                                                *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                                style="color: red !important"
+                                            >
+                                                El campo es requerido.
+                                            </small>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -339,6 +491,7 @@
                                                     [suggestions]="
                                                         filtradoMunicipios
                                                     "
+                                                    placeholder="Seleccione su municipio."
                                                     (completeMethod)="
                                                         filtroMunicipio($event)
                                                     "
@@ -367,6 +520,12 @@
                                                     >Municipio</label
                                                 >
                                             </span>
+                                            <small
+                                                *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                                style="color: red !important"
+                                            >
+                                                El campo es requerido.
+                                            </small>
                                         </div>
                                     </div>
                                 </div>
@@ -375,11 +534,6 @@
                                 <label style="color: rgb(19, 18, 18)"
                                     >Imagen</label
                                 >
-                                <!-- <small
-                          style="display: inline-block; color: red !important; vertical-align: super;"
-                          class="ng-dirty ng-invalid"
-                          *ngIf="optanteForm.controls['opta_Imagen'].invalid"
-                        >*</small> -->
                                 <p-fileUpload
                                     #fileUpload
                                     name="demo[]"
@@ -392,7 +546,6 @@
                                     [showUploadButton]="false"
                                     [showCancelButton]="false"
                                     [auto]="true"
-                                    formControlName="opta_Imagen"
                                 >
                                     <ng-template pTemplate="content">
                                         <div
@@ -413,13 +566,14 @@
                                                     ></i>
                                                     <span
                                                         class="font-bold text-900 text-2xl mb-3"
-                                                        >Subir Imagen</span
                                                     >
+                                                        Subir Imagen
+                                                    </span>
                                                     <span
                                                         class="font-medium text-600 text-lg text-center"
-                                                        >Seleccione Una
-                                                        Imagen</span
                                                     >
+                                                        Seleccione Una Imagen
+                                                    </span>
                                                 </div>
                                             </ng-container>
                                             <ng-template #showImage>
@@ -440,6 +594,12 @@
                                         </div>
                                     </ng-template>
                                 </p-fileUpload>
+                                <small
+                                    *ngIf="enviado && optanteForm.get('opta_Imagen')?.errors?.['required']"
+                                    style="color: red !important"
+                                >
+                                    La imagen es obligatoria.
+                                </small>
                             </div>
                         </div>
                         <div class="grid p-fluid mt-0">
@@ -450,6 +610,7 @@
                                         (completeMethod)="
                                             filtroUniversidad($event)
                                         "
+                                        placeholder="Seleccione su universidad."
                                         field="univ_DescripcionUniversidad"
                                         [dropdown]="true"
                                         [showClear]="true"
@@ -461,6 +622,12 @@
                                     </p-autoComplete>
                                     <label for="dropdown">Universidad</label>
                                 </span>
+                                <small
+                                    *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                    style="color: red !important"
+                                >
+                                    El campo es requerido.
+                                </small>
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
@@ -469,6 +636,7 @@
                                         (completeMethod)="
                                             filtroRegional($event)
                                         "
+                                        placeholder="Seleccione su regional universitaria."
                                         field="regi_DescripcionRegional"
                                         [dropdown]="true"
                                         [showClear]="true"
@@ -480,6 +648,12 @@
                                     ></p-autoComplete>
                                     <label for="dropdown">Regional</label>
                                 </span>
+                                <small
+                                    *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                    style="color: red !important"
+                                >
+                                    El campo es requerido.
+                                </small>
                             </div>
                         </div>
                         <div class="grid p-fluid mt-0.2">
@@ -490,6 +664,7 @@
                                         (completeMethod)="
                                             filtroFacultad($event)
                                         "
+                                        placeholder="Seleccione su facultad."
                                         field="facu_DesripcionFacultad"
                                         [dropdown]="true"
                                         [disabled]="facultades.length === 0"
@@ -501,6 +676,12 @@
                                     ></p-autoComplete>
                                     <label for="dropdown">Facultad</label>
                                 </span>
+                                <small
+                                    *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                    style="color: red !important"
+                                >
+                                    El campo es requerido.
+                                </small>
                             </div>
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label">
@@ -509,6 +690,7 @@
                                         [suggestions]="filtradoCarreras"
                                         (completeMethod)="filtroCarrera($event)"
                                         field="carr_DescripcionCarrera"
+                                        placeholder="Seleccione su carrera."
                                         [dropdown]="true"
                                         [showClear]="true"
                                         (onClear)="limpiarCarrera()"
@@ -524,6 +706,12 @@
                                     ></p-autoComplete>
                                     <label for="dropdown">Carrera</label>
                                 </span>
+                                <small
+                                    *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                    style="color: red !important"
+                                >
+                                    El campo es requerido.
+                                </small>
                             </div>
                         </div>
 

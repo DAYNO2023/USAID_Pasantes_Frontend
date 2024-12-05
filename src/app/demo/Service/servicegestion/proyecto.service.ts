@@ -2,19 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { apiService } from '../apiservice.service';
-import { optante } from '../../models/modelsgestion/optanteviewmodel'; 
-
+import { proyecto } from '../../models/modelsgestion/proyectoviewmodel';
 
 @Injectable({
   providedIn: 'root'
 })
-export class optanteService {
+export class proyectoService {
 
   constructor(private http: HttpClient) { }
 
   private apiUrl: string = apiService.apiUrl;
   private apiKey: string = apiService.apiKey;
-  private optante = `${this.apiUrl}/api/Optante/`;
+  private proyecto = `${this.apiUrl}/api/Proyecto`;
   
   private getHttpOptions() {
     return {
@@ -24,10 +23,9 @@ export class optanteService {
     };
   }
 
-  registrarOptante(optante: optante): Observable<any> {
-    const url = `${this.optante}Registrar`;
-    return this.http.post(url, optante, this.getHttpOptions());
-}
-
+  
+  Listar (){
+    return this.http.get<proyecto[]>(`${this.proyecto}/Listar`,this.getHttpOptions());
+  }
 
 }

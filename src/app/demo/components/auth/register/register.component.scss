@@ -113,6 +113,23 @@ p-autoComplete {
     border-color: #1f3168; /* Azul */
 }
 
+.input-group textarea {
+    width: 100%;
+    border: 1px solid #ccc; /* Mismo borde que los inputs */
+    border-radius: 5px; /* Bordes redondeados */
+    font-family: inherit; /* Fuente consistente */
+    font-size: inherit; /* Tamaño de fuente consistente */
+    box-sizing: border-box; /* Asegura que padding no afecte el tamaño */
+    color: #2a2a2a; /* Color de texto */
+}
+
+.input-group textarea:focus {
+    border: 1px solid #1f3168; /* Azul al enfocar */
+    outline: none; /* Elimina borde adicional */
+    box-shadow: none; /* Elimina sombra por defecto */
+}
+
+
 /* Estilo para el botón del calendario */
 ::ng-deep .p-button:not(:disabled):hover {
     background: #1f3168 !important; /* Cambia el fondo al azul */
@@ -226,7 +243,14 @@ p-autoComplete {
     border: none; /* Elimina bordes no deseados */
     box-sizing: border-box; /* Asegura que el ancho incluya padding y bordes */
 }
+/* Ocultar mensajes de error predeterminados de PrimeNG */
+::ng-deep .p-fileupload-content .p-fileupload-row.error {
+    display: none !important;
+}
 
+::ng-deep .p-fileupload-files.ng-star-inserted > .ng-star-inserted > .p-fileupload-row > div:last-child {
+    display: block !important;
+  }
 
 .upload-placeholder {
 display: flex;

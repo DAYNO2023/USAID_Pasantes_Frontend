@@ -254,8 +254,8 @@
                                         <div class="field-radiobutton">
                                             <p-radioButton
                                                 name="opta_Sexo"
-                                                value="f"
-                                                id="f"
+                                                value="F"
+                                                id="F"
                                                 formControlName="opta_Sexo"
                                             ></p-radioButton>
                                             <label>Femenino</label>
@@ -265,8 +265,8 @@
                                         <div class="field-radiobutton">
                                             <p-radioButton
                                                 name="opta_Sexo"
-                                                value="m"
-                                                id="m"
+                                                value="M"
+                                                id="M"
                                                 formControlName="opta_Sexo"
                                             ></p-radioButton>
                                             <label>Masculino</label>
@@ -409,9 +409,7 @@
                                                         filtradoProyectos
                                                     "
                                                     (completeMethod)="
-                                                        filtroProyecto(
-                                                            $event
-                                                        )
+                                                        filtroProyecto($event)
                                                     "
                                                     field="pryt_DescripcionProyecto"
                                                     placeholder="Seleccione el proyecto a optar."
@@ -474,7 +472,10 @@
                                                 >
                                             </span>
                                             <small
-                                                *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                                *ngIf="
+                                                    enviado &&
+                                                    !seleccionadoDepartamento
+                                                "
                                                 style="color: red !important"
                                             >
                                                 El campo es requerido.
@@ -521,7 +522,7 @@
                                                 >
                                             </span>
                                             <small
-                                                *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                                *ngIf="enviado && optanteForm.get('muni_Id')?.errors?.['required']"
                                                 style="color: red !important"
                                             >
                                                 El campo es requerido.
@@ -623,7 +624,10 @@
                                     <label for="dropdown">Universidad</label>
                                 </span>
                                 <small
-                                    *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                *ngIf="
+                                enviado &&
+                                !seleccionadoUniversidad
+                            "
                                     style="color: red !important"
                                 >
                                     El campo es requerido.
@@ -649,7 +653,10 @@
                                     <label for="dropdown">Regional</label>
                                 </span>
                                 <small
-                                    *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                *ngIf="
+                                enviado &&
+                                !seleccionadoRegional
+                            "
                                     style="color: red !important"
                                 >
                                     El campo es requerido.
@@ -677,7 +684,10 @@
                                     <label for="dropdown">Facultad</label>
                                 </span>
                                 <small
-                                    *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                *ngIf="
+                                enviado &&
+                                !seleccionadoFacultad
+                            "
                                     style="color: red !important"
                                 >
                                     El campo es requerido.
@@ -707,7 +717,7 @@
                                     <label for="dropdown">Carrera</label>
                                 </span>
                                 <small
-                                    *ngIf="enviado && optanteForm.get('tisa_Id')?.errors?.['required']"
+                                    *ngIf="enviado && optanteForm.get('cafr_Id')?.errors?.['required']"
                                     style="color: red !important"
                                 >
                                     El campo es requerido.

@@ -77,7 +77,7 @@ export class RegisterComponent implements OnInit {
         private cdr: ChangeDetectorRef
     ) {
         this.optanteForm = this.fb.group({
-            opta_DNI: ['', Validators.required, Validators.pattern(/^\d{13}$/)],
+            opta_DNI: ['', Validators.required],
             opta_Imagen: ['', Validators.required],
             opta_CorreoElectronico: [
                 '',
@@ -99,7 +99,7 @@ export class RegisterComponent implements OnInit {
                 Validators.pattern('^[a-zA-ZñÑ\\s]+$'),
             ],
             opta_FechaNacimiento: ['', Validators.required],
-            opta_Sexo: ['f'],
+            opta_Sexo: ['F'],
             opta_Direccion: ['', Validators.required],
             opta_Telefono1: ['', Validators.required],
             opta_Telefono2: [''],
@@ -675,7 +675,6 @@ export class RegisterComponent implements OnInit {
     }
 
     guardar() {
-        console.log(this.seleccionadoProyecto);
         this.enviado = true;
         const formData = { ...this.optanteForm.value };
 
@@ -685,7 +684,9 @@ export class RegisterComponent implements OnInit {
             formData.opta_FechaNacimiento = fecha.toISOString().split('T')[0]; // Solo la fecha (sin hora)
         }
 
+        formData.opta_Imagen = 'imagen.png';
         console.log(formData); // Verificar cómo queda el objeto antes de enviarlo
+        console.log(this.optanteForm);
 
         if (this.optanteForm.valid) {
             this.optanteService
@@ -726,14 +727,6 @@ export class RegisterComponent implements OnInit {
                         });
                     }
                 );
-        } else {
-            console.error('Formulario inválido');
-            this.messageService.add({
-                severity: 'warn',
-                summary: 'Advertencia',
-                detail: 'Por favor, complete los campos obligatorios.',
-                life: 3000,
-            });
         }
     }
 }

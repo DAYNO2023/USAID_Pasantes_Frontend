@@ -53,13 +53,40 @@ export class RegisterComponent implements OnInit {
     routeItems: MenuItem[] = [];
     IndexTab: number = 0;
 
-    enviado: boolean = false;
-
     //FECHAS
     fechaMinima!: Date;
     fechaMaxima!: Date;
     fechaPorDefecto!: Date;
     anioRango!: string;
+
+    //VALIDAR TAB
+    // Campos del tab "Personal"
+    enviadoPersonal: boolean = false;
+    enviadoGeneral: boolean = false;
+
+    camposPersonales = [
+        'opta_DNI',
+        'opta_CorreoElectronico',
+        'opta_Nombres',
+        'opta_Apellidos',
+        'opta_FechaNacimiento',
+        'civi_Id',
+        'tisa_Id',
+        'opta_Direccion',
+        'opta_Telefono1',
+    ];
+
+    camposGenerales = [
+        'opta_Imagen',
+        'opta_Telefono2',
+        'prco_Id',
+        'muni_Id',
+        'cafr_Id',
+        'seleccionadoDepartamento',
+        'seleccionadoUniversidad',
+        'seleccionadoRegional',
+        'seleccionadoFacultad',
+    ];
 
     constructor(
         private messageService: MessageService,
@@ -113,32 +140,22 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit() {
         //AUTOCOMPLETES
-        this.tipoSangreService.Listar().subscribe(
-            (response) => {
-                this.tiposSangre = response; // Asignar la lista de tipos de sangre
-                console.log(this.tiposSangre);
-            }
-        );
-        this.estadoCivilService.Listar().subscribe(
-            (response) => {
-                this.estadosCiviles = response;
-            }
-        );
-        this.proyectoService.Listar().subscribe(
-            (response) => {
-                this.proyectos = response;
-            }
-        );
-        this.departamentoService.Listar().subscribe(
-            (response) => {
-                this.departamentos = response;
-            }
-        );
-        this.universidadService.Listar().subscribe(
-            (response) => {
-                this.universidades = response;
-            }
-        );
+        this.tipoSangreService.Listar().subscribe((response) => {
+            this.tiposSangre = response; // Asignar la lista de tipos de sangre
+            console.log(this.tiposSangre);
+        });
+        this.estadoCivilService.Listar().subscribe((response) => {
+            this.estadosCiviles = response;
+        });
+        this.proyectoService.Listar().subscribe((response) => {
+            this.proyectos = response;
+        });
+        this.departamentoService.Listar().subscribe((response) => {
+            this.departamentos = response;
+        });
+        this.universidadService.Listar().subscribe((response) => {
+            this.universidades = response;
+        });
 
         //RANGO PARA FECHA DE NACIMIENTO
         const currentYear = new Date().getFullYear();
@@ -146,7 +163,7 @@ export class RegisterComponent implements OnInit {
 
         // Establecer fecha mínima y máxima
         this.fechaMinima = new Date(currentYear - 30, 0, 1); // 30 años atrás (1 de enero)
-        this.fechaMaxima = new Date(currentYear - 18, 11, 31); // 18 años atrás (31 de diciembre)
+        this.fechaMaxima = new Date(currentYear - 13, 11, 31); // 18 años atrás (31 de diciembre)
 
         // Fecha por defecto para mostrar al abrir el calendario
         this.fechaPorDefecto = new Date(
@@ -159,8 +176,61 @@ export class RegisterComponent implements OnInit {
         this.anioRango = `${currentYear - 30}:${currentYear - 18}`;
     }
 
+    validarCamposPersonales(): boolean {
+        let esValido = true;
+
+        // Recorremos los campos del tab "Personal"
+        this.camposPersonales.forEach((campo) => {
+            const control = this.optanteForm.get(campo);
+            if (control && control.invalid) {
+                control.markAsDirty(); // Marca el control como "sucio" para activar los mensajes de error
+                control.updateValueAndValidity();
+                esValido = false;
+            }
+        });
+
+        return esValido; // Retorna true si todos los campos son válidos
+    }
+
+    validarCamposGenerales(): boolean {
+        let esValido = true;
+
+        // Recorremos los campos del tab "General"
+        this.camposGenerales.forEach((campo) => {
+            const control = this.optanteForm.get(campo);
+            if (control && control.invalid) {
+                control.markAsDirty(); // Marca el control como "sucio" para activar los mensajes de error
+                control.updateValueAndValidity();
+                esValido = false;
+            }
+
+            // Si el campo está basado en una variable, verifica su valor
+            if (
+                (campo === 'seleccionadoDepartamento' &&
+                    !this.seleccionadoDepartamento) ||
+                (campo === 'seleccionadoUniversidad' &&
+                    !this.seleccionadoUniversidad) ||
+                (campo === 'seleccionadoRegional' &&
+                    !this.seleccionadoRegional) ||
+                (campo === 'seleccionadoFacultad' && !this.seleccionadoFacultad)
+            ) {
+                esValido = false;
+            }
+        });
+
+        return esValido;
+    }
+
     siguiente() {
-        this.IndexTab = this.IndexTab === 2 ? 0 : this.IndexTab + 1;
+        // Validar los campos del tab "Personal"
+        if (!this.validarCamposPersonales()) {
+            this.enviadoPersonal = true; // Activa los mensajes de error del tab "Personal"
+            return; // No avanza al siguiente tab
+        }
+
+        // Si es válido, avanza al siguiente tab y reinicia los mensajes de error del tab "General"
+        this.enviadoGeneral = false;
+        this.IndexTab = 1;
     }
 
     anterior() {
@@ -195,11 +265,11 @@ export class RegisterComponent implements OnInit {
         );
     }
     seleccionandoDepartamento(event: any) {
-        const departamentoSeleccionado = event?.value?.depa_Id;
+        this.seleccionadoDepartamento = event?.value?.depa_Id;
 
-        if (departamentoSeleccionado) {
+        if (this.seleccionadoDepartamento) {
             this.municipioService
-                .ListarPorDepartamento(departamentoSeleccionado)
+                .ListarPorDepartamento(this.seleccionadoDepartamento)
                 .subscribe(
                     (response) => {
                         this.municipios = response;
@@ -231,11 +301,11 @@ export class RegisterComponent implements OnInit {
         );
     }
     seleccionandoUniversidad(event: any) {
-        const universidadSeleccionada = event?.value?.univ_Id;
+        this.seleccionadoUniversidad = event?.value?.univ_Id;
 
-        if (universidadSeleccionada) {
+        if (this.seleccionadoUniversidad) {
             this.regionalService
-                .ListarPorUniversidad(universidadSeleccionada)
+                .ListarPorUniversidad(this.seleccionadoUniversidad)
                 .subscribe(
                     (response) => {
                         this.regionales = response;
@@ -266,22 +336,17 @@ export class RegisterComponent implements OnInit {
         );
     }
     seleccionandoRegional(event: any) {
-        const regionalSeleccionada = event?.value?.regi_Id;
+        this.seleccionadoRegional = event?.value?.regi_Id;
 
-        if (regionalSeleccionada) {
+        if (this.seleccionadoRegional) {
             this.facultadService
-                .ListarPorRegional(regionalSeleccionada)
-                .subscribe(
-                    (response) => {
-                        this.facultades = response;
-                        this.filtradoFacultades = [];
-                        this.carreras = [];
-                        this.filtradoCarreras = [];
-                    },
-                    (error) => {
-                        console.error('Error al cargar las facultades:', error);
-                    }
-                );
+                .ListarPorRegional(this.seleccionadoRegional)
+                .subscribe((response) => {
+                    this.facultades = response;
+                    this.filtradoFacultades = [];
+                    this.carreras = [];
+                    this.filtradoCarreras = [];
+                });
         } else {
             this.facultades = [];
             this.carreras = [];
@@ -296,20 +361,15 @@ export class RegisterComponent implements OnInit {
         );
     }
     seleccionandoFacultad(event: any) {
-        const facultadSeleccionada = event?.value?.fare_Id;
+        this.seleccionadoFacultad = event?.value?.fare_Id;
 
-        if (facultadSeleccionada) {
+        if (this.seleccionadoFacultad) {
             this.carreraService
-                .ListarPorFacultadPorRegional(facultadSeleccionada)
-                .subscribe(
-                    (response) => {
-                        this.carreras = response;
-                        this.filtradoCarreras = [];
-                    },
-                    (error) => {
-                        console.error('Error al cargar las carreras:', error);
-                    }
-                );
+                .ListarPorFacultadPorRegional(this.seleccionadoFacultad)
+                .subscribe((response) => {
+                    this.carreras = response;
+                    this.filtradoCarreras = [];
+                });
         } else {
             this.carreras = [];
             this.filtradoCarreras = [];
@@ -329,8 +389,7 @@ export class RegisterComponent implements OnInit {
     }
     limpiarEstadoCivil() {
         this.seleccionadoEstadoCivil = null;
-        this.optanteForm.
-        controls['civi_Id'].setValue(null);
+        this.optanteForm.controls['civi_Id'].setValue(null);
     }
     limpiarProyecto() {
         this.seleccionadoProyecto = null;
@@ -387,7 +446,7 @@ export class RegisterComponent implements OnInit {
     ValidarTexto(event: KeyboardEvent) {
         const inputElement = event.target as HTMLInputElement;
         const key = event.key;
-    
+
         // Permitir letras (incluyendo ñ y acentos), espacios y teclas especiales
         if (
             !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]$/.test(key) &&
@@ -399,7 +458,7 @@ export class RegisterComponent implements OnInit {
             event.preventDefault();
             return;
         }
-    
+
         // Evitar espacio inicial
         if (key === ' ' && inputElement.selectionStart === 0) {
             event.preventDefault();
@@ -408,13 +467,13 @@ export class RegisterComponent implements OnInit {
     permitirSoloLetras(event: Event) {
         const inputElement = event.target as HTMLInputElement;
         let texto = inputElement.value;
-    
+
         // Limitar a solo letras, espacios y caracteres especiales válidos
         texto = texto
             .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '') // Eliminar caracteres no válidos
             .replace(/\s{2,}/g, ' ') // Evitar múltiples espacios consecutivos
             .replace(/^\s/, ''); // Evitar espacio al inicio
-    
+
         // Obtener el nombre del control basado en el atributo formControlName
         const controlName = inputElement.getAttribute('formControlName');
         if (controlName) {
@@ -422,7 +481,7 @@ export class RegisterComponent implements OnInit {
             this.optanteForm.controls[controlName].setValue(texto);
         }
     }
-        
+
     ValidarNumeros(event: KeyboardEvent) {
         const key = event.key;
 
@@ -539,7 +598,7 @@ export class RegisterComponent implements OnInit {
     validarDireccion(event: KeyboardEvent) {
         const inputElement = event.target as HTMLInputElement;
         const key = event.key;
-    
+
         // Permitir letras, números, espacios, y caracteres válidos en direcciones
         if (
             !/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,#-]$/.test(key) &&
@@ -551,7 +610,7 @@ export class RegisterComponent implements OnInit {
             event.preventDefault();
             return;
         }
-    
+
         // Prevenir caracteres consecutivos repetidos (##, .., etc.)
         const cursorPos = inputElement.selectionStart || 0;
         const previousChar = inputElement.value[cursorPos - 1];
@@ -562,19 +621,19 @@ export class RegisterComponent implements OnInit {
     permitirFormatoDireccion(event: Event) {
         const inputElement = event.target as HTMLInputElement;
         let texto = inputElement.value;
-    
+
         // Permitir solo caracteres válidos
         texto = texto.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,#-]/g, '');
-    
+
         // Prevenir múltiples espacios consecutivos
         texto = texto.replace(/\s{2,}/g, ' ');
-    
+
         // Prevenir caracteres consecutivos repetidos (##, .., etc.)
         texto = texto.replace(/([.,#-])\1+/g, '$1');
-    
+
         // Evitar espacio al inicio
         texto = texto.replace(/^\s/, '');
-    
+
         // Actualizar el valor visual y el FormControl
         inputElement.value = texto;
         const controlName = inputElement.getAttribute('formControlName');
@@ -586,11 +645,11 @@ export class RegisterComponent implements OnInit {
     //IMAGEN SUBIR
     seleccionarImagen(event: any): void {
         const archivo: File = event.files[0]; // Obtenemos el primer archivo
-    
+
         if (!archivo) {
             return;
         }
-    
+
         // Verifica si el archivo es una imagen
         if (!archivo.type.startsWith('image/')) {
             this.messageService.add({
@@ -599,12 +658,12 @@ export class RegisterComponent implements OnInit {
                 detail: 'Solo se permiten archivos de imagen.',
                 life: 3000,
             });
-    
+
             // Limpia el archivo subido sin modificar directamente el `FileList`
             event.originalEvent.target.value = ''; // Limpia el input de archivo
             return;
         }
-    
+
         // Verificar que el tamaño del archivo no exceda 10 MB
         const MAX_TAMANIO_MB = 10 * 1024 * 1024;
         if (archivo.size > MAX_TAMANIO_MB) {
@@ -614,16 +673,16 @@ export class RegisterComponent implements OnInit {
                 detail: 'El tamaño máximo permitido es de 10 MB.',
                 life: 3000,
             });
-    
+
             // Limpia el archivo subido
             event.originalEvent.target.value = ''; // Limpia el input de archivo
             return;
         }
-    
+
         const lector = new FileReader();
         lector.onload = (e: any) => {
             const imageUrl = e.target.result;
-    
+
             // Redimensionar y guardar la imagen
             this.redimensionandoImagen(
                 imageUrl,
@@ -635,10 +694,9 @@ export class RegisterComponent implements OnInit {
                 }
             );
         };
-    
+
         lector.readAsDataURL(archivo); // Cargar la imagen
     }
-    
 
     redimensionandoImagen(
         imageUrl: string,
@@ -675,58 +733,77 @@ export class RegisterComponent implements OnInit {
     }
 
     guardar() {
-        this.enviado = true;
+        this.enviadoPersonal = true;
+        this.enviadoGeneral = true;
+    
+        const esValidoPersonal = this.validarCamposPersonales();
+        const esValidoGeneral = this.validarCamposGenerales();
+    
+        if (!esValidoPersonal || !esValidoGeneral) {
+            return;
+        }
+    
         const formData = { ...this.optanteForm.value };
-
-        // Asegurarse de que la fecha se transforme a formato ISO (YYYY-MM-DD)
+    
         if (formData.opta_FechaNacimiento) {
             const fecha = new Date(formData.opta_FechaNacimiento);
-            formData.opta_FechaNacimiento = fecha.toISOString().split('T')[0]; // Solo la fecha (sin hora)
+            formData.opta_FechaNacimiento = fecha.toISOString().split('T')[0];
         }
-
+    
         formData.opta_Imagen = 'imagen.png';
-        console.log(formData); // Verificar cómo queda el objeto antes de enviarlo
-        console.log(this.optanteForm);
-
-        if (this.optanteForm.valid) {
-            this.optanteService
-                .registrarOptante(formData) // Enviar el objeto transformado
-                .subscribe(
-                    (response) => {
-                        // Validar si la operación fue exitosa según la respuesta
-                        if (
-                            response &&
-                            response.code === 200 &&
-                            response.success
-                        ) {
-                            this.messageService.add({
-                                severity: 'success',
-                                summary: 'Éxito',
-                                detail: 'Operación completada exitosamente.',
-                                life: 3000,
-                            });
-                            this.ngOnInit(); // Recarga los datos
-                        } else {
-                            // Manejar respuestas inesperadas
-                            this.messageService.add({
-                                severity: 'error',
-                                summary: 'Error',
-                                detail:
-                                    response.message || 'Actualización fallida',
-                                life: 3000,
-                            });
-                        }
-                    },
-                    (error) => {
-                        console.error('Error:', error);
+    
+        this.optanteService
+            .registrarOptante(formData)
+            .subscribe(
+                (response) => {
+                    if (response?.code === 200 && response?.success) {
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Éxito',
+                            detail: 'Registro completado exitosamente.',
+                            life: 3000,
+                        });
+                        this.ngOnInit();
+                    } else if (
+                        response?.code === 501 &&
+                        response?.data?.message === 'DNI ya registrado.'
+                    ) {
+                        // DNI ya registrado: Mostrar mensaje y resaltar el campo
                         this.messageService.add({
                             severity: 'error',
                             summary: 'Error',
-                            detail: 'Actualización fallida',
+                            detail: response.data.message,
+                            life: 3000,
+                        });
+    
+                        // Resaltar el campo DNI
+                        const dniControl = this.optanteForm.get('opta_DNI');
+                        if (dniControl) {
+                            dniControl.setErrors({ dniExistente: true }); // Asignar el error
+                            dniControl.markAsDirty(); // Forzar "campo sucio"
+                            dniControl.markAsTouched(); // Forzar "campo tocado"
+                            console.log(dniControl.errors);
+                        }
+                    } else {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: response.message || 'Registro fallido.',
                             life: 3000,
                         });
                     }
-                );
-        }
+                },
+                (error) => {
+                    console.error('Error:', error);
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Registro fallido.',
+                        life: 3000,
+                    });
+                }
+            );
     }
+    
+    
 }

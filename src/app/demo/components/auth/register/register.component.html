@@ -14,7 +14,6 @@
         </div>
         <div class="right-section">
             <h2>Registro</h2>
-
             <p-tabView [(activeIndex)]="IndexTab" class="custom-tabview">
                 <p-tabPanel header="Personal">
                     <form [formGroup]="optanteForm">
@@ -32,12 +31,12 @@
                                         formControlName="opta_DNI"
                                         [ngClass]="{
                                             'ng-invalid ng-dirty':
-                                                enviadoPersonal &&
-                                                optanteForm.get('opta_DNI')?.invalid
+                                                (enviadoPersonal && optanteForm.get('opta_DNI')?.invalid) || dniYaRegistrado
                                         }"
                                     />
                                     <label>Número de Identidad</label>
                                 </span>
+                                <!-- Mensaje de campo requerido -->
                                 <small
                                     class="ng-dirty ng-invalid"
                                     *ngIf="
@@ -48,14 +47,16 @@
                                 >
                                     El campo es requerido.
                                 </small>
+                                <!-- Mensaje de DNI ya registrado -->
                                 <small
                                     class="ng-dirty ng-invalid"
-                                    *ngIf="optanteForm.get('opta_DNI')?.errors?.['dniExistente']"
+                                    *ngIf="dniYaRegistrado"
                                     style="color: red !important"
                                 >
-                                    El DNI ya está registrado.
+                                Número de Identidad existente.
                                 </small>
                             </div>
+                            
                             
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label p-input-icon-left">
@@ -65,37 +66,45 @@
                                         pInputText
                                         formControlName="opta_CorreoElectronico"
                                         (keydown)="ValidarCorreo($event)"
-                                        (input)="permitirFormatoCorreo($event)"
+                                        (input)="permitirFormatoCorreo($event); correoYaRegistrado = false"
                                         placeholder="usuario@dominio.com"
                                         [ngClass]="{
                                             'ng-invalid ng-dirty':
-                                            enviadoPersonal &&
-                                                optanteForm.get(
-                                                    'opta_CorreoElectronico'
-                                                )?.invalid
+                                                (enviadoPersonal && optanteForm.get('opta_CorreoElectronico')?.invalid) || correoYaRegistrado
                                         }"
                                     />
                                     <label>Correo Electrónico</label>
                                 </span>
+                                <!-- Mensaje de campo requerido -->
                                 <small
                                     *ngIf="
-                                    enviadoPersonal &&
+                                        enviadoPersonal &&
                                         optanteForm.get('opta_CorreoElectronico')?.errors?.['required']
                                     "
                                     style="color: red !important"
                                 >
                                     El campo es requerido.
                                 </small>
+                                <!-- Mensaje de correo no válido -->
                                 <small
                                     *ngIf="
-                                    enviadoPersonal &&
+                                        enviadoPersonal &&
                                         optanteForm.get('opta_CorreoElectronico')?.errors?.['pattern']
                                     "
                                     style="color: red !important"
                                 >
                                     Ingresa un correo electrónico válido.
                                 </small>
+                                <!-- Mensaje de correo ya registrado -->
+                                <small
+                                    class="ng-dirty ng-invalid"
+                                    *ngIf="correoYaRegistrado"
+                                    style="color: red !important"
+                                >
+                                    Correo electrónico existente.
+                                </small>
                             </div>
+                            
                         </div>
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">

@@ -20,6 +20,7 @@ export class optante {
     muni_Id?:string;
     cafr_Id?:number;
     banc_Id?:number;
+    prco_Id?:number;
     opta_TipoPago?: boolean;
     opta_CuentaBancaria?: string;
     opta_OptanteAceptado?: boolean;

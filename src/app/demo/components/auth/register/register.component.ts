@@ -67,7 +67,6 @@ export class RegisterComponent implements OnInit {
     dniYaRegistrado: boolean = false;
     correoYaRegistrado: boolean = false;
 
-
     camposPersonales = [
         'opta_DNI',
         'opta_CorreoElectronico',
@@ -133,7 +132,7 @@ export class RegisterComponent implements OnInit {
             opta_Sexo: ['F'],
             opta_Direccion: ['', Validators.required],
             opta_Telefono1: ['', Validators.required],
-            opta_Telefono2: [''],
+            opta_Telefono2: [null],
             civi_Id: [null, Validators.required],
             tisa_Id: [null, Validators.required],
             muni_Id: ['', Validators.required],
@@ -167,17 +166,17 @@ export class RegisterComponent implements OnInit {
 
         // Establecer fecha mínima y máxima
         this.fechaMinima = new Date(currentYear - 30, 0, 1); // 30 años atrás (1 de enero)
-        this.fechaMaxima = new Date(currentYear - 13, 11, 31); // 18 años atrás (31 de diciembre)
+        this.fechaMaxima = new Date(currentYear - 13, 11, 31); // 13 años atrás (31 de diciembre)
 
         // Fecha por defecto para mostrar al abrir el calendario
         this.fechaPorDefecto = new Date(
-            today.getFullYear() - 18,
+            today.getFullYear() - 13,
             today.getMonth(),
             today.getDate()
         ); // 18 años atrás mismo mes y día
 
         // Rango de años para el selector de años
-        this.anioRango = `${currentYear - 30}:${currentYear - 18}`;
+        this.anioRango = `${currentYear - 30}:${currentYear - 30}`;
     }
 
     validarCamposPersonales(): boolean {
@@ -736,6 +735,34 @@ export class RegisterComponent implements OnInit {
         this.cdr.detectChanges();
     }
 
+    reiniciarFormulario() {
+        // Reinicia el formulario a sus valores iniciales
+        this.optanteForm.reset();
+
+        // Limpia los valores de los autocompletes
+        this.seleccionadoTipoSangre = null;
+        this.seleccionadoEstadoCivil = null;
+        this.seleccionadoProyecto = null;
+        this.seleccionadoDepartamento = null;
+        this.seleccionadoMunicipio = null;
+        this.seleccionadoUniversidad = null;
+        this.seleccionadoRegional = null;
+        this.seleccionadoFacultad = null;
+        this.seleccionadoCarrera = null;
+
+        // Limpia los campos de error
+        this.enviadoPersonal = false;
+        this.enviadoGeneral = false;
+        this.dniYaRegistrado = false;
+        this.correoYaRegistrado = false;
+
+        // Reinicia el estado de los tabs
+        this.IndexTab = 0;
+
+        // Llamar a OnInit si necesitas recargar datos
+        this.ngOnInit();
+    }
+
     guardar() {
         this.enviadoPersonal = true;
         this.enviadoGeneral = true;
@@ -756,52 +783,81 @@ export class RegisterComponent implements OnInit {
     
         formData.opta_Imagen = 'imagen.png';
     
-        this.optanteService
-    .registrarOptante(formData)
-    .subscribe(
-        (response) => {
-            console.log(response);
-            if (response?.code === 200 && response?.success) {
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Éxito',
-                    detail: 'Registrado exitosamente.',
-                    life: 3000,
-                });
-                this.ngOnInit();
-            } else if (
-                response?.code === 501 &&
-                (response?.data?.message === 'DNI ya registrado.' ||
-                 response?.data?.message === 'Correo ya registrado.')
-            ) {
-                if (response.data.message === 'DNI ya registrado.') {
-                    // Manejo del error para el DNI ya registrado
-                    this.dniYaRegistrado = true;
-                    this.IndexTab = 0;
-                } else if (response.data.message === 'Correo ya registrado.') {
-                    // Manejo del error para el correo ya registrado
-                    this.correoYaRegistrado = true;
-                    this.IndexTab = 0; // Cambia al tab Personal (donde está el correo)
+        this.optanteService.registrarOptante(formData).subscribe(
+            (response) => {
+                console.log(response);
+                if (response?.code === 200 && response?.success) {
+                    const { usuario, contraseña } = response.data;
+                    const { opta_Nombres, opta_Apellidos, opta_CorreoElectronico } = formData;
+    
+                    // Llama al servicio para enviar el correo
+                    this.optanteService.enviarCorreoConCredenciales(
+                        opta_Nombres,
+                        opta_Apellidos,
+                        opta_CorreoElectronico,
+                        usuario,
+                        contraseña
+                    ).subscribe(
+                        (correoResponse) => {
+                            this.messageService.add({
+                                severity: 'success',
+                                summary: 'Correo Enviado',
+                                detail: 'Se han enviado las credenciales al correo registrado.',
+                                life: 3000,
+                            });
+                            this.reiniciarFormulario(); // Reinicia el formulario después del éxito
+                        },
+                        (errorCorreo) => {
+                            console.error('Error al enviar correo:', errorCorreo);
+                            this.messageService.add({
+                                severity: 'warn',
+                                summary: 'Correo No Enviado',
+                                detail: 'El registro fue exitoso, pero no se pudo enviar el correo.',
+                                life: 3000,
+                            });
+                            this.reiniciarFormulario(); // Reinicia el formulario incluso si el correo falla
+                        }
+                    );
+                } else if (
+                    response?.code === 501 &&
+                    (response?.data?.message === 'DNI ya registrado.' ||
+                     response?.data?.message === 'Correo ya registrado.')
+                ) {
+                    if (response.data.message === 'DNI ya registrado.') {
+                        this.dniYaRegistrado = true;
+                        this.IndexTab = 0;
+                    } else if (response.data.message === 'Correo ya registrado.') {
+                        this.correoYaRegistrado = true;
+                        this.IndexTab = 0;
+                    }
+                    this.messageService.add({
+                        severity: 'warn',
+                        summary: 'Advertencia',
+                        detail: this.dniYaRegistrado ? 'Número de identidad existente.' : 'Correo electrónico existente.',
+                        life: 3000,
+                    });
+                } else if (
+                    response?.code === 200 &&
+                    response?.data?.success === 0 &&
+                    response?.data?.message === 'Error desconocido al registrar el optante.'
+                ) {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Algo salió mal. Comuníquese con un Administrador.',
+                        life: 3000,
+                    });
+                } else {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Algo salió mal. Comuníquese con un Administrador.',
+                        life: 3000,
+                    });
                 }
-                this.messageService.add({
-                    severity: 'warn',
-                    summary: 'Advertencia',
-                    detail: this.dniYaRegistrado ? 'Número de identidad existente.' : 'Correo electrónico existente.',
-                    life: 3000,
-                });
-            } else if (
-                response?.code === 200 &&
-                response?.data?.success === 0 &&
-                response?.data?.message === 'Error desconocido al registrar el optante.'
-            ) {
-                // Caso de error desconocido con código 200
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Algo salió mal. Comuníquese con un Administrador.',
-                    life: 3000,
-                });
-            } else {
+            },
+            (error) => {
+                console.error('Error:', error);
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
@@ -809,19 +865,6 @@ export class RegisterComponent implements OnInit {
                     life: 3000,
                 });
             }
-        },
-        (error) => {
-            console.error('Error:', error);
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Algo salió mal. Comuníquese con un Administrador.',
-                life: 3000,
-            });
-        }
-    );
-
+        );
     }
-    
-    
-}
+    }

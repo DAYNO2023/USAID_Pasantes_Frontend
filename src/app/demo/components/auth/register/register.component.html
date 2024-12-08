@@ -23,7 +23,7 @@
                                     <i class="pi pi-user"></i>
                                     <input
                                         (keydown)="ValidarNumeros($event)"
-                                        (input)="permitirSoloNumeros($event)"
+                                        (input)="permitirSoloNumeros($event); dniYaRegistrado = false"
                                         placeholder="Ingrese su número de identidad."
                                         maxlength="13"
                                         type="text"
@@ -66,6 +66,7 @@
                                         pInputText
                                         formControlName="opta_CorreoElectronico"
                                         (keydown)="ValidarCorreo($event)"
+                                        maxlength="60"
                                         (input)="permitirFormatoCorreo($event); correoYaRegistrado = false"
                                         placeholder="usuario@dominio.com"
                                         [ngClass]="{
@@ -113,7 +114,7 @@
                                     <input
                                         (keydown)="ValidarTexto($event)"
                                         (input)="permitirSoloLetras($event)"
-                                        maxlength="50"
+                                        maxlength="80"
                                         placeholder="Ingrese su primer y segundo nombre."
                                         type="text"
                                         pInputText
@@ -144,7 +145,7 @@
                                     <input
                                         (keydown)="ValidarTexto($event)"
                                         (input)="permitirSoloLetras($event)"
-                                        maxlength="50"
+                                        maxlength="80"
                                         placeholder="Ingrese su primer y segundo apellido."
                                         type="text"
                                         pInputText
@@ -302,7 +303,7 @@
                                         pInputTextarea
                                         placeholder="Ingrese su dirección exacta."
                                         formControlName="opta_Direccion"
-                                        maxlength="300"
+                                        maxlength="150"
                                         (keydown)="validarDireccion($event)"
                                         (input)="
                                             permitirFormatoDireccion($event)

@@ -142,22 +142,43 @@ export class RegisterComponent implements OnInit {
     }
 
     ngOnInit() {
-        //AUTOCOMPLETES
+        // AUTOCOMPLETES
         this.tipoSangreService.Listar().subscribe((response) => {
-            this.tiposSangre = response; // Asignar la lista de tipos de sangre
-            console.log(this.tiposSangre);
+            this.tiposSangre = response.sort((a: any, b: any) =>
+                a.tisa_Descripcion.localeCompare(b.tisa_Descripcion)
+            ); // Ordenar por la descripción
         });
+
         this.estadoCivilService.Listar().subscribe((response) => {
-            this.estadosCiviles = response;
+            this.estadosCiviles = response.sort((a: any, b: any) =>
+                a.civi_DescripcionEstadoCivil.localeCompare(
+                    b.civi_DescripcionEstadoCivil
+                )
+            ); // Ordenar por la descripción
         });
+
         this.proyectoService.Listar().subscribe((response) => {
-            this.proyectos = response;
+            this.proyectos = response.sort((a: any, b: any) =>
+                a.pryt_DescripcionProyecto.localeCompare(
+                    b.pryt_DescripcionProyecto
+                )
+            ); // Ordenar por la descripción
         });
+
         this.departamentoService.Listar().subscribe((response) => {
-            this.departamentos = response;
+            this.departamentos = response.sort((a: any, b: any) =>
+                a.depa_DescripcionDepartamento.localeCompare(
+                    b.depa_DescripcionDepartamento
+                )
+            ); // Ordenar por la descripción
         });
+
         this.universidadService.Listar().subscribe((response) => {
-            this.universidades = response;
+            this.universidades = response.sort((a: any, b: any) =>
+                a.univ_DescripcionUniversidad.localeCompare(
+                    b.univ_DescripcionUniversidad
+                )
+            ); // Ordenar por la descripción
         });
 
         //RANGO PARA FECHA DE NACIMIENTO
@@ -275,7 +296,8 @@ export class RegisterComponent implements OnInit {
                 .ListarPorDepartamento(this.seleccionadoDepartamento)
                 .subscribe(
                     (response) => {
-                        this.municipios = response;
+                        this.municipios = response.sort((a: any, b: any) =>
+                        a.muni_DescripcionMunicipio.localeCompare(b.muni_DescripcionMunicipio));
                         this.filtradoMunicipios = [];
                         this.optanteForm.controls['muni_Id'].setValue(null); // Reiniciar municipio seleccionado
                     },
@@ -311,7 +333,8 @@ export class RegisterComponent implements OnInit {
                 .ListarPorUniversidad(this.seleccionadoUniversidad)
                 .subscribe(
                     (response) => {
-                        this.regionales = response;
+                        this.regionales = response.sort((a: any, b: any) =>
+                            a.regi_DescripcionRegional.localeCompare(b.regi_DescripcionRegional));
                         this.filtradoRegionales = [];
                         this.facultades = [];
                         this.carreras = [];
@@ -345,7 +368,8 @@ export class RegisterComponent implements OnInit {
             this.facultadService
                 .ListarPorRegional(this.seleccionadoRegional)
                 .subscribe((response) => {
-                    this.facultades = response;
+                    this.facultades = response.sort((a: any, b: any) =>
+                        a.facu_DesripcionFacultad.localeCompare(b.facu_DesripcionFacultad));
                     this.filtradoFacultades = [];
                     this.carreras = [];
                     this.filtradoCarreras = [];
@@ -370,7 +394,8 @@ export class RegisterComponent implements OnInit {
             this.carreraService
                 .ListarPorFacultadPorRegional(this.seleccionadoFacultad)
                 .subscribe((response) => {
-                    this.carreras = response;
+                    this.carreras = response.sort((a: any, b: any) =>
+                        a.carr_DescripcionCarrera.localeCompare(b.carr_DescripcionCarrera));
                     this.filtradoCarreras = [];
                 });
         } else {
@@ -766,80 +791,98 @@ export class RegisterComponent implements OnInit {
     guardar() {
         this.enviadoPersonal = true;
         this.enviadoGeneral = true;
-    
+
         const esValidoPersonal = this.validarCamposPersonales();
         const esValidoGeneral = this.validarCamposGenerales();
-    
+
         if (!esValidoPersonal || !esValidoGeneral) {
             return;
         }
-    
+
         const formData = { ...this.optanteForm.value };
-    
+
         if (formData.opta_FechaNacimiento) {
             const fecha = new Date(formData.opta_FechaNacimiento);
             formData.opta_FechaNacimiento = fecha.toISOString().split('T')[0];
         }
-    
+
         formData.opta_Imagen = 'imagen.png';
-    
+
         this.optanteService.registrarOptante(formData).subscribe(
             (response) => {
                 console.log(response);
                 if (response?.code === 200 && response?.success) {
                     const { usuario, contraseña } = response.data;
-                    const { opta_Nombres, opta_Apellidos, opta_CorreoElectronico } = formData;
-    
-                    // Llama al servicio para enviar el correo
-                    this.optanteService.enviarCorreoConCredenciales(
+                    const {
                         opta_Nombres,
                         opta_Apellidos,
                         opta_CorreoElectronico,
-                        usuario,
-                        contraseña
-                    ).subscribe(
-                        (correoResponse) => {
-                            this.messageService.add({
-                                severity: 'success',
-                                summary: 'Correo Enviado',
-                                detail: 'Se han enviado las credenciales al correo registrado.',
-                                life: 3000,
-                            });
-                            this.reiniciarFormulario(); // Reinicia el formulario después del éxito
-                        },
-                        (errorCorreo) => {
-                            console.error('Error al enviar correo:', errorCorreo);
-                            this.messageService.add({
-                                severity: 'warn',
-                                summary: 'Correo No Enviado',
-                                detail: 'El registro fue exitoso, pero no se pudo enviar el correo.',
-                                life: 3000,
-                            });
-                            this.reiniciarFormulario(); // Reinicia el formulario incluso si el correo falla
-                        }
-                    );
+                    } = formData;
+
+                    // Llama al servicio para enviar el correo
+                    this.optanteService
+                        .enviarCorreoConCredenciales(
+                            opta_Nombres,
+                            opta_Apellidos,
+                            opta_CorreoElectronico,
+                            usuario,
+                            contraseña
+                        )
+                        .subscribe(
+                            (correoResponse) => {
+                                this.messageService.add({
+                                    severity: 'success',
+                                    summary: 'Correo Enviado',
+                                    detail: 'Se han enviado las credenciales al correo registrado.',
+                                    life: 3000,
+                                });
+                                this.reiniciarFormulario(); // Reinicia el formulario después del éxito
+                            },
+                            (errorCorreo) => {
+                                console.error(
+                                    'Error al enviar correo:',
+                                    errorCorreo
+                                );
+                                this.messageService.add({
+                                    severity: 'warn',
+                                    summary: 'Correo No Enviado',
+                                    detail: 'El registro fue exitoso, pero no se pudo enviar el correo.',
+                                    life: 3000,
+                                });
+                                this.reiniciarFormulario(); // Reinicia el formulario incluso si el correo falla
+                            }
+                        );
                 } else if (
                     response?.code === 501 &&
                     (response?.data?.message === 'DNI ya registrado.' ||
-                     response?.data?.message === 'Correo ya registrado.')
+                        response?.data?.message === 'Correo ya registrado.')
                 ) {
                     if (response.data.message === 'DNI ya registrado.') {
                         this.dniYaRegistrado = true;
                         this.IndexTab = 0;
-                    } else if (response.data.message === 'Correo ya registrado.') {
+                        this.messageService.add({
+                            severity: 'warn',
+                            summary: 'Advertencia',
+                            detail: 'Número de identidad existente.',
+                            life: 3000,
+                        });
+                    } else if (
+                        response.data.message === 'Correo ya registrado.'
+                    ) {
                         this.correoYaRegistrado = true;
                         this.IndexTab = 0;
+                        this.messageService.add({
+                            severity: 'warn',
+                            summary: 'Advertencia',
+                            detail: 'Correo electrónico existente.',
+                            life: 3000,
+                        });
                     }
-                    this.messageService.add({
-                        severity: 'warn',
-                        summary: 'Advertencia',
-                        detail: this.dniYaRegistrado ? 'Número de identidad existente.' : 'Correo electrónico existente.',
-                        life: 3000,
-                    });
                 } else if (
                     response?.code === 200 &&
                     response?.data?.success === 0 &&
-                    response?.data?.message === 'Error desconocido al registrar el optante.'
+                    response?.data?.message ===
+                        'Error desconocido al registrar el optante.'
                 ) {
                     this.messageService.add({
                         severity: 'error',
@@ -867,4 +910,4 @@ export class RegisterComponent implements OnInit {
             }
         );
     }
-    }
+}

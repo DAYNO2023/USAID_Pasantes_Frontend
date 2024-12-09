@@ -82,6 +82,28 @@ h2 {
     outline: none;
 }
 
+//INPUTS ERROR
+.custom-error {
+    border: 1px solid #FC6161 !important;
+}
+/* Cambia el color del label cuando el input tiene la clase custom-error */
+.input-group .p-inputtext.custom-error + label {
+    color: #FC6161; /* Color rojo para el label */
+}
+
+::ng-deep p-calendar.custom-error + label {
+    color: #FC6161 !important; /* Cambia el color del label del calendario */
+}
+::ng-deep p-autoComplete.custom-error + label {
+    color: #FC6161 !important; /* Cambia el color del label del autocomplete */
+}
+
+/* Estilo para labels flotantes dentro de calendarios y autocompletes */
+::ng-deep p-calendar.custom-error .p-float-label label,
+::ng-deep p-autoComplete.custom-error .p-float-label label {
+    color: #FC6161 !important; /* Cambia el color del label flotante */
+}
+
 //ESTILOS PARA CALENDARIO, Y AUTOCOMPLETADOS
 p-calendar,
 p-autoComplete {
@@ -105,6 +127,11 @@ p-autoComplete {
     border: 1px solid #1f3168 !important;
     outline: none;
 }
+::ng-deep p-calendar.ng-dirty.ng-invalid > .p-calendar > .p-inputtext {
+    border-color: #ccc !important; /* Color del borde */
+    border-width: 1px !important; /* Grosor del borde */
+}
+
 
 ::ng-deep .p-inputtext:enabled:focus {
     outline: none;

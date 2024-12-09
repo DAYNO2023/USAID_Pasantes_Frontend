@@ -23,15 +23,22 @@
                                     <i class="pi pi-user"></i>
                                     <input
                                         (keydown)="ValidarNumeros($event)"
-                                        (input)="permitirSoloNumeros($event); dniYaRegistrado = false"
-                                        placeholder="Ingrese su número de identidad."
+                                        (input)="
+                                            permitirSoloNumeros($event);
+                                            dniYaRegistrado = false
+                                        "
+                                        placeholder="Ingrese sin guiones ni espacios."
                                         maxlength="13"
+                                        minlength="13"
                                         type="text"
                                         pInputText
                                         formControlName="opta_DNI"
                                         [ngClass]="{
-                                            'ng-invalid ng-dirty':
-                                                (enviadoPersonal && optanteForm.get('opta_DNI')?.invalid) || dniYaRegistrado
+                                            'custom-error':
+                                                (enviadoPersonal &&
+                                                    optanteForm.get('opta_DNI')
+                                                        ?.invalid) ||
+                                                dniYaRegistrado
                                         }"
                                     />
                                     <label>Número de Identidad</label>
@@ -43,21 +50,31 @@
                                         enviadoPersonal &&
                                         optanteForm.get('opta_DNI')?.errors?.['required']
                                     "
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
+                                </small>
+                                <!-- Mensaje de longitud -->
+                                <small
+                                    *ngIf="
+                                         enviadoPersonal &&
+                                         (optanteForm.get('opta_DNI')?.errors?.['minlength'] ||
+                                             optanteForm.get('opta_DNI')?.errors?.['maxlength'])
+                                     "
+                                    style="color: #FC6161 !important"
+                                >
+                                    La identidad debe ser de 13 dígitos.
                                 </small>
                                 <!-- Mensaje de DNI ya registrado -->
                                 <small
                                     class="ng-dirty ng-invalid"
                                     *ngIf="dniYaRegistrado"
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
-                                Número de Identidad existente.
+                                    Número de Identidad existente.
                                 </small>
                             </div>
-                            
-                            
+
                             <div class="input-group col-12 md:col-4">
                                 <span class="p-float-label p-input-icon-left">
                                     <i class="pi pi-envelope"></i>
@@ -67,11 +84,18 @@
                                         formControlName="opta_CorreoElectronico"
                                         (keydown)="ValidarCorreo($event)"
                                         maxlength="60"
-                                        (input)="permitirFormatoCorreo($event); correoYaRegistrado = false"
+                                        (input)="
+                                            permitirFormatoCorreo($event);
+                                            correoYaRegistrado = false
+                                        "
                                         placeholder="usuario@dominio.com"
                                         [ngClass]="{
-                                            'ng-invalid ng-dirty':
-                                                (enviadoPersonal && optanteForm.get('opta_CorreoElectronico')?.invalid) || correoYaRegistrado
+                                            ' custom-error':
+                                                (enviadoPersonal &&
+                                                    optanteForm.get(
+                                                        'opta_CorreoElectronico'
+                                                    )?.invalid) ||
+                                                correoYaRegistrado
                                         }"
                                     />
                                     <label>Correo Electrónico</label>
@@ -82,7 +106,7 @@
                                         enviadoPersonal &&
                                         optanteForm.get('opta_CorreoElectronico')?.errors?.['required']
                                     "
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
                                 </small>
@@ -92,7 +116,7 @@
                                         enviadoPersonal &&
                                         optanteForm.get('opta_CorreoElectronico')?.errors?.['pattern']
                                     "
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     Ingresa un correo electrónico válido.
                                 </small>
@@ -100,12 +124,11 @@
                                 <small
                                     class="ng-dirty ng-invalid"
                                     *ngIf="correoYaRegistrado"
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     Correo electrónico existente.
                                 </small>
                             </div>
-                            
                         </div>
                         <div class="grid p-fluid mt-0.2">
                             <div class="input-group col-12 md:col-4">
@@ -120,8 +143,8 @@
                                         pInputText
                                         formControlName="opta_Nombres"
                                         [ngClass]="{
-                                            'ng-invalid ng-dirty':
-                                            enviadoPersonal &&
+                                            ' custom-error':
+                                                enviadoPersonal &&
                                                 optanteForm.get('opta_Nombres')
                                                     ?.invalid
                                         }"
@@ -131,10 +154,10 @@
                                 <small
                                     class="ng-dirty ng-invalid"
                                     *ngIf="
-                                    enviadoPersonal &&
+                                        enviadoPersonal &&
                                         optanteForm.get('opta_Nombres')?.invalid
                                     "
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
                                 </small>
@@ -151,8 +174,8 @@
                                         pInputText
                                         formControlName="opta_Apellidos"
                                         [ngClass]="{
-                                            'ng-invalid ng-dirty':
-                                            enviadoPersonal &&
+                                            ' custom-error':
+                                                enviadoPersonal &&
                                                 optanteForm.get(
                                                     'opta_Apellidos'
                                                 )?.invalid
@@ -163,11 +186,11 @@
                                 <small
                                     class="ng-dirty ng-invalid"
                                     *ngIf="
-                                    enviadoPersonal &&
+                                        enviadoPersonal &&
                                         optanteForm.get('opta_Apellidos')
                                             ?.invalid
                                     "
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
                                 </small>
@@ -184,6 +207,9 @@
                                         [yearRange]="anioRango"
                                         [minDate]="fechaMinima"
                                         [maxDate]="fechaMaxima"
+                                        [ngClass]="{
+                                            'custom-error': enviadoPersonal && optanteForm.get('opta_FechaNacimiento')?.invalid
+                                        }"
                                     ></p-calendar>
                                     <label>Fecha de Nacimiento</label>
                                 </span>
@@ -192,7 +218,7 @@
                                     enviadoPersonal &&
                                         optanteForm.get('opta_FechaNacimiento')?.errors?.['required']
                                     "
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
                                 </small>
@@ -219,13 +245,16 @@
                                             )
                                         "
                                         [ngModelOptions]="{ standalone: true }"
+                                        [ngClass]="{
+                                            'custom-error': enviadoPersonal && optanteForm.get('tisa_Id')?.invalid
+                                        }"
                                     ></p-autoComplete>
 
                                     <label for="dropdown">Tipo de Sangre</label>
                                 </span>
                                 <small
                                     *ngIf="enviadoPersonal && optanteForm.get('tisa_Id')?.errors?.['required']"
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
                                 </small>
@@ -254,12 +283,15 @@
                                             )
                                         "
                                         [ngModelOptions]="{ standalone: true }"
+                                        [ngClass]="{
+                                            'custom-error': enviadoPersonal && optanteForm.get('civi_Id')?.invalid
+                                        }"
                                     ></p-autoComplete>
                                     <label for="dropdown">Estado Civil</label>
                                 </span>
                                 <small
                                     *ngIf="enviadoPersonal && optanteForm.get('civi_Id')?.errors?.['required']"
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
                                 </small>
@@ -309,8 +341,8 @@
                                             permitirFormatoDireccion($event)
                                         "
                                         [ngClass]="{
-                                            'ng-invalid ng-dirty':
-                                            enviadoPersonal &&
+                                            ' custom-error':
+                                                enviadoPersonal &&
                                                 optanteForm.get(
                                                     'opta_Direccion'
                                                 )?.invalid
@@ -323,7 +355,7 @@
                                     enviadoPersonal &&
                                         optanteForm.get('opta_Direccion')?.errors?.['required']
                                     "
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
                                 </small>
@@ -336,29 +368,41 @@
                                         (input)="permitirSoloNumeros($event)"
                                         placeholder="Ingrese su número de teléfono celular."
                                         maxlength="8"
+                                        minlength="8"
                                         type="text"
                                         formControlName="opta_Telefono1"
                                         pInputText
                                         [ngClass]="{
-                                            'ng-invalid ng-dirty':
-                                            enviadoPersonal &&
+                                            ' custom-error':
+                                                enviadoPersonal &&
                                                 optanteForm.get(
                                                     'opta_Telefono1'
                                                 )?.invalid
                                         }"
                                     />
-                                    <label>Celular</label>
+                                    <label>Teléfono</label>
                                 </span>
                                 <small
                                     class="ng-dirty ng-invalid"
                                     *ngIf="
-                                    enviadoPersonal &&
+                                        enviadoPersonal &&
                                         optanteForm.get('opta_Telefono1')
                                             ?.invalid
                                     "
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
+                                </small>
+                                <!-- Mensaje de longitud -->
+                                <small
+                                    *ngIf="
+                                         enviadoPersonal &&
+                                         (optanteForm.get('opta_Telefono1')?.errors?.['minlength'] ||
+                                             optanteForm.get('opta_Telefono1')?.errors?.['maxlength'])
+                                     "
+                                    style="color: #FC6161 !important"
+                                >
+                                    El teléfono debe ser de 8 dígitos.
                                 </small>
                             </div>
                         </div>
@@ -384,7 +428,10 @@
                         </div>
                     </form>
                 </p-tabPanel>
-                <p-tabPanel header="General" [disabled]="!validarCamposPersonales()">
+                <p-tabPanel
+                    header="General"
+                    [disabled]="!validarCamposPersonales()"
+                >
                     <form [formGroup]="optanteForm">
                         <div class="grid nested-grid">
                             <div class="col-6">
@@ -399,19 +446,30 @@
                                                     (keydown)="
                                                         ValidarNumeros($event)
                                                     "
-                                                    placeholder="Ingrese un número de celular alterno."
+                                                    placeholder="Ingrese un número de teléfono alterno."
                                                     (input)="
                                                         permitirSoloNumeros(
                                                             $event
                                                         )
                                                     "
                                                     maxlength="8"
+                                                    minlength="8"
                                                     type="text"
                                                     pInputText
                                                     formControlName="opta_Telefono2"
                                                 />
-                                                <label>Celular Alterno</label>
+                                                <label>Teléfono Alterno</label>
                                             </span>
+                                            <small
+                                    *ngIf="
+                                    enviadoGeneral &&
+                                         (optanteForm.get('opta_Telefono2')?.errors?.['minlength'] ||
+                                             optanteForm.get('opta_Telefono2')?.errors?.['maxlength'])
+                                     "
+                                    style="color: #FC6161 !important"
+                                >
+                                    El teléfono debe ser de 8 dígitos.
+                                </small>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -445,6 +503,9 @@
                                                     [ngModelOptions]="{
                                                         standalone: true
                                                     }"
+                                                    [ngClass]="{
+                                                        'custom-error': enviadoGeneral && optanteForm.get('prco_Id')?.invalid
+                                                    }"
                                                 ></p-autoComplete>
                                                 <label for="dropdown"
                                                     >Proyecto</label
@@ -452,7 +513,7 @@
                                             </span>
                                             <small
                                                 *ngIf="enviadoGeneral && optanteForm.get('prco_Id')?.errors?.['required']"
-                                                style="color: red !important"
+                                                style="color: #FC6161 !important"
                                             >
                                                 El campo es requerido.
                                             </small>
@@ -482,6 +543,9 @@
                                                             $event
                                                         )
                                                     "
+                                                    [ngClass]="{
+                                                        'custom-error': enviadoGeneral && !seleccionadoDepartamento
+                                                    }"
                                                 >
                                                 </p-autoComplete>
                                                 <label for="dropdown"
@@ -490,10 +554,10 @@
                                             </span>
                                             <small
                                                 *ngIf="
-                                                enviadoGeneral &&
+                                                    enviadoGeneral &&
                                                     !seleccionadoDepartamento
                                                 "
-                                                style="color: red !important"
+                                                style="color: #FC6161 !important"
                                             >
                                                 El campo es requerido.
                                             </small>
@@ -532,6 +596,9 @@
                                                     [ngModelOptions]="{
                                                         standalone: true
                                                     }"
+                                                    [ngClass]="{
+                                                        'custom-error': enviadoGeneral && optanteForm.get('muni_Id')?.invalid
+                                                    }"
                                                 >
                                                 </p-autoComplete>
                                                 <label for="dropdown"
@@ -540,7 +607,7 @@
                                             </span>
                                             <small
                                                 *ngIf="enviadoGeneral && optanteForm.get('muni_Id')?.errors?.['required']"
-                                                style="color: red !important"
+                                                style="color: #FC6161 !important"
                                             >
                                                 El campo es requerido.
                                             </small>
@@ -614,7 +681,7 @@
                                 </p-fileUpload>
                                 <small
                                     *ngIf="enviadoGeneral && optanteForm.get('opta_Imagen')?.errors?.['required']"
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     La imagen es obligatoria.
                                 </small>
@@ -636,16 +703,19 @@
                                         (onSelect)="
                                             seleccionandoUniversidad($event)
                                         "
+                                        [ngClass]="{
+                                            'custom-error': enviadoGeneral && !seleccionadoUniversidad
+                                        }"
                                     >
                                     </p-autoComplete>
                                     <label for="dropdown">Universidad</label>
                                 </span>
                                 <small
-                                *ngIf="
-                                enviadoGeneral &&
-                                !seleccionadoUniversidad
-                            "
-                                    style="color: red !important"
+                                    *ngIf="
+                                        enviadoGeneral &&
+                                        !seleccionadoUniversidad
+                                    "
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
                                 </small>
@@ -666,15 +736,17 @@
                                         (onSelect)="
                                             seleccionandoRegional($event)
                                         "
+                                        [ngClass]="{
+                                            'custom-error': enviadoGeneral && !seleccionadoRegional
+                                        }"
                                     ></p-autoComplete>
                                     <label for="dropdown">Regional</label>
                                 </span>
                                 <small
-                                *ngIf="
-                                enviadoGeneral &&
-                                !seleccionadoRegional
-                            "
-                                    style="color: red !important"
+                                    *ngIf="
+                                        enviadoGeneral && !seleccionadoRegional
+                                    "
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
                                 </small>
@@ -697,15 +769,17 @@
                                         (onSelect)="
                                             seleccionandoFacultad($event)
                                         "
+                                        [ngClass]="{
+                                            'custom-error': enviadoGeneral && !seleccionadoFacultad
+                                        }"
                                     ></p-autoComplete>
                                     <label for="dropdown">Facultad</label>
                                 </span>
                                 <small
-                                *ngIf="
-                                enviadoGeneral &&
-                                !seleccionadoFacultad
-                            "
-                                    style="color: red !important"
+                                    *ngIf="
+                                        enviadoGeneral && !seleccionadoFacultad
+                                    "
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
                                 </small>
@@ -730,12 +804,15 @@
                                             )
                                         "
                                         [ngModelOptions]="{ standalone: true }"
+                                        [ngClass]="{
+                                            'custom-error': enviadoGeneral && optanteForm.get('cafr_Id')?.invalid
+                                        }"
                                     ></p-autoComplete>
                                     <label for="dropdown">Carrera</label>
                                 </span>
                                 <small
                                     *ngIf="enviadoGeneral && optanteForm.get('cafr_Id')?.errors?.['required']"
-                                    style="color: red !important"
+                                    style="color: #FC6161 !important"
                                 >
                                     El campo es requerido.
                                 </small>

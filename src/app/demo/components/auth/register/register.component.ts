@@ -60,7 +60,6 @@ export class RegisterComponent implements OnInit {
     anioRango!: string;
 
     //VALIDAR TAB
-    // Campos del tab "Personal"
     enviadoPersonal: boolean = false;
     enviadoGeneral: boolean = false;
 
@@ -107,10 +106,10 @@ export class RegisterComponent implements OnInit {
         private cdr: ChangeDetectorRef
     ) {
         this.optanteForm = this.fb.group({
-            opta_DNI: ['', Validators.required],
-            opta_Imagen: ['', Validators.required],
+            opta_DNI: [null, Validators.required, Validators.minLength(13)],
+            opta_Imagen: [null, Validators.required],
             opta_CorreoElectronico: [
-                '',
+                null,
                 [
                     Validators.required,
                     Validators.pattern(
@@ -119,23 +118,23 @@ export class RegisterComponent implements OnInit {
                 ],
             ],
             opta_Nombres: [
-                '',
+                null,
                 Validators.required,
                 Validators.pattern('^[a-zA-ZñÑ\\s]+$'),
             ],
             opta_Apellidos: [
-                '',
+                null,
                 Validators.required,
                 Validators.pattern('^[a-zA-ZñÑ\\s]+$'),
             ],
-            opta_FechaNacimiento: ['', Validators.required],
+            opta_FechaNacimiento: [null, Validators.required],
             opta_Sexo: ['F'],
-            opta_Direccion: ['', Validators.required],
-            opta_Telefono1: ['', Validators.required],
-            opta_Telefono2: [null],
+            opta_Direccion: [null, Validators.required],
+            opta_Telefono1: [null, Validators.required, Validators.minLength(8)],
+            opta_Telefono2: [null, Validators.minLength(8)],
             civi_Id: [null, Validators.required],
             tisa_Id: [null, Validators.required],
-            muni_Id: ['', Validators.required],
+            muni_Id: [null, Validators.required],
             cafr_Id: [null, Validators.required],
             prco_Id: [null, Validators.required],
         });

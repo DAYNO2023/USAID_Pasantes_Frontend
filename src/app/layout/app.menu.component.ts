@@ -40,7 +40,7 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Roles',
                                 icon: 'pi pi-fw pi-cog',
-                                routerLink: ['/apps/blog/list']
+                                routerLink: ['/acceso/rol']
                             },
                             {
                                 label: 'Usuarios',

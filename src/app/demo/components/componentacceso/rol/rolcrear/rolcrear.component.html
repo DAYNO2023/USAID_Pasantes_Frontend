@@ -1,0 +1,103 @@
+<p-toast></p-toast>
+<div class="card">
+    <div class="flex" style="display: flex; align-items: center; height: 42px">
+        <div
+            style="
+                width: 20%;
+                display: flex;
+                align-items: center;
+                height: 12.5%;
+            "
+        >
+            <button
+                (click)="cancelar()"
+                class="p-button-link"
+                pButton
+                pRipple
+                type="button"
+                label="Regresar"
+                icon="pi pi-arrow-left"
+                style="box-shadow: none !important"
+            ></button>
+        </div>
+        <div>
+            <h1 class="text-center mt-4">Crear Rol</h1>
+        </div>
+    </div>
+    <hr />
+
+    <form [formGroup]="insertarForm">
+        <div class="grid p-fluid mt-3">
+            <div class="field col-12 md:col-6">
+                <span class="p-float-label p-input-icon-left">
+                    <i class="pi pi-cog"></i>
+                    <input
+                        (keydown)="ValidarTexto($event)"
+                        (input)="permitirSoloLetras($event); rolYaRegistrado = false;"
+                        maxlength="50"
+                        type="text"
+                        pInputText
+                        formControlName="role_DescripcionRol"
+                        [ngClass]="{
+                            'ng-dirty ng-invalid':
+                                (enviado &&
+                                insertarForm.get('role_DescripcionRol')?.invalid) || rolYaRegistrado
+                        }"
+                    />
+                    <label>Rol</label>
+                </span>
+                <small
+                    class="ng-dirty ng-invalid"
+                    *ngIf="
+                        enviado &&
+                        insertarForm.get('role_DescripcionRol')?.invalid
+                    "
+                    style="color: #fc6161 !important"
+                >
+                    El campo es requerido.
+                </small>
+                <small
+                    class="ng-dirty ng-invalid"
+                    *ngIf="rolYaRegistrado"
+                    style="color: #fc6161 !important"
+                >
+                    Rol existente.
+                </small>
+            </div>
+        </div>
+        <p-tree
+            [value]="modulos"
+            selectionMode="checkbox"
+            [(selection)]="modulosSeleccionados"
+        >
+        </p-tree>
+        <div style="display: flex; justify-content: end; margin-top: 15px">
+            <button
+                class="btn btn-guardar"
+                pButton
+                pRipple
+                type="button"
+                label="Guardar"
+                icon="pi pi-save"
+                (click)="guardar()"
+            ></button>
+            <button
+                style="margin-left: 2%"
+                class="p-button-secondary"
+                pButton
+                pRipple
+                type="button"
+                label="Cancelar"
+                icon="pi pi-times"
+                routerLink="rol"
+            ></button>
+        </div>
+    </form>
+
+    <!-- <div *ngIf="LoadingSubir2" style="height: 600px;display: flex; justify-content: center; align-items: center;">
+                <div class="loader-container" *ngIf="loading">
+                    <div class="loader">
+                        <span></span>
+                    </div>
+            </div> -->
+</div>

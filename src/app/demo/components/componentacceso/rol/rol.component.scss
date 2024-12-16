@@ -3,4 +3,13 @@
     vertical-align: middle;
     padding-left: 2px; /* Ajusta según sea necesario */
   }
-  
+
+  ::ng-deep .p-datatable .p-datatable-header {
+    background-color: #2a3c70 !important;
+}
+  ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    background-color: #1f3168  !important;
+}
+  ::ng-deep .p-datatable .p-datatable-tbody > tr {
+    background-color: #1f3168  !important;
+}

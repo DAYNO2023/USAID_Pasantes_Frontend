@@ -14,8 +14,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from "primeng/dropdown";
 import { TreeModule } from 'primeng/tree';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RolCrearRoutingModule } from './rolcrear-routing.module';
-import { RolCrearComponent } from './rolcrear.component';
+import { RolEditarRoutingModule } from './roleditar-routing.module';
+import { RolEditarComponent } from './roleditar.component';
 import { SplitButtonModule } from "primeng/splitbutton";
 import { FileUploadModule } from 'primeng/fileupload';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -24,7 +24,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		FileUploadModule,
 		SplitButtonModule,
 		CommonModule,
-		RolCrearRoutingModule,
+		RolEditarRoutingModule,
 		ToastModule,
 		DialogModule,
 		FormsModule,
@@ -41,7 +41,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 		ReactiveFormsModule
 	],
     declarations: [
-        RolCrearComponent
+        RolEditarComponent
     ]
 })
-export class RolCrearModule { }
+export class RolEditarModule { }

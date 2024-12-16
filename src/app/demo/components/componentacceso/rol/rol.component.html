@@ -28,29 +28,35 @@
             <p-table
                 #dt
                 [value]="roles"
-                [columns]="cols"
+                styleClass="mt-2"
                 responsiveLayout="scroll"
                 [rows]="10"
                 [globalFilterFields]="['codigo', 'role_DescripcionRol']"
                 [paginator]="true"
-                [rowsPerPageOptions]="rowsPerPageOptions"
                 [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[10,25,50,100]"
+                [rowHover]="true"
                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
-                dataKey="codigo"
             >
-                <ng-template pTemplate="caption">
+                <ng-template pTemplate="caption" style="background-color: #1f3168 ;">
                     <div
                         class="flex justify-content-between align-items-center"
                     >
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
+                            <i style="color: white;" class="pi pi-search"></i>
                             <input
+                                style="color: white;"
                                 pInputText
                                 type="text"
                                 (input)="onGlobalFilter(dt, $event)"
                                 placeholder="Buscar..."
                             />
                         </span>
+                        <div>
+                            <p-dropdown [options]="dt.rowsPerPageOptions" [(ngModel)]="dt.rows" [style]="{ 'margin-right': '5px' }"></p-dropdown>
+
+                            <span style="color: white; font-weight: 700; margin-top: 7px;"> Registros por página</span>
+                        </div>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
@@ -71,11 +77,13 @@
                     <tr>
                         <td class="align-actions">
                             <p-splitButton
+                                #splitButton
                                 label="Acciones"
                                 icon="pi pi-cog"
                                 [model]="items"
                             ></p-splitButton>
                         </td>
+                        
                         <td>
                             <span class="p-column-title">Código</span>
                             {{ rol.codigo }}

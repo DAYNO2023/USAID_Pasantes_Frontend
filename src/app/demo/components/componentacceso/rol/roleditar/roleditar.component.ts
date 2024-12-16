@@ -9,12 +9,12 @@ import { moduloPorRolService } from 'src/app/demo/service/serviceacceso/modulopo
 import { rolService } from 'src/app/demo/service/serviceacceso/rol.service';
 
 @Component({
-    selector: 'acceso-rol-rolcrear',
-    templateUrl: './rolcrear.component.html',
-    styleUrls: ['./rolcrear.component.scss'],
+    selector: 'acceso-rol-roleditar',
+    templateUrl: './roleditar.component.html',
+    styleUrls: ['./roleditar.component.scss'],
     providers: [MessageService],
 })
-export class RolCrearComponent implements OnInit {
+export class RolEditarComponent implements OnInit {
     insertarForm: FormGroup; // Grupo de controles
     enviado: boolean = false;
     rolYaRegistrado: boolean = false;
@@ -153,7 +153,7 @@ export class RolCrearComponent implements OnInit {
         // Convertir los módulos seleccionados en un arreglo de IDs
         const modulosSeleccionadosIds = this.modulosSeleccionados
             .map((modulo: any): number => parseInt(modulo.key, 10)) // Especificar el tipo explícitamente
-            .filter((id: number) => !isNaN(id) && id !== 0); // Filtrar IDs no válidos y el ID 0 (nodo raíz)
+            .filter((id: number) => !isNaN(id)); // Filtrar IDs no válidos
 
         // Construir el objeto `moduloPorRol`
         const moduloPorRol: moduloPorRol = {
@@ -161,27 +161,17 @@ export class RolCrearComponent implements OnInit {
             modu_Id: modulosSeleccionadosIds, // Pasar el arreglo de números
         };
 
-        console.log('enviando modulos', moduloPorRol);
+        console.log('Enviando:', moduloPorRol);
 
         // Llamar al servicio para insertar los módulos por rol
-        this.moduloPorRolService.Insertar(moduloPorRol).subscribe({
-            next: (response) => {
-                console.log('qepaso', response);
-                if (response?.code === 200 && response?.success) {
-                    console.log('inserto bien');
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Éxito',
-                        detail: 'Rol creado exitosamente.',
-                        life: 3000,
-                    });
-
-                    setTimeout(() => {
-                        this.cancelar();
-                    }, 500);
-                }
-            },
+        this.moduloPorRolService.Insertar(moduloPorRol).subscribe({});
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Rol creado exitosamente.',
+            life: 3000,
         });
+        this.cancelar();
     }
 
     cancelar() {
@@ -190,11 +180,12 @@ export class RolCrearComponent implements OnInit {
 
         // Limpiar el formulario
         this.insertarForm.reset();
-
+    
         // Limpiar el treeview
         this.modulosSeleccionados = [];
         this.router.navigate(['../'], { relativeTo: this.route });
     }
+    
 
     guardar() {
         this.enviado = true;
@@ -213,7 +204,8 @@ export class RolCrearComponent implements OnInit {
         }
 
         const formData = { ...this.insertarForm.value };
-        if (formData.role_DescripcionRol == null) return;
+        if(formData.role_DescripcionRol == null)
+            return;
 
         formData.role_UsuarioCreacion = 1;
         console.log(formData);
@@ -222,6 +214,7 @@ export class RolCrearComponent implements OnInit {
             next: (response) => {
                 if (response?.code === 200 && response?.success) {
                     const rolId = response.data.codeStatus; // ID del rol insertado
+                    
 
                     // Llama a un método para insertar los módulos seleccionados para el rol
                     this.guardarModulosPorRol(rolId);

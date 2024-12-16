@@ -17,7 +17,6 @@ export class RolComponent implements OnInit {
   selectedRoles: rol[] = [];
   cols: any[] = [];
   items: any[] = [];
-  rowsPerPageOptions = [5, 10, 20];
 
   productDialog: boolean = false;
 
@@ -43,7 +42,7 @@ export class RolComponent implements OnInit {
       { field: 'acciones', header: 'Acciones' }
     ];
     this.items = [
-      { label: 'Detalles', icon: 'pi pi-info'},
+      { label: 'Detalles', icon: 'pi pi-eye'},
       { label: 'Editar', icon: 'pi pi-pencil' },
       { label: 'Eliminar', icon: 'pi pi-trash'}
     ];
@@ -65,6 +64,7 @@ export class RolComponent implements OnInit {
       this.submitted = false;
       this.productDialog = true;
   }
+
 
   deleteSelectedProducts() {
       this.deleteProductsDialog = true;

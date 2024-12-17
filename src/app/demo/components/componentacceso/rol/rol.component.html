@@ -77,13 +77,15 @@
                     <tr>
                         <td class="align-actions">
                             <p-splitButton
-                                #splitButton
                                 label="Acciones"
                                 icon="pi pi-cog"
-                                [model]="items"
-                            ></p-splitButton>
+                                [model]="[
+                                    { label: 'Detalles', icon: 'pi pi-eye', routerLink: ['/rol/roldetalles', rol.role_Id] },
+                                    { label: 'Editar', icon: 'pi pi-pencil', routerLink: ['roleditar', rol.role_Id] },
+                                    { label: 'Eliminar', icon: 'pi pi-trash' }
+                                ]">
+                            </p-splitButton>
                         </td>
-                        
                         <td>
                             <span class="p-column-title">Código</span>
                             {{ rol.codigo }}

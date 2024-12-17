@@ -158,7 +158,7 @@ export class RolCrearComponent implements OnInit {
         // Construir el objeto `moduloPorRol`
         const moduloPorRol: moduloPorRol = {
             role_Id: rolId,
-            modu_Id: modulosSeleccionadosIds, // Pasar el arreglo de números
+            modulos: modulosSeleccionadosIds, // Pasar el arreglo de números
         };
 
         console.log('enviando modulos', moduloPorRol);

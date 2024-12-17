@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RolRoutingModule } from './rol-routing.module';
 import { RolComponent } from './rol.component';
 import { TableModule } from 'primeng/table';
@@ -17,6 +17,13 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { SidebarModule } from 'primeng/sidebar';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { TreeModule } from 'primeng/tree';
+import { RolEditarComponent } from './roleditar/roleditar.component';
+import { RolCrearComponent } from './rolcrear/rolcrear.component';
 
 @NgModule({
 	imports: [
@@ -36,9 +43,15 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 		RadioButtonModule,
 		InputNumberModule,
 		DialogModule,
+		OverlayPanelModule,
+		ConfirmDialogModule,
+		SidebarModule,
+		ConfirmPopupModule,
+		TreeModule,
+		ReactiveFormsModule,
 		// ProgressSpinnerModule,
 		SplitButtonModule,
 	],
-	declarations: [RolComponent]
+	declarations: [RolComponent, RolEditarComponent, RolCrearComponent]
 })
 export class RolModule { }

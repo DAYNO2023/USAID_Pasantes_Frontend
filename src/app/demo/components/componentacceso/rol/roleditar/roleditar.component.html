@@ -25,7 +25,7 @@
 
     <!-- Título centrado -->
     <div>
-        <h1 style="margin: 0;">Crear Rol</h1>
+        <h1 style="margin: 0;">Editar Rol</h1>
     </div>
 </div>
 
@@ -70,11 +70,10 @@
                 </small>
             </div>
         </div>
-        <p-tree
-            [value]="modulos"
-            selectionMode="checkbox"
-            [(selection)]="modulosSeleccionados"
-        >
+        <p-tree 
+            [value]="modulos" 
+            [(selection)]="modulosSeleccionados" 
+            selectionMode="checkbox">
         </p-tree>
         <div style="display: flex; justify-content: end; margin-top: 15px">
             <button

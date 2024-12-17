@@ -31,4 +31,13 @@ export class rolService {
     const url = `${this.rol}Insertar`;
     return this.http.post(url, rol, this.getHttpOptions());
   }
+
+  Buscar(rolId: number){
+    return this.http.get<rol[]>(`${this.rol}/Buscar/${rolId}`,this.getHttpOptions());
+  }
+
+  Actualizar(rol: rol): Observable<any> {
+    const url = `${this.rol}Actualizar`;
+    return this.http.put(url, rol, this.getHttpOptions());
+  }
 }

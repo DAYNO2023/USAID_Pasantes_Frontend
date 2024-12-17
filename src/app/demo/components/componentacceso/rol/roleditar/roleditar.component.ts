@@ -22,6 +22,8 @@ export class RolEditarComponent implements OnInit {
     modulos: TreeNode[] = [];
     modulosSeleccionados: TreeNode | TreeNode[] | any[] | any;
 
+    rolId: number | undefined;
+
     constructor(
         private moduloService: moduloService,
         private moduloPorRolService: moduloPorRolService,
@@ -41,8 +43,15 @@ export class RolEditarComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.cargarModulos();
+        // Obtener el ID del rol desde la ruta
+        this.rolId = +this.route.snapshot.paramMap.get('id')!;
+    
+        if (this.rolId) {
+            this.cargarModulos(); // Cargar todos los módulos disponibles
+        }
     }
+    
+    
 
     cargarModulos() {
         this.moduloService.Listar().subscribe({
@@ -158,13 +167,13 @@ export class RolEditarComponent implements OnInit {
         // Construir el objeto `moduloPorRol`
         const moduloPorRol: moduloPorRol = {
             role_Id: rolId,
-            modu_Id: modulosSeleccionadosIds, // Pasar el arreglo de números
+            modulos: modulosSeleccionadosIds, // Pasar el arreglo de números
         };
 
         console.log('Enviando:', moduloPorRol);
 
         // Llamar al servicio para insertar los módulos por rol
-        this.moduloPorRolService.Insertar(moduloPorRol).subscribe({});
+        this.moduloPorRolService.Actualizar(moduloPorRol).subscribe({});
         this.messageService.add({
             severity: 'success',
             summary: 'Éxito',
@@ -176,8 +185,6 @@ export class RolEditarComponent implements OnInit {
 
     cancelar() {
         this.enviado = false;
-        console.log('entra');
-
         // Limpiar el formulario
         this.insertarForm.reset();
     
@@ -210,14 +217,12 @@ export class RolEditarComponent implements OnInit {
         formData.role_UsuarioCreacion = 1;
         console.log(formData);
 
-        this.rolService.Insertar(formData).subscribe({
+        this.rolService.Actualizar(formData).subscribe({
             next: (response) => {
                 if (response?.code === 200 && response?.success) {
-                    const rolId = response.data.codeStatus; // ID del rol insertado
-                    
 
                     // Llama a un método para insertar los módulos seleccionados para el rol
-                    this.guardarModulosPorRol(rolId);
+                    // this.guardarModulosPorRol(rolId);
                 } else if (
                     response?.code === 500 &&
                     response?.message === 'Rol ya registrado.'

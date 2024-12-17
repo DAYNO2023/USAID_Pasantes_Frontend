@@ -16,7 +16,6 @@ export class RolComponent implements OnInit {
   roles: rol[] = [];
   selectedRoles: rol[] = [];
   cols: any[] = [];
-  items: any[] = [];
 
   productDialog: boolean = false;
 
@@ -40,11 +39,6 @@ export class RolComponent implements OnInit {
       { field: 'codigo', header: 'Código' },
       { field: 'role_DescripcionRol', header: 'Descripción del Rol' },
       { field: 'acciones', header: 'Acciones' }
-    ];
-    this.items = [
-      { label: 'Detalles', icon: 'pi pi-eye'},
-      { label: 'Editar', icon: 'pi pi-pencil' },
-      { label: 'Eliminar', icon: 'pi pi-trash'}
     ];
   }
 

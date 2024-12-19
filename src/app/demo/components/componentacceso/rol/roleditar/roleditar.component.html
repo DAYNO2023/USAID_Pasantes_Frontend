@@ -31,7 +31,7 @@
 
     <hr />
 
-    <form [formGroup]="insertarForm">
+    <form [formGroup]="actualizarForm">
         <div class="grid p-fluid mt-3">
             <div class="field col-12 md:col-6">
                 <span class="p-float-label p-input-icon-left">
@@ -46,7 +46,7 @@
                         [ngClass]="{
                             'ng-dirty ng-invalid':
                                 (enviado &&
-                                insertarForm.get('role_DescripcionRol')?.invalid) || rolYaRegistrado
+                                actualizarForm.get('role_DescripcionRol')?.invalid) || rolYaRegistrado
                         }"
                     />
                     <label>Rol</label>
@@ -55,7 +55,7 @@
                     class="ng-dirty ng-invalid"
                     *ngIf="
                         enviado &&
-                        insertarForm.get('role_DescripcionRol')?.invalid
+                        actualizarForm.get('role_DescripcionRol')?.invalid
                     "
                     style="color: #fc6161 !important"
                 >
@@ -71,10 +71,11 @@
             </div>
         </div>
         <p-tree 
-            [value]="modulos" 
-            [(selection)]="modulosSeleccionados" 
-            selectionMode="checkbox">
-        </p-tree>
+        [value]="modulos" 
+        [(selection)]="modulosSeleccionados" 
+        selectionMode="checkbox">
+    </p-tree>
+    
         <div style="display: flex; justify-content: end; margin-top: 15px">
             <button
                 class="btn btn-guardar"
@@ -83,7 +84,7 @@
                 type="button"
                 label="Guardar"
                 icon="pi pi-save"
-                (click)="guardar()"
+                (click)="actualizar()"
             ></button>
             <button
                 style="margin-left: 2%"

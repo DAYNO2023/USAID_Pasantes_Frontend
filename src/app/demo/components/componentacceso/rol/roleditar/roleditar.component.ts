@@ -15,14 +15,14 @@ import { rolService } from 'src/app/demo/service/serviceacceso/rol.service';
     providers: [MessageService],
 })
 export class RolEditarComponent implements OnInit {
-    insertarForm: FormGroup; // Grupo de controles
+    actualizarForm: FormGroup; // Grupo de controles
     enviado: boolean = false;
     rolYaRegistrado: boolean = false;
 
     modulos: TreeNode[] = [];
-    modulosSeleccionados: TreeNode | TreeNode[] | any[] | any;
+    modulosSeleccionados: TreeNode | TreeNode[] | any = [] ;
 
-    rolId: number | undefined;
+    roleId: number | null | undefined;
 
     constructor(
         private moduloService: moduloService,
@@ -33,40 +33,107 @@ export class RolEditarComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute
     ) {
-        this.insertarForm = this.fb.group({
+        this.actualizarForm = this.fb.group({
             role_DescripcionRol: [
                 null,
                 [Validators.required, Validators.pattern('^[a-zA-ZñÑ\\s]+$')],
             ],
-            role_UsuarioCreacion: [null],
+            role_UsuarioModificacion: [null],
         });
     }
 
     ngOnInit(): void {
-        // Obtener el ID del rol desde la ruta
-        this.rolId = +this.route.snapshot.paramMap.get('id')!;
+        // this.loading = true;
     
-        if (this.rolId) {
-            this.cargarModulos(); // Cargar todos los módulos disponibles
-        }
+        this.roleId = this.rolService.getRoleId();
+    
+        if (this.roleId) {
+            this.rolService.Buscar(this.roleId).subscribe({
+                next: (rol: any) => {
+                    this.actualizarForm.patchValue({
+                        role_DescripcionRol: rol.role_DescripcionRol
+                    });
+                }
+            });
+            this.cargarModulos();
+        } 
+        // Limpia el estado después de usarlo
     }
-    
-    
 
     cargarModulos() {
         this.moduloService.Listar().subscribe({
             next: (modulos: modulo[]) => {
                 this.modulos = this.transformarModulos(modulos);
-            },
-            error: (error) => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'No se pudieron cargar los módulos',
-                });
-            },
+                this.seleccionarModulos(); // Llamar después de cargar los módulos
+            }
         });
     }
+
+    seleccionarModulos() {
+        this.moduloPorRolService.Buscar(this.roleId!).subscribe({
+            next: (modulosPorRol: any[]) => {
+                const modulosSeleccionadosKeys = modulosPorRol.map(m => m.modu_Id.toString()); // Extraer los IDs como strings
+                console.log('mpdulos selecc', modulosSeleccionadosKeys)
+                this.marcarModulosSeleccionados(this.modulos, modulosSeleccionadosKeys);
+            },
+            error: (error) => {
+                console.error('Error al obtener módulos por rol:', error);
+            }
+        });
+    }
+
+    marcarModulosSeleccionados(nodos: TreeNode[], keysSeleccionados: string[]) {
+        nodos.forEach((nodo) => {
+            // Si el nodo actual tiene una key en la lista, se selecciona
+            if (keysSeleccionados.includes(nodo.key!)) {
+                if (!this.modulosSeleccionados.includes(nodo)) {
+                    this.modulosSeleccionados.push(nodo);
+                }
+            }
+    
+            // Si tiene hijos, recursivamente verifica y selecciona
+            if (nodo.children && nodo.children.length > 0) {
+                this.marcarModulosSeleccionados(nodo.children, keysSeleccionados);
+            }
+        });
+    
+        // Después de marcar los nodos, forzar la propagación de la selección hacia arriba
+        this.propagateSelectionUp(nodos);
+    }
+
+    propagateSelectionUp(nodos: TreeNode[]) {
+        nodos.forEach((nodo) => {
+            if (nodo.children && nodo.children.length > 0) {
+                const todosSeleccionados = nodo.children.every((hijo) =>
+                    this.modulosSeleccionados.includes(hijo)
+                );
+    
+                const algunoSeleccionado = nodo.children.some((hijo) =>
+                    this.modulosSeleccionados.includes(hijo)
+                );
+    
+                if (todosSeleccionados) {
+                    if (!this.modulosSeleccionados.includes(nodo)) {
+                        this.modulosSeleccionados = [...this.modulosSeleccionados, nodo];
+                    }
+                    nodo.partialSelected = false; // No está en estado indeterminado
+                } else if (algunoSeleccionado) {
+                    nodo.partialSelected = true; // Estado indeterminado
+                } else {
+                    nodo.partialSelected = false;
+                    this.modulosSeleccionados = this.modulosSeleccionados.filter(
+                        (item: TreeNode<any>) => item !== nodo
+                    );
+                }
+            }
+    
+            // Detener la recursión si no hay más padres
+            if (nodo.parent) {
+                this.propagateSelectionUp([nodo.parent]);
+            }
+        });
+    }
+    
 
     transformarModulos(modulos: modulo[]): TreeNode[] {
         // Crear un mapa para agrupar por título (modu_Titulo)
@@ -94,6 +161,7 @@ export class RolEditarComponent implements OnInit {
                         key: titulo, // Key del nodo padre
                         label: titulo, // Nombre del título
                         data: `Título: ${titulo}`, // Información adicional
+                        expanded: true,
                         children: [], // Aquí se agregarán los módulos como hijos
                     };
                 }
@@ -113,6 +181,7 @@ export class RolEditarComponent implements OnInit {
                 key: '0', // Nodo raíz
                 label: 'Todas', // Etiqueta del nodo raíz
                 data: 'Todas las modulos',
+                expanded: true,
                 children: Object.values(tituloMap), // Convertir los valores del mapa a un arreglo
             },
         ];
@@ -158,43 +227,51 @@ export class RolEditarComponent implements OnInit {
         }
     }
 
-    guardarModulosPorRol(rolId: number) {
+    actualizarModulosPorRol() {
         // Convertir los módulos seleccionados en un arreglo de IDs
         const modulosSeleccionadosIds = this.modulosSeleccionados
             .map((modulo: any): number => parseInt(modulo.key, 10)) // Especificar el tipo explícitamente
-            .filter((id: number) => !isNaN(id)); // Filtrar IDs no válidos
+            .filter((id: number) => !isNaN(id) && id !== 0); // Filtrar IDs no válidos y el ID 0 (nodo raíz)
 
         // Construir el objeto `moduloPorRol`
         const moduloPorRol: moduloPorRol = {
-            role_Id: rolId,
+            role_Id: this.roleId!,
             modulos: modulosSeleccionadosIds, // Pasar el arreglo de números
         };
 
-        console.log('Enviando:', moduloPorRol);
+        // Llamar al servicio para actualizar los módulos por rol
+        this.moduloPorRolService.Actualizar(moduloPorRol).subscribe({
+            next: (response) => {
+                console.log('qepaso', response);
+                if (response?.code === 200 && response?.success) {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Éxito',
+                        detail: 'Rol actualizado exitosamente.',
+                        life: 3000,
+                    });
 
-        // Llamar al servicio para insertar los módulos por rol
-        this.moduloPorRolService.Actualizar(moduloPorRol).subscribe({});
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Éxito',
-            detail: 'Rol creado exitosamente.',
-            life: 3000,
+                    setTimeout(() => {
+                        this.cancelar();
+                    }, 500);
+                }
+            },
         });
-        this.cancelar();
     }
 
     cancelar() {
         this.enviado = false;
         // Limpiar el formulario
-        this.insertarForm.reset();
+        this.actualizarForm.reset();
     
         // Limpiar el treeview
         this.modulosSeleccionados = [];
-        this.router.navigate(['../'], { relativeTo: this.route });
+        this.rolService.clearRoleId();
+        this.router.navigate(['/acceso/rol']);
     }
     
 
-    guardar() {
+    actualizar() {
         this.enviado = true;
         // Verificar si se seleccionaron modulos
         if (
@@ -210,19 +287,20 @@ export class RolEditarComponent implements OnInit {
             return;
         }
 
-        const formData = { ...this.insertarForm.value };
+        const formData = { ...this.actualizarForm.value };
         if(formData.role_DescripcionRol == null)
             return;
 
-        formData.role_UsuarioCreacion = 1;
+        formData.role_Id = this.roleId;
+        formData.role_UsuarioModificacion = 1;
         console.log(formData);
 
         this.rolService.Actualizar(formData).subscribe({
             next: (response) => {
                 if (response?.code === 200 && response?.success) {
 
-                    // Llama a un método para insertar los módulos seleccionados para el rol
-                    // this.guardarModulosPorRol(rolId);
+                    // Llama a un método para actualizar los módulos seleccionados para el rol
+                    this.actualizarModulosPorRol();
                 } else if (
                     response?.code === 500 &&
                     response?.message === 'Rol ya registrado.'

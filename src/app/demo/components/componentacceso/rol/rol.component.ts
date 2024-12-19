@@ -1,145 +1,147 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { NavigationExtras, Router } from '@angular/router';
+import { MenuItem, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Product } from 'src/app/demo/api/product';
 import { rol } from 'src/app/demo/models/modelsacceso/rolviewmodel';
 import { rolService } from 'src/app/demo/service/serviceacceso/rol.service';
 
 @Component({
-  selector: 'acceso-rol',
-  templateUrl: './rol.component.html',
-  styleUrls: ['./rol.component.scss'],
-  providers: [MessageService]
+    selector: 'acceso-rol',
+    templateUrl: './rol.component.html',
+    styleUrls: ['./rol.component.scss'],
+    providers: [MessageService],
 })
 export class RolComponent implements OnInit {
+    roles: rol[] = [];
+    selectedRoles: rol[] = [];
+    cols: any[] = [];
 
-  roles: rol[] = [];
-  selectedRoles: rol[] = [];
-  cols: any[] = [];
+    productDialog: boolean = false;
 
-  productDialog: boolean = false;
+    deleteProductDialog: boolean = false;
 
-  deleteProductDialog: boolean = false;
+    deleteProductsDialog: boolean = false;
 
-  deleteProductsDialog: boolean = false;
+    products: Product[] = [];
 
-  products: Product[] = [];
+    selectedRol: rol | null = null; // Rol seleccionado para eliminar
+    deleteRolDialog: boolean = false; // Mostrar el diálogo de eliminación
 
-  product: Product = {};
+    acciones: MenuItem[] = [];
 
-  selectedProducts: Product[] = [];
+    constructor(
+        private rolService: rolService,
+        private messageService: MessageService,
+        private router: Router
+    ) {}
 
-  submitted: boolean = false;
+    ngOnInit() {
+        this.rolService.clearRoleId();
 
-  constructor(private rolService: rolService, private messageService: MessageService) { }
+        this.loadRoles();
+        this.cols = [
+            { field: 'codigo', header: 'Código' },
+            { field: 'role_DescripcionRol', header: 'Descripción del Rol' },
+            { field: 'acciones', header: 'Acciones' },
+        ];
+        this.acciones = [
+            { 
+                label: 'Detalles', 
+                icon: 'pi pi-eye', 
+                command: () => this.verDetalle(this.selectedRol!) 
+            },
+            { 
+                label: 'Editar', 
+                icon: 'pi pi-pencil', 
+                command: () => this.editarRol(this.selectedRol!) 
+            },
+            { 
+                label: 'Eliminar', 
+                icon: 'pi pi-trash', 
+                command: () => this.mostrarDialogoEliminar(this.selectedRol!) 
+            }
+        ]    
+    }
+    setSelectedRol(rol: rol) {
+        this.selectedRol = rol;
+    }
 
-  ngOnInit() {
-    this.loadRoles();
-    this.cols = [
-      { field: 'codigo', header: 'Código' },
-      { field: 'role_DescripcionRol', header: 'Descripción del Rol' },
-      { field: 'acciones', header: 'Acciones' }
-    ];
-  }
+    loadRoles() {
+        this.rolService.Listar().subscribe({
+            next: (data) => {
+                this.roles = data;
+            }
+        });
+    }
 
-  loadRoles() {
-    this.rolService.Listar().subscribe({
-      next: (data) => {
-        this.roles = data;
-      },
-      error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar roles' });
-      }
-    });
-  }
+    verDetalle(rol: rol) {
+        this.rolService.setRoleId(rol.role_Id!);
+        this.router.navigate(['/acceso/rol/roldetalle']);
+    }
 
-  openNew() {
-      this.product = {};
-      this.submitted = false;
-      this.productDialog = true;
-  }
+    editarRol(rol: rol) {
+        this.rolService.setRoleId(rol.role_Id!);
+        this.router.navigate(['/acceso/rol/roleditar']);
+    }
+    
 
+    mostrarDialogoEliminar(rol: rol) {
+        console.log('mostrar', rol);
+        this.selectedRol = rol; // Asignar el rol seleccionado
+        this.deleteRolDialog = true; // Mostrar el diálogo
+    }
 
-  deleteSelectedProducts() {
-      this.deleteProductsDialog = true;
-  }
+    confirmarEliminarRol() {
+        console.log(this.selectedRol);
+        if (!this.selectedRol) return;
 
-  editProduct(product: Product) {
-      this.product = { ...product };
-      this.productDialog = true;
-  }
+        this.rolService.Eliminar(this.selectedRol.role_Id!).subscribe({
+            next: (response) => {
+                console.log(response);
+                if (response?.code === 200 && response?.success) {
+                    this.roles = this.roles.filter(
+                        (rol) => rol.role_Id !== this.selectedRol?.role_Id
+                    );
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Éxito',
+                        detail: 'Rol eliminado exitosamente.',
+                        life: 3000,
+                    });
+                } else if (response.code === 500 && response.message === 'Rol ya en uso.') {
+                    this.messageService.add({
+                        severity: 'warn',
+                        summary: 'Advertencia',
+                        detail: 'El rol está en uso y no puede ser eliminado.',
+                        life: 3000,
+                    });
+                } else {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Algo salió mal. Comuníquese con un Administrador.',
+                        life: 3000,
+                    });
+                }
 
-  deleteProduct(product: Product) {
-      this.deleteProductDialog = true;
-      this.product = { ...product };
-  }
+                this.deleteRolDialog = false;
+                this.selectedRol = null;
+            },
+            error: () => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Algo salió mal. Comuníquese con un Administrador.',
+                    life: 3000,
+                });
+                this.deleteRolDialog = false;
+                this.selectedRol = null;
+            },
+        });
+    }
 
-  confirmDeleteSelected() {
-      this.deleteProductsDialog = false;
-      this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-      this.selectedProducts = [];
-  }
-
-  confirmDelete() {
-      this.deleteProductDialog = false;
-      this.products = this.products.filter(val => val.id !== this.product.id);
-      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-      this.product = {};
-  }
-
-  hideDialog() {
-      this.productDialog = false;
-      this.submitted = false;
-  }
-
-  saveProduct() {
-      this.submitted = true;
-
-      if (this.product.name?.trim()) {
-          if (this.product.id) {
-              // @ts-ignore
-              this.product.inventoryStatus = this.product.inventoryStatus.value ? this.product.inventoryStatus.value : this.product.inventoryStatus;
-              this.products[this.findIndexById(this.product.id)] = this.product;
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-          } else {
-              this.product.id = this.createId();
-              this.product.code = this.createId();
-              this.product.image = 'product-placeholder.svg';
-              // @ts-ignore
-              this.product.inventoryStatus = this.product.inventoryStatus ? this.product.inventoryStatus.value : 'INSTOCK';
-              this.products.push(this.product);
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-          }
-
-          this.products = [...this.products];
-          this.productDialog = false;
-          this.product = {};
-      }
-  }
-
-  findIndexById(id: string): number {
-      let index = -1;
-      for (let i = 0; i < this.products.length; i++) {
-          if (this.products[i].id === id) {
-              index = i;
-              break;
-          }
-      }
-
-      return index;
-  }
-
-  createId(): string {
-      let id = '';
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      for (let i = 0; i < 5; i++) {
-          id += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return id;
-  }
-
-  onGlobalFilter(table: Table, event: Event) {
+    onGlobalFilter(table: Table, event: Event) {
       table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

@@ -1,0 +1,99 @@
+<div class="card">
+    <!-- Encabezado -->
+    <div
+        style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 50px;
+        "
+    >
+        <div style="position: absolute; left: 0">
+            <button
+                (click)="regresar()"
+                class="p-button-link"
+                pButton
+                pRipple
+                type="button"
+                label="Regresar"
+                icon="pi pi-arrow-left"
+                style="box-shadow: none !important"
+            ></button>
+        </div>
+
+        <div>
+            <h1 style="margin: 0">Detalle Rol</h1>
+        </div>
+    </div>
+
+    <hr />
+
+    <!-- Spinner de Carga -->
+    <div
+        *ngIf="cargando"
+        class="flex justify-content-center align-items-center"
+        style="height: 300px"
+    >
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+
+    <!-- Detalles del Rol -->
+    <div *ngIf="!cargando">
+        <div class="grid p-fluid mt-3">
+            <div class="field col">
+                <label><b>Código</b></label>
+                <p>{{ rol?.codigo }}</p>
+            </div>
+            <div class="field col">
+                <label><b>Descripción del Rol</b></label>
+                <p>{{ rol?.role_DescripcionRol }}</p>
+            </div>
+        </div>
+
+        <h3>Pantallas</h3>
+        <div class="grid p-fluid mt-3">
+            <div class="field col-12 md:col-3" *ngFor="let modulo of modulosRol">
+                <p>{{ modulo.modu_DescripcionModulo }}</p>
+            </div>
+        </div>
+        
+
+        <!-- Auditoría -->
+        <h3>Auditoría</h3>
+        <p-table
+            [value]="[rol]"
+            responsiveLayout="scroll"
+            styleClass="p-datatable-striped"
+        >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Acción</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rol>
+                <tr>
+                    <td>Creado</td>
+                    <td>{{ rol.usuarioCreacion || "N/A" }}</td>
+                    <td>
+                        {{ rol.role_FechaCreacion | date : "dd/MM/yyyy HH:mm" }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Modificado</td>
+                    <td>{{ rol.usuarioModificacion || "N/A" }}</td>
+                    <td>
+                        {{
+                            rol.role_FechaModificacion
+                                ? (rol.role_FechaModificacion
+                                  | date : "dd/MM/yyyy HH:mm")
+                                : "N/A"
+                        }}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

@@ -24,6 +24,8 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { TreeModule } from 'primeng/tree';
 import { RolEditarComponent } from './roleditar/roleditar.component';
 import { RolCrearComponent } from './rolcrear/rolcrear.component';
+import { RolDetalleComponent } from './roldetalle/roldetalle.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
 	imports: [
@@ -49,9 +51,9 @@ import { RolCrearComponent } from './rolcrear/rolcrear.component';
 		ConfirmPopupModule,
 		TreeModule,
 		ReactiveFormsModule,
-		// ProgressSpinnerModule,
+		ProgressSpinnerModule,
 		SplitButtonModule,
 	],
-	declarations: [RolComponent, RolEditarComponent, RolCrearComponent]
+	declarations: [RolComponent, RolEditarComponent, RolCrearComponent, RolDetalleComponent]
 })
 export class RolModule { }

@@ -29,11 +29,11 @@ export class moduloPorRolService {
   }
 
   Buscar(rolId: number){
-    return this.http.get<moduloPorRol[]>(`${this.moduloPorRol}/Buscar/${rolId}`,this.getHttpOptions());
+    return this.http.get<moduloPorRol[]>(`${this.moduloPorRol}Buscar/${rolId}`,this.getHttpOptions());
   }
 
   Actualizar(moduloPorRol: moduloPorRol): Observable<any> {
       const url = `${this.moduloPorRol}Actualizar`;
-      return this.http.post(url, moduloPorRol, this.getHttpOptions());
+      return this.http.put(url, moduloPorRol, this.getHttpOptions());
   }
 }

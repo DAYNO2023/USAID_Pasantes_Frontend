@@ -79,11 +79,8 @@
                             <p-splitButton
                                 label="Acciones"
                                 icon="pi pi-cog"
-                                [model]="[
-                                    { label: 'Detalles', icon: 'pi pi-eye', routerLink: ['/rol/roldetalles', rol.role_Id] },
-                                    { label: 'Editar', icon: 'pi pi-pencil', routerLink: ['roleditar', rol.role_Id] },
-                                    { label: 'Eliminar', icon: 'pi pi-trash' }
-                                ]">
+                                [model]="acciones"
+                                (onDropdownClick)="setSelectedRol(rol)">
                             </p-splitButton>
                         </td>
                         <td>
@@ -101,9 +98,9 @@
             </p-table>
         </div>
 
-        <!-- <p-dialog
-            [(visible)]="deleteProductDialog"
-            header="Confirm"
+        <p-dialog
+            [(visible)]="deleteRolDialog"
+            header="Confirmación"
             [modal]="true"
             [style]="{ width: '450px' }"
         >
@@ -112,62 +109,26 @@
                     class="pi pi-exclamation-triangle mr-3"
                     style="font-size: 2rem"
                 ></i>
-                <span *ngIf="product"
-                    >Are you sure you want to delete <b>{{ product.name }}</b
-                    >?</span
-                >
+                <span *ngIf="selectedRol">
+                    ¿Está seguro de que desea eliminar el rol 
+                    <b>{{ selectedRol.role_DescripcionRol }}</b>?
+                </span>
             </div>
             <ng-template pTemplate="footer">
                 <button
-                    pButton
-                    pRipple
-                    icon="pi pi-times"
-                    class="p-button-text"
-                    label="No"
-                    (click)="deleteProductDialog = false"
+                    pButton pRipple
+                    icon="pi pi-trash"
+                    label="Eliminar"
+                    (click)="confirmarEliminarRol()"
                 ></button>
                 <button
-                    pButton
-                    pRipple
-                    icon="pi pi-check"
-                    class="p-button-text"
-                    label="Yes"
-                    (click)="confirmDelete()"
+                    pButton pRipple
+                    icon="pi pi-times"
+                    class="p-button-outlined p-button-primary"
+                    label="Cancelar"
+                    (click)="deleteRolDialog = false"
                 ></button>
             </ng-template>
-        </p-dialog> -->
-
-        <!-- <p-dialog
-            [(visible)]="deleteProductsDialog"
-            header="Confirm"
-            [modal]="true"
-            [style]="{ width: '450px' }"
-        >
-            <div class="flex align-items-center justify-content-center">
-                <i
-                    class="pi pi-exclamation-triangle mr-3"
-                    style="font-size: 2rem"
-                ></i>
-                <span>Are you sure you want to delete selected products?</span>
-            </div>
-            <ng-template pTemplate="footer">
-                <button
-                    pButton
-                    pRipple
-                    icon="pi pi-times"
-                    class="p-button-text"
-                    label="No"
-                    (click)="deleteProductsDialog = false"
-                ></button>
-                <button
-                    pButton
-                    pRipple
-                    icon="pi pi-check"
-                    class="p-button-text"
-                    label="Yes"
-                    (click)="confirmDeleteSelected()"
-                ></button>
-            </ng-template>
-        </p-dialog> -->
+        </p-dialog>
     </div>
 </div>

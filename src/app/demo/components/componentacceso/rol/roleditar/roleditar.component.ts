@@ -267,7 +267,7 @@ export class RolEditarComponent implements OnInit {
         // Limpiar el treeview
         this.modulosSeleccionados = [];
         this.rolService.clearRoleId();
-        this.router.navigate(['/acceso/rol']);
+        this.router.navigate(['/USAID//acceso/rol']);
     }
     
 

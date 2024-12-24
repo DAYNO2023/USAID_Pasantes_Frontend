@@ -77,12 +77,12 @@ export class RolComponent implements OnInit {
 
     verDetalle(rol: rol) {
         this.rolService.setRoleId(rol.role_Id!);
-        this.router.navigate(['/acceso/rol/roldetalle']);
+        this.router.navigate(['/USAID//acceso/rol/roldetalle']);
     }
 
     editarRol(rol: rol) {
         this.rolService.setRoleId(rol.role_Id!);
-        this.router.navigate(['/acceso/rol/roleditar']);
+        this.router.navigate(['/USAID//acceso/rol/roleditar']);
     }
     
 

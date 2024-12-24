@@ -1,0 +1,193 @@
+
+body, html {
+    height: 100%;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom, #0b2751, #1f3168); /* Fondo azul */
+  }
+  
+  .login-card {
+    display: flex;
+    width: 60%; /* Más ancho */
+    background: #fff; /* Fondo blanco */
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    height: 500px; /* Más alto */
+    border-style: hidden;
+    position: relative; /* Para posicionar el botón de FAQ */
+  
+  }
+  
+  .left-section {
+    background: #1f3168; /* Gris claro */
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
+  
+  }
+  
+  .left-section img {
+    max-width: 70%;
+    height: auto;
+  }
+  
+  .right-section {
+    flex: 2; /* Más espacio para el formulario */
+    padding: 40px; /* Más espacio interno */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  h2 {
+    font-size: 30px; /* Más grande */
+    margin-bottom: 20px;
+    color: #1f3168; /* Azul */
+    text-align: center;
+  }
+
+  //ESTILOS PARA INPUTS
+::ng-deep .p-inputtext {
+  color: #2a2a2a;
+}
+  
+  .input-group {
+    flex: 1; /* Hace que ambos campos tomen el mismo ancho */
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  .input-group label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .input-group input {
+    width: 100%;
+    border: 1px solid #ccc;
+    height: 32px;
+    border-radius: 5px;
+  }
+  
+  .input-group input:focus {
+    border: 1px solid #1f3168; /* Azul */
+    outline: none;
+  }
+
+  
+  
+  .forgot-link, .faq-link {
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #1f3168; /* Azul */
+    text-decoration: none;
+  }
+  
+  .forgot-link:hover, .faq-link:hover {
+    text-decoration: underline;
+  }
+  
+  .login-btn {
+  
+    background: #1f3168; /* Rojo */
+    color: #fff;
+    padding: 15px; /* Botón más grande */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px; /* Texto más grande */
+    cursor: pointer;
+    transition: background 0.3s;
+    margin: 0 auto; /* Centrado del botón */
+    display: block;
+  }
+  
+  .login-btn:hover {
+    background: #0453a1; /* Rojo más oscuro */
+  }
+  
+  .faq-btn {
+  
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: #1f3168;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+  }
+  
+  .faq-btn:hover {
+    background: #0453a1;
+  }
+  
+  .register-link {
+    border-top: 20px;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #1f3168; /* Azul */
+    text-decoration: none;
+  }
+  
+  .register-link:hover {
+    text-decoration: underline;
+  }
+  
+  
+  .faq-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: #ffffff;
+    color: #1f3168;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    margin-top: 20px;
+    margin-right: 20px;
+    font-size: 14px;
+    font-weight: bold; /* Texto en negritas */
+  }
+  
+  
+  .faq-btn:hover {
+    background: #003f7d;;
+    color: #ffffff;
+  }
+  
+  .logo-container {
+    display: flex;
+    flex-direction: column; /* Apilar elementos en columna */
+    align-items: center; /* Centrar horizontalmente */
+    justify-content: center; /* Centrar verticalmente */
+  }
+  
+  .logo-container img {
+    max-width: 70%;
+    height: auto;
+    margin-bottom: 20px; /* Espacio entre la imagen y el texto */
+  }
+  
+  .logo-container h1 {
+    font-size: 50px; /* Tamaño del texto */
+    color: #fff; /* Color del texto */
+    text-align: center; /* Centrar el texto */
+  }
+  

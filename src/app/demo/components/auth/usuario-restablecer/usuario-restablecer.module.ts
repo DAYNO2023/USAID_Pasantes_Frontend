@@ -1,15 +1,13 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoginPasantesRoutingModule } from './login-pasantes-routing.module';
-import { LoginPasantesComponent } from './login-pasantes.component';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { CheckboxModule } from 'primeng/checkbox';
+import { UsuariorestablecerRoutingModule } from './usuario-restablecer-routing.module';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
+import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
 import { AppConfigModule } from 'src/app/layout/config/app.config.module';
 import { PasswordModule } from 'primeng/password';
-
-import { RippleModule } from 'primeng/ripple';
 import { FileUploadModule } from 'primeng/fileupload';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TabViewModule } from 'primeng/tabview';
@@ -21,22 +19,21 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { UsuariorestablecerComponent } from './usuario-restablecer.component';
 
 
 
 @NgModule({
-    imports: [
-        CommonModule,
-        LoginPasantesRoutingModule,
+  imports: [
+    CommonModule,
+    UsuariorestablecerRoutingModule,
+    FormsModule,
         ButtonModule,
+        RippleModule,
         InputTextModule,
         CheckboxModule,
-        FormsModule,
         AppConfigModule,
-        InputTextModule,
         PasswordModule,
-        RippleModule,
         FileUploadModule,
         TabViewModule,
         CalendarModule,
@@ -47,8 +44,9 @@ import { ReactiveFormsModule } from '@angular/forms';
         InputTextareaModule,
         InputGroupModule,
         InputGroupAddonModule,
-    ],
-    declarations: [LoginPasantesComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA] // Esto permitirá usar <p-floatLabel>
+        ReactiveFormsModule
+  ],
+  declarations: [UsuariorestablecerComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA] 
 })
-export class LoginPasantesComponentModule { }
+export class UsuariorestablecerModule { }

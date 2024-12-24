@@ -68,7 +68,7 @@ export class RolDetalleComponent implements OnInit {
     regresar() {
         // Limpiar el ID del rol al salir del componente
         this.rolService.clearRoleId();
-        this.router.navigate(['/acceso/rol']);
+        this.router.navigate(['/USAID//acceso/rol']);
     }
 
     obtenerDetallesRol() {

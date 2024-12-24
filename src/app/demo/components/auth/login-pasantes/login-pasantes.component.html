@@ -2,29 +2,53 @@
   <div class="login-card">
     <div class="left-section">
       <div class="logo-container">
-        <img style="width: 400px;" src="assets/layout/images/usaidlogo-light.png" alt="Móvil con contraseña" class="illustration" />
+        <img style="width: 400px;" src="assets/layout/images/usaidlogo-light.png" alt="Logo USAID" class="illustration" />
         <h1>USAID</h1>
       </div>
     </div>
     <div class="right-section">
       <h2>Inicio de Sesión</h2>
-      <form>
-        <div class="input-group">
-          <label for="email">Usuario</label>
-          <p-floatLabel>
-            <input id="username" type="text" pInputText />
-          </p-floatLabel>
+
+      <!-- Contenedor para mensajes de error -->
+      <div *ngIf="errorMessage" class="error-container">
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <form (ngSubmit)="iniciarSesion()">
+        <div class="grid p-fluid mt-0.3">
+          <div class="input-group col-12 md:col-12">
+            <span class="p-float-label p-input-icon-left">
+              <i class="pi pi-user"></i>
+              <input
+                type="text"
+                pInputText
+                [(ngModel)]="usuario"
+                name="usuario"
+                required
+              />
+              <label>Usuario</label>
+            </span>
+          </div>
         </div>
-        <div class="input-group">
-          <label for="password">Contraseña</label>
-          <p-floatLabel>
-            <input id="password" type="password" pInputText />
-          </p-floatLabel>
+        <div class="grid p-fluid mt-0.3">
+          <div class="input-group col-12 md:col-12">
+            <span class="p-float-label p-input-icon-left">
+              <i class="pi pi-lock"></i>
+              <input
+                type="password"
+                pInputText
+                [(ngModel)]="clave"
+                name="clave"
+                required
+              />
+              <label>Contraseña</label>
+            </span>
+          </div>
         </div>
-        <a href="#" class="forgot-link">¿Olvidó su Contraseña?</a>
+        <a routerLink="/auth/Usuario-Restablecer" class="forgot-link">¿Olvidó su Contraseña?</a>
         <button type="submit" class="login-btn">Iniciar Sesión</button>
-        <a href="#" class="register-link">-- O --</a>
-        <a routerLink="register" class="register-link">Registrarse</a>
+        <a class="register-link">-- O --</a>
+        <a routerLink="/auth/register" class="register-link">Registrarse</a>
       </form>
     </div>
   </div>
